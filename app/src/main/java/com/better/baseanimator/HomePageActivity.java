@@ -1,44 +1,81 @@
 package com.better.baseanimator;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
-import android.widget.TextView;
+import android.support.v4.view.ViewPager;
 
-public class HomePageActivity extends AppCompatActivity {
+import com.better.baseanimator.base.BaseActivity;
+import com.better.baseanimator.base.BaseViewpagerAdapter;
 
-    private TextView mTextMessage;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+/*
+ * -----------------------------------------------------------------
+ * Copyright (C) 2014-2017, by Better, All rights reserved.
+ * -----------------------------------------------------------------
+ *
+ * File: HomePageActivity.java
+ * Author: lianghuiyong@outlook.com
+ * Create: 2017/12/18 上午10:49
+ *
+ * Changes (from 2017/12/18)
+ * -----------------------------------------------------------------
+ * 2017/12/18 : Create HomePageActivity.java (梁惠涌);
+ * -----------------------------------------------------------------
+ */
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+public class HomePageActivity extends BaseActivity {
+
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+    @BindView(R.id.navigation)
+    BottomNavigationView navigation;
+
+    @Override
+    public int setViewId() {
+        return R.layout.activity_home_page;
+    }
+
+    @Override
+    public void initData() {
+        BaseViewpagerAdapter viewpagerAdapter = new BaseViewpagerAdapter(getSupportFragmentManager());
+        viewpagerAdapter.addFragment(new EvaluatorFragment());  // Evaluator
+        viewpagerAdapter.addFragment(new Dynamic2DFragment());  // 动效2D
+        viewpagerAdapter.addFragment(new Dynamic3DFragment());  // 动效3D
+        viewPager.setAdapter(viewpagerAdapter);
+        viewPager.setOffscreenPageLimit(2);
+
+        navigation.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    viewPager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    viewPager.setCurrentItem(1);
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                    viewPager.setCurrentItem(2);
                     return true;
             }
             return false;
-        }
-    };
+        });
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                navigation.setSelectedItemId(navigation.getMenu().getItem(position).getItemId());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
-
 }
