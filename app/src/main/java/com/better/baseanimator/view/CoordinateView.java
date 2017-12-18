@@ -49,6 +49,8 @@ public class CoordinateView extends View {
     private float process = 0;
     //时间
     private float time = 0;
+    //标题
+    private String title = "";
 
     public CoordinateView(Context context) {
         super(context);
@@ -69,7 +71,7 @@ public class CoordinateView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        float[] pts1 = {pading, 0, pading, mHeight - pading, pading, mHeight - pading, mWidth, mHeight - pading};
+        float[] pts1 = {pading, 2 * pading, pading, mHeight - 3 * pading, pading, mHeight - 3 * pading, mWidth, mHeight - 3 * pading};
         canvas.drawLines(pts1, paintLine);
         canvas.drawPath(dottedPath, dottedLine);
         canvas.drawPath(path, paintLine);
@@ -78,9 +80,15 @@ public class CoordinateView extends View {
         Paint.FontMetrics fontMetrics = paintText.getFontMetrics();
         float font_height = fontMetrics.bottom - fontMetrics.top;
 
-        canvas.drawText("1", pading * 2 / 3, pading + font_height / 3, paintText);
-        canvas.drawText("0", pading * 2 / 3, mHeight - pading + font_height, paintText);
-        canvas.drawText("1", mWidth - pading + pading / 3, mHeight - pading + font_height, paintText);
+        canvas.drawText("1", pading / 2, 3 * pading, paintText);
+        canvas.drawText("0", pading / 2, mHeight - 3 * pading + pading / 2, paintText);
+        canvas.drawText("1", mWidth - pading, mHeight - 3 * pading + pading / 2, paintText);
+        canvas.drawText(title, mWidth / 2, 3 * pading / 2, paintText);
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        invalidate();
     }
 
     @Override
@@ -114,7 +122,7 @@ public class CoordinateView extends View {
          * LEFT:以文字左边为起始点向右边开始绘制
          * RIGHT:以文字宽度的右边为起始点向左边绘制
          */
-        paintText.setTextAlign(Paint.Align.RIGHT);
+        paintText.setTextAlign(Paint.Align.CENTER);
         paintText.setTextSize(textSize);
         paintText.setStyle(Paint.Style.FILL);   // 设置样式
         paintText.setAntiAlias(true);
@@ -132,25 +140,26 @@ public class CoordinateView extends View {
     public void setProcess(float process) {
         this.process = process;
         float x = (pading) + (mWidth - 2 * pading) * time;
-        float y = (mHeight - pading) - (mHeight - 2 * pading) * process;
+        float y = (mHeight - 3 * pading) - (mHeight - 6 * pading) * process;
         path.lineTo(x, y);
         invalidate();
     }
 
     public void setTime(float time) {
         this.time = time;
+        invalidate();
     }
 
     public void initPath() {
         //实线
         path.reset();
-        path.moveTo(pading, mHeight - pading);//起始点
+        path.moveTo(pading, mHeight - 3 * pading);//起始点
 
         //虚线
         dottedPath.reset();
-        dottedPath.moveTo(pading, pading);
-        dottedPath.lineTo(mWidth - pading, pading);
-        dottedPath.lineTo(mWidth - pading, mHeight - pading);
+        dottedPath.moveTo(pading, 3 * pading);
+        dottedPath.lineTo(mWidth - pading, 3 * pading);
+        dottedPath.lineTo(mWidth - pading, mHeight - 3 * pading);
 
         setProcess(0.5f);
         invalidate();
@@ -158,7 +167,7 @@ public class CoordinateView extends View {
 
     public void clear() {
         path.reset();
-        path.moveTo(mWidth - pading, mHeight - pading);//起始点
+        path.moveTo(mWidth - pading, mHeight - 3 * pading);//起始点
 
         invalidate();
     }

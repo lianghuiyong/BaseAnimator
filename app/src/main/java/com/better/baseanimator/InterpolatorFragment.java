@@ -62,7 +62,6 @@ public class InterpolatorFragment extends BaseFragment {
         list.add("DecelerateInterpolator");
         adapter.setNewData(list);
 
-
         ValueAnimator process = ObjectAnimator.ofFloat(coordinate, "process", 0.0f, 1.0f);
         ValueAnimator time = ObjectAnimator.ofFloat(coordinate, "time", 0.0f, 1.0f);
         AnimatorSet animatorSet = new AnimatorSet();
@@ -74,6 +73,7 @@ public class InterpolatorFragment extends BaseFragment {
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
                 coordinate.clear();
+                coordinate.setTitle((String) adapter.getData().get(position));
 
                 switch (position) {
                     case 0:
