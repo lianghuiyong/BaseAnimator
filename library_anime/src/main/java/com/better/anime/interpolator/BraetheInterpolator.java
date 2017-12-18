@@ -1,4 +1,4 @@
-package com.better.anime.evaluator;
+package com.better.anime.interpolator;
 
 import android.view.animation.Interpolator;
 

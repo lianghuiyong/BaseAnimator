@@ -2,18 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_1"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Interpolator" />
+
+    <item
+        android:id="@+id/navigation_2"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="Evaluator" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_3"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="Dynamic2D" />
 
-    <item
-        android:id="@+id/navigation_notifications"
+<!--    <item
+        android:id="@+id/navigation_4"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Dynamic3D" />
+        android:title="Dynamic3D" />-->
 
 </menu>

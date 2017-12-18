@@ -40,23 +40,27 @@ public class HomePageActivity extends BaseActivity {
     @Override
     public void initData() {
         BaseViewpagerAdapter viewpagerAdapter = new BaseViewpagerAdapter(getSupportFragmentManager());
-        viewpagerAdapter.addFragment(new EvaluatorFragment());  // Evaluator
-        viewpagerAdapter.addFragment(new Dynamic2DFragment());  // 动效2D
-        viewpagerAdapter.addFragment(new Dynamic3DFragment());  // 动效3D
+        viewpagerAdapter.addFragment(new InterpolatorFragment());   // Interpolator
+        viewpagerAdapter.addFragment(new EvaluatorFragment());      // Evaluator
+        viewpagerAdapter.addFragment(new Dynamic2DFragment());      // 动效2D
+        //viewpagerAdapter.addFragment(new Dynamic3DFragment());      // 动效3D
         viewPager.setAdapter(viewpagerAdapter);
         viewPager.setOffscreenPageLimit(2);
 
         navigation.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_1:
                     viewPager.setCurrentItem(0);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_2:
                     viewPager.setCurrentItem(1);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_3:
                     viewPager.setCurrentItem(2);
                     return true;
+/*                case R.id.navigation_4:
+                    viewPager.setCurrentItem(3);
+                    return true;*/
             }
             return false;
         });
