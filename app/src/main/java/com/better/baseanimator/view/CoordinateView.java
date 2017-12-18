@@ -81,8 +81,8 @@ public class CoordinateView extends View {
         float font_height = fontMetrics.bottom - fontMetrics.top;
 
         canvas.drawText("1", pading / 2, 3 * pading, paintText);
-        canvas.drawText("0", pading / 2, mHeight - 3 * pading + pading / 2, paintText);
-        canvas.drawText("1", mWidth - pading, mHeight - 3 * pading + pading / 2, paintText);
+        canvas.drawText("0", pading / 2, mHeight - 2.3f * pading, paintText);
+        canvas.drawText("1", mWidth - pading, mHeight - 2.3f * pading, paintText);
         canvas.drawText(title, mWidth / 2, 3 * pading / 2, paintText);
     }
 
