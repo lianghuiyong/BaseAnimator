@@ -3,6 +3,8 @@ package com.better.baseanimator;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
@@ -18,6 +20,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.view.animation.PathInterpolator;
+import android.widget.Toast;
 
 import com.better.baseanimator.adapter.InterpolatorAdapter;
 import com.better.baseanimator.base.BaseFragment;
@@ -30,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 
 /*
@@ -83,6 +89,7 @@ public class InterpolatorFragment extends BaseFragment {
         process.setDuration(1000);
 
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
+
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
@@ -120,7 +127,11 @@ public class InterpolatorFragment extends BaseFragment {
                         process.setInterpolator(new CycleInterpolator(1));
                         break;
                     case 9:
-                        //process.setInterpolator(new PathInterpolator());
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            process.setInterpolator(new PathInterpolator(0.2f,1f));
+                        }else {
+                            Toast.makeText(getContext(),"Api 21 以上支持", LENGTH_SHORT).show();
+                        }
                         break;
                     case 10:
                         process.setInterpolator(new FastOutLinearInInterpolator());
