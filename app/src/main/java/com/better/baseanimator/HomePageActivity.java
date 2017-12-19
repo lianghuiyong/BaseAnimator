@@ -41,9 +41,9 @@ public class HomePageActivity extends BaseActivity {
     public void initData() {
         BaseViewpagerAdapter viewpagerAdapter = new BaseViewpagerAdapter(getSupportFragmentManager());
         viewpagerAdapter.addFragment(new InterpolatorFragment());   // Interpolator
-        viewpagerAdapter.addFragment(new EvaluatorFragment());      // Evaluator
+        //viewpagerAdapter.addFragment(new EvaluatorFragment());      // Evaluator
         viewpagerAdapter.addFragment(new Dynamic2DFragment());      // 动效2D
-        //viewpagerAdapter.addFragment(new Dynamic3DFragment());      // 动效3D
+        viewpagerAdapter.addFragment(new Dynamic3DFragment());      // 动效3D
         viewPager.setAdapter(viewpagerAdapter);
         viewPager.setOffscreenPageLimit(2);
 
@@ -58,9 +58,6 @@ public class HomePageActivity extends BaseActivity {
                 case R.id.navigation_3:
                     viewPager.setCurrentItem(2);
                     return true;
-/*                case R.id.navigation_4:
-                    viewPager.setCurrentItem(3);
-                    return true;*/
             }
             return false;
         });

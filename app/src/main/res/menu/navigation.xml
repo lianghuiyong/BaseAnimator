@@ -8,17 +8,12 @@
 
     <item
         android:id="@+id/navigation_2"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Evaluator" />
-
-    <item
-        android:id="@+id/navigation_3"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="Dynamic2D" />
 
-<!--    <item
-        android:id="@+id/navigation_4"
+    <item
+        android:id="@+id/navigation_3"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Dynamic3D" />-->
+        android:title="Dynamic3D" />
 
 </menu>
