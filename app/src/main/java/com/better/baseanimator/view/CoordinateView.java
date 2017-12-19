@@ -8,6 +8,7 @@ import android.graphics.DiscretePathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathDashPathEffect;
+import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -53,6 +54,9 @@ public class CoordinateView extends View {
 
     private float point_x;
     private float point_y;
+
+    private Paint circlePaint;
+
     //标题
     private String title = "";
 
@@ -80,13 +84,16 @@ public class CoordinateView extends View {
         canvas.drawLines(pts1, paintLine);
         //坐标虚线
         canvas.drawPath(dottedPath, dottedLine);
-        //弧度
-        canvas.drawPath(path, paintLine);
 
         //字体高度
         canvas.drawText("1", pading / 2, 3 * pading, paintText);
         canvas.drawText("0", pading / 2, mHeight - 2.3f * pading, paintText);
         canvas.drawText("1", mWidth - pading, mHeight - 2.3f * pading, paintText);
+        //弧度
+        canvas.drawPath(path, paintLine);
+        //圆球
+        canvas.drawCircle(mWidth - pading, point_y, pading / 4, circlePaint);
+        //标题
         canvas.drawText(title, mWidth / 2, 3 * pading / 2, paintText);
     }
 
@@ -139,6 +146,12 @@ public class CoordinateView extends View {
         dottedLine.setStyle(Paint.Style.STROKE);
         dottedPath = new Path();
         dottedLine.setPathEffect(new DashPathEffect(new float[]{5, 5}, 0));
+
+        //圆球
+        circlePaint = new Paint();
+        circlePaint.setColor(Color.RED);
+        circlePaint.setAntiAlias(true);
+        circlePaint.setStyle(Paint.Style.FILL);
     }
 
     public void setProcess(float process) {
@@ -160,23 +173,30 @@ public class CoordinateView extends View {
     }
 
     public void initPath() {
+        //初始化起点
+        point_x = pading;
+        point_y = mHeight - 3 * pading;
+
         //实线
         path.reset();
-        path.moveTo(pading, mHeight - 3 * pading);//起始点
+        path.moveTo(point_x, point_y);//起始点
 
         //虚线
         dottedPath.reset();
-        dottedPath.moveTo(pading, 3 * pading);
-        dottedPath.lineTo(mWidth - pading, 3 * pading);
-        dottedPath.lineTo(mWidth - pading, mHeight - 3 * pading);
+        dottedPath.moveTo(point_x, 3 * pading);
+        dottedPath.lineTo(mWidth - point_x, 3 * pading);
+        dottedPath.lineTo(mWidth - point_x, point_y);
 
-        setProcess(0.5f);
         invalidate();
     }
 
     public void clear() {
+        //初始化起点
+        point_x = pading;
+        point_y = mHeight - 3 * pading;
+
         path.reset();
-        path.moveTo(pading, mHeight - 3 * pading);//起始点
+        path.moveTo(point_x, point_y);//起始点
 
         invalidate();
     }
