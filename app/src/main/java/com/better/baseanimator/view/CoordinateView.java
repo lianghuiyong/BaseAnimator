@@ -48,7 +48,11 @@ public class CoordinateView extends View {
     //进度
     private float process = 0;
     //时间
-    private float time = 0;
+    private long time = 0;
+    private long oldTime = 0;
+
+    private float point_x;
+    private float point_y;
     //标题
     private String title = "";
 
@@ -72,14 +76,14 @@ public class CoordinateView extends View {
         super.onDraw(canvas);
 
         float[] pts1 = {pading, 2 * pading, pading, mHeight - 3 * pading, pading, mHeight - 3 * pading, mWidth, mHeight - 3 * pading};
+        //坐标实线
         canvas.drawLines(pts1, paintLine);
+        //坐标虚线
         canvas.drawPath(dottedPath, dottedLine);
+        //弧度
         canvas.drawPath(path, paintLine);
 
         //字体高度
-        Paint.FontMetrics fontMetrics = paintText.getFontMetrics();
-        float font_height = fontMetrics.bottom - fontMetrics.top;
-
         canvas.drawText("1", pading / 2, 3 * pading, paintText);
         canvas.drawText("0", pading / 2, mHeight - 2.3f * pading, paintText);
         canvas.drawText("1", mWidth - pading, mHeight - 2.3f * pading, paintText);
@@ -139,15 +143,20 @@ public class CoordinateView extends View {
 
     public void setProcess(float process) {
         this.process = process;
-        float x = (pading) + (mWidth - 2 * pading) * time;
-        float y = (mHeight - 3 * pading) - (mHeight - 6 * pading) * process;
-        path.lineTo(x, y);
-        invalidate();
-    }
 
-    public void setTime(float time) {
-        this.time = time;
-        invalidate();
+        if (process == 0) {
+            oldTime = System.currentTimeMillis();
+            time = oldTime;
+        } else {
+            time = System.currentTimeMillis();
+        }
+
+        if (time >= oldTime && time - oldTime <= 1000) {
+            point_x = (pading) + (mWidth - 2 * pading) * (time - oldTime) / 1000;
+            point_y = (mHeight - 3 * pading) - (mHeight - 6 * pading) * process;
+            path.lineTo(point_x, point_y);
+            invalidate();
+        }
     }
 
     public void initPath() {
@@ -167,7 +176,7 @@ public class CoordinateView extends View {
 
     public void clear() {
         path.reset();
-        path.moveTo(mWidth - pading, mHeight - 3 * pading);//起始点
+        path.moveTo(pading, mHeight - 3 * pading);//起始点
 
         invalidate();
     }

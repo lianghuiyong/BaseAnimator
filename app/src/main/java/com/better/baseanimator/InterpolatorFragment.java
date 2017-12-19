@@ -63,15 +63,14 @@ public class InterpolatorFragment extends BaseFragment {
         adapter.setNewData(list);
 
         ValueAnimator process = ObjectAnimator.ofFloat(coordinate, "process", 0.0f, 1.0f);
-        ValueAnimator time = ObjectAnimator.ofFloat(coordinate, "time", 0.0f, 1.0f);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(process).with(time);
-        animatorSet.setDuration(1000);
+        process.setDuration(1000);
+        //ValueAnimator time = ObjectAnimator.ofFloat(coordinate, "time", 0.0f, 1.0f);
 
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
+                //设置标题
                 coordinate.clear();
                 coordinate.setTitle((String) adapter.getData().get(position));
 
@@ -84,8 +83,8 @@ public class InterpolatorFragment extends BaseFragment {
                         break;
 
                 }
-
-                animatorSet.start();
+                //开启动画
+                process.start();
             }
         });
     }
