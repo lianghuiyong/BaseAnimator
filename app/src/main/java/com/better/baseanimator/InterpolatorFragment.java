@@ -124,7 +124,7 @@ public class InterpolatorFragment extends BaseFragment {
                         process.setInterpolator(new BounceInterpolator());
                         break;
                     case 8:
-                        process.setInterpolator(new CycleInterpolator(1));
+                        process.setInterpolator(new CycleInterpolator(0.25f));
                         break;
                     case 9:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
