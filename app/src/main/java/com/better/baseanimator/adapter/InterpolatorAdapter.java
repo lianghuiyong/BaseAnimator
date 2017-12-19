@@ -1,13 +1,9 @@
 package com.better.baseanimator.adapter;
 
-import android.support.annotation.Nullable;
-
 import com.better.baseanimator.R;
+import com.better.baseanimator.bean.ListInfoBean;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * -----------------------------------------------------------------
@@ -23,13 +19,14 @@ import java.util.List;
  * 2017/12/18 : Create InterpolatorAdapter.java (梁惠涌);
  * -----------------------------------------------------------------
  */
-public class InterpolatorAdapter  extends BaseQuickAdapter<String, BaseViewHolder> {
+public class InterpolatorAdapter  extends BaseQuickAdapter<ListInfoBean, BaseViewHolder> {
     public InterpolatorAdapter() {
         super(R.layout.item_text_info);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-        helper.setText(R.id.tv_info, item);
+    protected void convert(BaseViewHolder helper, ListInfoBean item) {
+        helper.setText(R.id.tv_info, item.getTitle());
+        helper.setText(R.id.tv_sub, item.getSubTitle());
     }
 }
