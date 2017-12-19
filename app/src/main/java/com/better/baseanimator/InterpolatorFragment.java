@@ -4,11 +4,11 @@ package com.better.baseanimator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -17,12 +17,12 @@ import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.Toast;
 
+import com.better.anime.interpolator.BreatheInterpolator;
 import com.better.baseanimator.adapter.InterpolatorAdapter;
 import com.better.baseanimator.base.BaseFragment;
 import com.better.baseanimator.bean.ListInfoBean;
@@ -70,8 +70,8 @@ public class InterpolatorFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
 
         List<ListInfoBean> list = new ArrayList<>();
-        list.add(new ListInfoBean("AccelerateDecelerateInterpolator", "先加速再减速"));
-        list.add(new ListInfoBean("LinearInterpolator", "匀速"));
+        list.add(new ListInfoBean("AccelerateDecelerateInterpolator", "【系统默认】匀速"));
+        list.add(new ListInfoBean("LinearInterpolator", "先加速再减速"));
         list.add(new ListInfoBean("AccelerateInterpolator", "持续加速"));
         list.add(new ListInfoBean("DecelerateInterpolator", "持续减速直到 0"));
         list.add(new ListInfoBean("AnticipateInterpolator", "先回拉再正常动画轨迹"));
@@ -83,10 +83,8 @@ public class InterpolatorFragment extends BaseFragment {
         list.add(new ListInfoBean("FastOutLinearInInterpolator", "加速运动"));
         list.add(new ListInfoBean("FastOutSlowInInterpolator", "先加速再减速"));
         list.add(new ListInfoBean("LinearOutSlowInInterpolator", "持续减速"));
+        list.add(new ListInfoBean("BreatheInterpolator", "【自定义】拟合呼吸变化"));
         adapter.setNewData(list);
-
-        ValueAnimator process = ObjectAnimator.ofFloat(coordinate, "process", 0.0f, 1.0f);
-        process.setDuration(1000);
 
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
 
@@ -94,75 +92,57 @@ public class InterpolatorFragment extends BaseFragment {
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
                 ListInfoBean infoBean = (ListInfoBean) adapter.getData().get(position);
-
-                //设置标题
-                coordinate.clear();
                 coordinate.setTitle(infoBean.getTitle());
                 switch (position) {
                     case 0:
-                        process.setInterpolator(new AccelerateDecelerateInterpolator());
+                        coordinate.setInterpolator(new AccelerateDecelerateInterpolator());
                         break;
                     case 1:
-                        process.setInterpolator(new LinearInterpolator());
+                        coordinate.setInterpolator(new LinearInterpolator());
                         break;
                     case 2:
-                        process.setInterpolator(new AccelerateInterpolator());
+                        coordinate.setInterpolator(new AccelerateInterpolator());
                         break;
                     case 3:
-                        process.setInterpolator(new DecelerateInterpolator());
+                        coordinate.setInterpolator(new DecelerateInterpolator());
                         break;
                     case 4:
-                        process.setInterpolator(new AnticipateInterpolator());
+                        coordinate.setInterpolator(new AnticipateInterpolator());
                         break;
                     case 5:
-                        process.setInterpolator(new OvershootInterpolator());
+                        coordinate.setInterpolator(new OvershootInterpolator());
                         break;
                     case 6:
-                        process.setInterpolator(new AnticipateOvershootInterpolator());
+                        coordinate.setInterpolator(new AnticipateOvershootInterpolator());
                         break;
                     case 7:
-                        process.setInterpolator(new BounceInterpolator());
+                        coordinate.setInterpolator(new BounceInterpolator());
                         break;
                     case 8:
-                        process.setInterpolator(new CycleInterpolator(0.25f));
+                        coordinate.setInterpolator(new CycleInterpolator(0.25f));
                         break;
                     case 9:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            process.setInterpolator(new PathInterpolator(0.2f,1f));
-                        }else {
-                            Toast.makeText(getContext(),"Api 21 以上支持", LENGTH_SHORT).show();
+                            coordinate.setInterpolator(new PathInterpolator(0.2f, 1f));
+                        } else {
+                            Toast.makeText(getContext(), "Api 21 以上支持", LENGTH_SHORT).show();
                         }
                         break;
                     case 10:
-                        process.setInterpolator(new FastOutLinearInInterpolator());
+                        coordinate.setInterpolator(new FastOutLinearInInterpolator());
                         break;
                     case 11:
-                        process.setInterpolator(new FastOutSlowInInterpolator());
+                        coordinate.setInterpolator(new FastOutSlowInInterpolator());
                         break;
                     case 12:
-                        process.setInterpolator(new LinearOutSlowInInterpolator());
+                        coordinate.setInterpolator(new LinearOutSlowInInterpolator());
+                        break;
+                    case 13:
+                        coordinate.setInterpolator(new BreatheInterpolator());
                         break;
 
                 }
-                //process.setInterpolator(getInterpolator("android.view.animation." + infoBean.getTitle()));
-                //开启动画
-                process.start();
             }
         });
     }
-
-
-    public Interpolator getInterpolator(String className) {
-        Interpolator interpolator = new LinearInterpolator();
-        // 获取对象或者类的Class实例
-        try {
-            Class<?> aClass = Class.forName(className);
-            interpolator = (Interpolator) aClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return interpolator;
-    }
-
-
 }

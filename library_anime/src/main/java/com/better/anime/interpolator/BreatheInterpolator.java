@@ -1,6 +1,6 @@
 package com.better.anime.interpolator;
 
-import android.view.animation.Interpolator;
+import android.animation.TimeInterpolator;
 
 /**
  * Created by huiyong on 2017/11/7.
@@ -9,7 +9,7 @@ import android.view.animation.Interpolator;
 /**
  * 定义拟合呼吸变化的插值器
  */
-public class BraetheInterpolator implements  Interpolator {
+public class BreatheInterpolator implements TimeInterpolator {
     @Override
     public float getInterpolation(float input) {
 

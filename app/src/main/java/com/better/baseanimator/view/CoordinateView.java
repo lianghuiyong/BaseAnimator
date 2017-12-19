@@ -1,5 +1,9 @@
 package com.better.baseanimator.view;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,6 +17,9 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BaseInterpolator;
+import android.view.animation.Interpolator;
 
 /*
  * -----------------------------------------------------------------
@@ -49,13 +56,14 @@ public class CoordinateView extends View {
     //进度
     private float process = 0;
     //时间
-    private long time = 0;
-    private long oldTime = 0;
+    private float time = 0;
 
     private float point_x;
     private float point_y;
 
     private Paint circlePaint;
+
+    private AnimatorSet animatorSet;
 
     //标题
     private String title = "";
@@ -90,6 +98,7 @@ public class CoordinateView extends View {
         canvas.drawText("0", pading / 2, mHeight - 2.3f * pading, paintText);
         canvas.drawText("1", mWidth - pading, mHeight - 2.3f * pading, paintText);
         //弧度
+        path.lineTo(point_x, point_y);
         canvas.drawPath(path, paintLine);
         //圆球
         canvas.drawCircle(mWidth - pading, point_y, pading / 4, circlePaint);
@@ -157,19 +166,19 @@ public class CoordinateView extends View {
     public void setProcess(float process) {
         this.process = process;
 
-        if (process == 0) {
-            oldTime = System.currentTimeMillis();
-            time = oldTime;
-        } else {
-            time = System.currentTimeMillis();
-        }
+        point_x = (pading) + (mWidth - 2 * pading) * time;
+        point_y = (mHeight - 3 * pading) - (mHeight - 6 * pading) * process;
 
-        if (time >= oldTime && time - oldTime <= 1000) {
-            point_x = (pading) + (mWidth - 2 * pading) * (time - oldTime) / 1000;
-            point_y = (mHeight - 3 * pading) - (mHeight - 6 * pading) * process;
-            path.lineTo(point_x, point_y);
-            invalidate();
-        }
+        invalidate();
+    }
+
+    public void setTime(float time) {
+        this.time = time;
+
+        point_x = (pading) + (mWidth - 2 * pading) * time;
+        point_y = (mHeight - 3 * pading) - (mHeight - 6 * pading) * process;
+
+        invalidate();
     }
 
     public void initPath() {
@@ -190,7 +199,26 @@ public class CoordinateView extends View {
         invalidate();
     }
 
+    public void setInterpolator(TimeInterpolator value) {
+        clear();
+
+        ValueAnimator processAnimator = ObjectAnimator.ofFloat(this, "process", 0.0f, 1.0f);
+        ValueAnimator timeAnimator = ObjectAnimator.ofFloat(this, "time", 0.0f, 1.0f);
+        processAnimator.setInterpolator(value);
+
+        //init AnimatorSet
+        animatorSet = new AnimatorSet();
+        animatorSet.setDuration(1000);
+        animatorSet.play(processAnimator).with(timeAnimator);
+        animatorSet.start();
+    }
+
     public void clear() {
+        if (animatorSet != null){
+            //结束动画
+            animatorSet.cancel();
+        }
+
         //初始化起点
         point_x = pading;
         point_y = mHeight - 3 * pading;
