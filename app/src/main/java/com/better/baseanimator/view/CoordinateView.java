@@ -54,7 +54,7 @@ public class CoordinateView extends View {
     //内容间距
     private float pading;
     //进度
-    private float process = 0;
+    private float progress = 0;
     //时间
     private float time = 0;
 
@@ -163,11 +163,10 @@ public class CoordinateView extends View {
         circlePaint.setStyle(Paint.Style.FILL);
     }
 
-    public void setProcess(float process) {
-        this.process = process;
+    public void setProgress(float progress) {
+        this.progress = progress;
 
-        point_x = (pading) + (mWidth - 2 * pading) * time;
-        point_y = (mHeight - 3 * pading) - (mHeight - 6 * pading) * process;
+        point_y = (mHeight - 3 * pading) - (mHeight - 6 * pading) * progress;
 
         invalidate();
     }
@@ -176,7 +175,6 @@ public class CoordinateView extends View {
         this.time = time;
 
         point_x = (pading) + (mWidth - 2 * pading) * time;
-        point_y = (mHeight - 3 * pading) - (mHeight - 6 * pading) * process;
 
         invalidate();
     }
@@ -202,7 +200,7 @@ public class CoordinateView extends View {
     public void setInterpolator(TimeInterpolator value) {
         clear();
 
-        ValueAnimator processAnimator = ObjectAnimator.ofFloat(this, "process", 0.0f, 1.0f);
+        ValueAnimator processAnimator = ObjectAnimator.ofFloat(this, "progress", 0.0f, 1.0f);
         ValueAnimator timeAnimator = ObjectAnimator.ofFloat(this, "time", 0.0f, 1.0f);
         processAnimator.setInterpolator(value);
 
