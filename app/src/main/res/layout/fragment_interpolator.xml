@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.better.baseanimator.view.CoordinateView
+    <com.better.baseanimator.widget.CoordinateView
         android:id="@+id/coordinate"
         android:layout_width="match_parent"
         android:layout_height="250dp" />

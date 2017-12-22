@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.better.baseanimator.R;
+import com.jkb.fragment.rigger.annotation.Puppet;
+
 import butterknife.ButterKnife;
 
 /*

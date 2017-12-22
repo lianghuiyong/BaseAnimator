@@ -1,28 +1,29 @@
-package com.better.baseanimator;
+package com.better.baseanimator.modules.evaluator;
 
 
+import com.better.baseanimator.R;
 import com.better.baseanimator.base.BaseFragment;
-
 
 /*
  * -----------------------------------------------------------------
  * Copyright (C) 2014-2017, by Better, All rights reserved.
  * -----------------------------------------------------------------
  *
- * File: Dynamic2DFragment.java
+ * File: EvaluatorFragment.java
  * Author: lianghuiyong@outlook.com
  * Create: 2017/12/18 上午10:49
  *
  * Changes (from 2017/12/18)
  * -----------------------------------------------------------------
- * 2017/12/18 : Create Dynamic2DFragment.java (梁惠涌);
+ * 2017/12/18 : Create EvaluatorFragment.java (梁惠涌);
  * -----------------------------------------------------------------
  */
-public class Dynamic2DFragment extends BaseFragment {
+
+public class EvaluatorFragment extends BaseFragment {
 
     @Override
     public int setViewId() {
-        return R.layout.fragment_dynamic_2d;
+        return R.layout.fragment_evaluator;
     }
 
     @Override

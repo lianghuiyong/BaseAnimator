@@ -1,14 +1,11 @@
 package com.better.baseanimator;
 
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.os.Build;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -26,7 +23,7 @@ import com.better.anime.interpolator.BreatheInterpolator;
 import com.better.baseanimator.adapter.InterpolatorAdapter;
 import com.better.baseanimator.base.BaseFragment;
 import com.better.baseanimator.bean.ListInfoBean;
-import com.better.baseanimator.view.CoordinateView;
+import com.better.baseanimator.widget.CoordinateView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 

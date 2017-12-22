@@ -1,5 +1,6 @@
-package com.better.baseanimator;
+package com.better.baseanimator.modules.dynamic3d;
 
+import com.better.baseanimator.R;
 import com.better.baseanimator.base.BaseFragment;
 
 /*

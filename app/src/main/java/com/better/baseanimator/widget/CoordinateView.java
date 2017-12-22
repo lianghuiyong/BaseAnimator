@@ -1,4 +1,4 @@
-package com.better.baseanimator.view;
+package com.better.baseanimator.widget;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -8,18 +8,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.DiscretePathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathDashPathEffect;
-import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.BaseInterpolator;
-import android.view.animation.Interpolator;
 
 /*
  * -----------------------------------------------------------------
