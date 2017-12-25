@@ -3,10 +3,8 @@ package com.better.baseanimator.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
-
-import com.better.baseanimator.R;
-import com.jkb.fragment.rigger.annotation.Puppet;
 
 import butterknife.ButterKnife;
 
@@ -37,6 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //矢量图代码再做兼容
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         View view = getLayoutInflater().inflate(setViewId(), null);
         setContentView(view);
