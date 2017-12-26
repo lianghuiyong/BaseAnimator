@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
+    buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "com.better.baseanimator"
         minSdkVersion 19
@@ -11,10 +12,31 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
+    signingConfigs {
+        release {
+            storeFile file('./keystore/app.keystore')
+            storePassword "123456"
+            keyAlias "better"
+            keyPassword "123456"
+        }
+        debug {
+            storeFile file('./keystore/app.keystore')
+            storePassword "123456"
+            keyAlias "better"
+            keyPassword "123456"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -38,9 +60,11 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     //RecyclerView
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     implementation project(':library_anime')
 
-    //fragment-rigger
-    implementation 'com.justkiddingbaby:fragment-rigger:1.0.0'
+    //tinker's main Android lib
+    implementation ("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}")
+    annotationProcessor("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}")
+    compileOnly("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}")
 }

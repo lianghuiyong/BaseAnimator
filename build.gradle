@@ -9,8 +9,9 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
 
-        //fragment-rigger
-        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:1.0.10'
+        // tinker的pluggin
+        classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.9.1')
+
     }
 }
 
