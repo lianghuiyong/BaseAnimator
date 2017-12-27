@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_1"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="Interpolator" />
 
     <item
@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/navigation_3"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="Dynamic3D" />
 
 </menu>

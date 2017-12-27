@@ -9,9 +9,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
 
-        // tinker的pluggin
-        classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.9.1')
-
+        //tinker
+        classpath "com.tencent.bugly:tinker-support:1.0.9"
     }
 }
 

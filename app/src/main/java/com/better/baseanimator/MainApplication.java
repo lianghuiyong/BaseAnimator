@@ -1,8 +1,11 @@
 package com.better.baseanimator;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
-import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 
 /**
  * Created by huiyong on 2017/12/27.
@@ -16,6 +19,17 @@ public class MainApplication extends Application {
         super.onCreate();
 
         //Bugly 异常上报
-        CrashReport.initCrashReport(getApplicationContext(), BUGLY_ID, BuildConfig.DEBUG);
+        Bugly.init(getApplicationContext(), BUGLY_ID, BuildConfig.DEBUG);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // you must install multiDex whatever tinker is installed!
+        MultiDex.install(base);
+
+
+        // 安装tinker
+        Beta.installTinker();
     }
 }
