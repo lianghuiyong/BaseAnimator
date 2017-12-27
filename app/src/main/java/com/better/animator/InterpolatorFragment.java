@@ -1,4 +1,4 @@
-package com.better.baseanimator;
+package com.better.animator;
 
 
 import android.os.Build;
@@ -20,10 +20,10 @@ import android.view.animation.PathInterpolator;
 import android.widget.Toast;
 
 import com.better.anime.interpolator.BreatheInterpolator;
-import com.better.baseanimator.adapter.InterpolatorAdapter;
-import com.better.baseanimator.base.BaseFragment;
-import com.better.baseanimator.bean.ListInfoBean;
-import com.better.baseanimator.widget.CoordinateView;
+import com.better.animator.adapter.InterpolatorAdapter;
+import com.better.animator.base.BaseFragment;
+import com.better.animator.bean.ListInfoBean;
+import com.better.animator.widget.CoordinateView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 

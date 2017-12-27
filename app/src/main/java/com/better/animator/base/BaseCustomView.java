@@ -1,4 +1,4 @@
-package com.better.baseanimator.base;
+package com.better.animator.base;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

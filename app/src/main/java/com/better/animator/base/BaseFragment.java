@@ -1,4 +1,4 @@
-package com.better.baseanimator.base;
+package com.better.animator.base;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

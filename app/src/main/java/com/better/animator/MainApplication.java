@@ -1,4 +1,4 @@
-package com.better.baseanimator;
+package com.better.animator;
 
 import android.app.Application;
 import android.content.Context;

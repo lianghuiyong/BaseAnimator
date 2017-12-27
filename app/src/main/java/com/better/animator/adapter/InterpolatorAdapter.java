@@ -1,7 +1,7 @@
-package com.better.baseanimator.adapter;
+package com.better.animator.adapter;
 
-import com.better.baseanimator.R;
-import com.better.baseanimator.bean.ListInfoBean;
+import com.better.animator.R;
+import com.better.animator.bean.ListInfoBean;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 

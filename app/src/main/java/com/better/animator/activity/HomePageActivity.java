@@ -1,14 +1,14 @@
-package com.better.baseanimator.activity;
+package com.better.animator.activity;
 
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 
-import com.better.baseanimator.modules.dynamic2d.Dynamic2DFragment;
-import com.better.baseanimator.modules.dynamic3d.Dynamic3DFragment;
-import com.better.baseanimator.InterpolatorFragment;
-import com.better.baseanimator.R;
-import com.better.baseanimator.base.BaseActivity;
-import com.better.baseanimator.base.BaseViewpagerAdapter;
+import com.better.animator.modules.dynamic2d.Dynamic2DFragment;
+import com.better.animator.modules.dynamic3d.Dynamic3DFragment;
+import com.better.animator.InterpolatorFragment;
+import com.better.animator.R;
+import com.better.animator.base.BaseActivity;
+import com.better.animator.base.BaseViewpagerAdapter;
 
 import butterknife.BindView;
 

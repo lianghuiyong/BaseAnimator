@@ -1,4 +1,4 @@
-package com.better.baseanimator.bean;
+package com.better.animator.bean;
 
 /*
  * -----------------------------------------------------------------

@@ -1,4 +1,4 @@
-package com.better.baseanimator.widget;
+package com.better.animator.widget;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

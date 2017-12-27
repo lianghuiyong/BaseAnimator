@@ -1,8 +1,8 @@
-package com.better.baseanimator.modules.dynamic2d;
+package com.better.animator.modules.dynamic2d;
 
 
-import com.better.baseanimator.R;
-import com.better.baseanimator.base.BaseFragment;
+import com.better.animator.R;
+import com.better.animator.base.BaseFragment;
 
 
 /*
