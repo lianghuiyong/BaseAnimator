@@ -67,4 +67,7 @@ dependencies {
     implementation ("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}")
     annotationProcessor("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}")
     compileOnly("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}")
+
+    //Bugly 异常上报
+    implementation ("com.tencent.bugly:crashreport:${BUGLY_VERSION}")
 }
