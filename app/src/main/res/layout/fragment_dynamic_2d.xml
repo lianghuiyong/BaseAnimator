@@ -8,8 +8,9 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:gravity="center">
 
             <TextView
@@ -19,6 +20,9 @@
                 android:textColor="#333333"
                 android:textSize="14sp" />
 
+            <com.better.animator.modules.dynamic2d.RankBarGraphView
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
 
         </LinearLayout>
 
