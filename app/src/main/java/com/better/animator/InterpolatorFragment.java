@@ -67,8 +67,8 @@ public class InterpolatorFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
 
         List<ListInfoBean> list = new ArrayList<>();
-        list.add(new ListInfoBean("AccelerateDecelerateInterpolator", "【系统默认】匀速"));
-        list.add(new ListInfoBean("LinearInterpolator", "先加速再减速"));
+        list.add(new ListInfoBean("AccelerateDecelerateInterpolator", "【系统默认】先加速再减速"));
+        list.add(new ListInfoBean("LinearInterpolator", "匀速"));
         list.add(new ListInfoBean("AccelerateInterpolator", "持续加速"));
         list.add(new ListInfoBean("DecelerateInterpolator", "持续减速直到 0"));
         list.add(new ListInfoBean("AnticipateInterpolator", "先回拉再正常动画轨迹"));
@@ -88,7 +88,7 @@ public class InterpolatorFragment extends BaseFragment {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                ListInfoBean infoBean = (ListInfoBean) adapter.getData().get(position);
+                  ListInfoBean infoBean = (ListInfoBean) adapter.getData().get(position);
                 coordinate.setTitle(infoBean.getTitle());
                 switch (position) {
                     case 0:

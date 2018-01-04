@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 /*
  * -----------------------------------------------------------------
@@ -197,10 +198,12 @@ public class CoordinateView extends View {
         ValueAnimator processAnimator = ObjectAnimator.ofFloat(this, "progress", 0.0f, 1.0f);
         ValueAnimator timeAnimator = ObjectAnimator.ofFloat(this, "time", 0.0f, 1.0f);
         processAnimator.setInterpolator(value);
+        timeAnimator.setInterpolator(new LinearInterpolator());
 
         //init AnimatorSet
         animatorSet = new AnimatorSet();
         animatorSet.setDuration(1000);
+
         animatorSet.play(processAnimator).with(timeAnimator);
         animatorSet.start();
     }
