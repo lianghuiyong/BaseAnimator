@@ -200,7 +200,7 @@ public class WaveView extends BaseCustomView {
             //水波高度+波浪高度
             float beginY = (float) (mViewHeight * 0.5f + mViewHeight * mAmplitudeRatio * Math.sin(wx));
 
-            Shader shader = new LinearGradient(beginX, beginY, beginX, endY, mBehindWaveColor, Color.parseColor("#FFFFFF"), Shader.TileMode.CLAMP);
+            Shader shader = new LinearGradient(beginX, beginY, beginX, endY, mBehindWaveColor, Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
             wavePaint.setShader(shader);
             canvas.drawLine(beginX, beginY, beginX, endY, wavePaint);
 
@@ -210,7 +210,7 @@ public class WaveView extends BaseCustomView {
         //wavePaint.setColor(mFrontWaveColor);
         final int wave2Shift = mViewWidth / 4;
         for (int beginX = 0; beginX < endX; beginX++) {
-            Shader shader = new LinearGradient(beginX, waveY[(beginX + wave2Shift) % endX], beginX, endY, mFrontWaveColor, Color.parseColor("#FFFFFF"), Shader.TileMode.CLAMP);
+            Shader shader = new LinearGradient(beginX, waveY[(beginX + wave2Shift) % endX], beginX, endY, mFrontWaveColor, Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
             wavePaint.setShader(shader);
             canvas.drawLine(beginX, waveY[(beginX + wave2Shift) % endX], beginX, endY, wavePaint);
         }
