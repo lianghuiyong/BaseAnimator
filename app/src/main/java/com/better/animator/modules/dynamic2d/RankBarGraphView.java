@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.better.animator.R;
-import com.better.animator.base.BaseCustomView;
+import com.better.anime.base.BaseCustomView;
 import com.better.animator.bean.RankBarBean;
 
 import java.util.ArrayList;

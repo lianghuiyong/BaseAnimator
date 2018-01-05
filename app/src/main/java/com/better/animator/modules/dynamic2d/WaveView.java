@@ -1,9 +1,5 @@
 package com.better.animator.modules.dynamic2d;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -12,19 +8,10 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Shader;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 
-import com.better.animator.base.BaseCustomView;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.better.anime.base.BaseCustomView;
 
 /*
  * -----------------------------------------------------------------

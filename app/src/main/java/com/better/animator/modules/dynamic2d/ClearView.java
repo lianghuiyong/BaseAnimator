@@ -3,9 +3,8 @@ package com.better.animator.modules.dynamic2d;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
 
-import com.better.animator.base.BaseCustomView;
+import com.better.anime.base.BaseCustomView;
 
 /*
  * -----------------------------------------------------------------
