@@ -42,7 +42,7 @@ public class WaveAntiAliased_Shader extends BaseCustomView {
     private Path path;
     private float currentPercent;
     private int color;
-    private String text = "贴";
+    private String text = "百";
     private int textSize;
     private Bitmap bitmap;
     private Canvas mCanvas;
@@ -66,8 +66,7 @@ public class WaveAntiAliased_Shader extends BaseCustomView {
 
     private void init() {
         //自定义颜色和文字
-        color = Color.rgb(41, 163, 254);
-        text = "贴";
+        color = Color.parseColor("#330033");
 
         //图形及路径填充画笔
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -112,7 +111,7 @@ public class WaveAntiAliased_Shader extends BaseCustomView {
     private BitmapShader getShaderBitmap() {
         bitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
         //上层的字
-        textPaint.setColor(Color.WHITE);
+        textPaint.setColor(Color.BLACK);
         //生成闭合波浪路径
         path = getActionPath(currentPercent);
         //绘制蓝色波浪
