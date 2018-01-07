@@ -45,14 +45,8 @@ android {
     //自定义输出配置
     applicationVariants.all { variant ->
         variant.outputs.all {
-
             def apkName = 'Better' + '-' + variant.versionName
-            if (!variant.flavorName.isEmpty()) {
-                apkName += ('-' + variant.flavorName)
-            }
             apkName += "-release"
-            apkName += "-" + defaultConfig.versionCode
-
             outputFileName = apkName + '.apk'
         }
     }
