@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply from:'tinker-support.gradle'
+apply from:'tinker-support.gradle'
 
 android {
     compileSdkVersion 27
@@ -10,7 +10,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -50,6 +50,7 @@ android {
             if (!variant.flavorName.isEmpty()) {
                 apkName += ('-' + variant.flavorName)
             }
+            apkName += "-release"
             apkName += "-" + defaultConfig.versionCode
 
             outputFileName = apkName + '.apk'
