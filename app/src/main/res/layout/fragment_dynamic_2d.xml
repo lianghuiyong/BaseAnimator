@@ -17,7 +17,8 @@
                 android:layout_height="300dp" />
 
             <com.better.anime.dynamic2d.WaveTest
-                android:layout_width="200dp"
+                android:id="@+id/wave"
+                android:layout_width="match_parent"
                 android:layout_height="200dp" />
 
             <com.better.animator.modules.dynamic2d.WaveView

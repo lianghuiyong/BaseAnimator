@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ComposeShader;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -15,6 +17,7 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
 import com.better.anime.base.BaseCustomView;
@@ -34,12 +37,31 @@ import com.better.anime.base.BaseCustomView;
  * -----------------------------------------------------------------
  */
 public class WaveTest extends BaseCustomView {
-    private Paint mPaint;
-    private Path path;
-    private float currentPercent;
-    private int color;
-    private Bitmap bitmap;
-    private Canvas mCanvas;
+
+    /**
+     * 波浪的画笔
+     */
+    private Paint mWavePaint;
+
+    /**
+     * 平移偏移量
+     */
+    private float mOffset;
+
+    /**
+     * 一个屏幕内显示几个周期
+     */
+    private int mWaveCount;
+
+    /**
+     * 振幅
+     */
+    private float mWaveAmplitude;
+
+    /**
+     * 波浪的路径
+     */
+    private Path mWavePath;
 
     public WaveTest(Context context) {
         super(context);
@@ -53,90 +75,113 @@ public class WaveTest extends BaseCustomView {
         super(context, attrs, defStyleAttr);
     }
 
-
     @Override
     public void initCustomView(Context context) {
-        init();
+        mWavePath = new Path();
+
+        mWavePaint = new Paint();
+        mWavePaint.setStrokeWidth(0);
+        mWavePaint.setAntiAlias(true);
     }
-
-    private void init() {
-        //自定义颜色和文字
-        color = Color.rgb(41, 163, 254);
-
-        //图形及路径填充画笔
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(color);
-        mPaint.setDither(true);
-        //闭合波浪路径
-        path = new Path();
-
-        ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-        animator.setDuration(1000);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setRepeatMode(ValueAnimator.RESTART);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                currentPercent = animation.getAnimatedFraction();
-                invalidate();
-            }
-        });
-        animator.start();
-    }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
-        mPaint.setShader(getShaderBitmap());
-        canvas.drawRect(0, 0, mViewHeight, mViewWidth, mPaint);
-        mPaint.setShader(null);
-    }
+        super.onDraw(canvas);
 
-    private BitmapShader getShaderBitmap() {
-        bitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
-        //生成闭合波浪路径
-        path = getActionPath(currentPercent);
-        //绘制蓝色波浪
-        mCanvas.drawPath(path, mPaint);
-
-        return new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        drawSinPath1(canvas);
+        drawSinPath2(canvas);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        bitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(bitmap);
+
+        mWaveAmplitude = mViewHeight * 0.1f;
+
+        mWaveCount = 2;
     }
 
-    //rQuadTo 参数，
-    private Path getActionPath(float percent) {
-        Path path = new Path();
-        int x = -mViewWidth;
-        //当前x点坐标（根据动画进度水平推移，一个动画周期推移的距离为一个mViewWidth）
-        x += percent * mViewWidth;
+    /**
+     * sin函数图像的波形
+     *
+     * @param canvas
+     */
+    private void drawSinPath1(Canvas canvas) {
+        mWavePath.reset();
+
+        //角度
+        float deg = mOffset / mViewWidth * 360;
+        //角度转弧度
+        Double rad = deg * Math.PI / 180;
+
+        //波形的起点Sin后偏移量
+        float mOffsetSin = mOffset + (float) Math.sin(rad) * (mViewWidth * 0.3f);
         //波形的起点
-        path.moveTo(x, mViewHeight / 2);
-        //控制点的相对宽度
-        int quadWidth = mViewWidth / 4;
-        //控制点的相对高度
-        int quadHeight = mViewHeight / 20 * 3;
-        //第一个周期
-        path.rQuadTo(quadWidth, quadHeight, quadWidth * 2, 0);
-        path.rQuadTo(quadWidth, -quadHeight, quadWidth * 2, 0);
-        //第二个周期
-        path.rQuadTo(quadWidth, quadHeight, quadWidth * 2, 0);
-        path.rQuadTo(quadWidth, -quadHeight, quadWidth * 2, 0);
-        //右侧的直线
-        path.lineTo(x + mViewWidth * 2, mViewHeight);
-        //下边的直线
-        path.lineTo(x, mViewHeight);
-        //自动闭合补出左边的直线
-        path.close();
-        return path;
+        mWavePath.moveTo(-mViewWidth + mOffset, mViewHeight / 2);
+
+        //控制点的偏移高度
+        float quadHeightOffset = (float) Math.sin(rad) * (mViewHeight / 30);
+
+        //控制点的高度
+        float quadHeight = mViewHeight / 10;
+        for (int i = 0; i < mWaveCount; i++) {
+
+            //rQuadTo参数  dx1, dy1：控制点相对起始点偏移量
+            //rQuadTo参数  dx2, dy2：终点相对起始点偏移量
+            mWavePath.rQuadTo(mViewWidth / 4, quadHeight, mViewWidth / 2, 0);
+            mWavePath.rQuadTo(mViewWidth / 4, -quadHeight, mViewWidth / 2, 0);
+        }
+
+        mWavePath.lineTo(mViewWidth, mViewHeight);
+        mWavePath.lineTo(0, mViewHeight);
+        mWavePath.close();
+
+        mWavePaint.setColor(Color.parseColor("#A0607D8B"));
+        canvas.drawPath(mWavePath, mWavePaint);
     }
 
+    /**
+     * sin函数图像的波形
+     *
+     * @param canvas
+     */
+    private void drawSinPath2(Canvas canvas) {
+        mWavePath.reset();
+
+        //角度
+        float deg = (mOffset + (mViewWidth / 4)) / mViewWidth * 360;
+        //角度转弧度
+        Double rad = deg * Math.PI / 180;
+
+        //波形的起点sin后偏移量
+        float mOffsetCos = mOffset + (float) Math.sin(rad) * (mViewWidth * 0.06f);
+
+        //波形的起点
+        mWavePath.moveTo(-2 * mViewWidth + mOffsetCos + mViewWidth * 0.3f, mViewHeight / 2);
+
+        //控制点的sin后偏移高度
+        float quadHeightCos = (float) Math.sin(rad) * (mViewHeight / 50);
+        //控制点的高度
+        float quadHeight = mViewHeight / 10 + quadHeightCos;
+        for (int i = 0; i < mWaveCount + 1; i++) {
+
+            //rQuadTo参数  dx1, dy1：控制点相对起始点偏移量
+            //rQuadTo参数  dx2, dy2：终点相对起始点偏移量
+            mWavePath.rQuadTo(mViewWidth / 4, quadHeight, mViewWidth / 2, 0);
+            mWavePath.rQuadTo(mViewWidth / 4, -quadHeight, mViewWidth / 2, 0);
+        }
+
+        mWavePath.lineTo(mViewWidth, mViewHeight);
+        mWavePath.lineTo(0, mViewHeight);
+        mWavePath.close();
+
+        mWavePaint.setColor(Color.parseColor("#A0388E3C"));
+        canvas.drawPath(mWavePath, mWavePaint);
+    }
+
+    public void setOffset(float Offset) {
+        this.mOffset = Offset;
+        invalidate();
+    }
 }

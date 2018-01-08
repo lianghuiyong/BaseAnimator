@@ -90,7 +90,7 @@ public class WaveAntiAliased_Shader extends BaseCustomView {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 currentPercent = animation.getAnimatedFraction();
-                invalidate();
+                //invalidate();
             }
         });
         animator.start();
