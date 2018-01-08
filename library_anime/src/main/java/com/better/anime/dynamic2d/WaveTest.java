@@ -137,8 +137,11 @@ public class WaveTest extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-        mWavePaint.setColor(Color.parseColor("#A0607D8B"));
+        //mWavePaint.setColor(Color.parseColor("#A0607D8B"));
+        Shader shader = new LinearGradient(0, 0, 0, mViewHeight / 2, Color.parseColor("#e0d5c8"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+        mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
+        mWavePaint.setShader(null);
     }
 
     /**
@@ -176,8 +179,12 @@ public class WaveTest extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-        mWavePaint.setColor(Color.parseColor("#A0388E3C"));
+        //mWavePaint.setColor(Color.parseColor("#A0388E3C"));
+
+        Shader shader = new LinearGradient(0, 0, 0, mViewHeight / 2, Color.parseColor("#e0d2c3"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+        mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
+        mWavePaint.setShader(null);
     }
 
     public void setOffset(float Offset) {
