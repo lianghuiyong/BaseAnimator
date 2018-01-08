@@ -2,7 +2,6 @@ package com.better.animator;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
 
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
@@ -26,7 +25,7 @@ public class MainApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         // you must install multiDex whatever tinker is installed!
-        MultiDex.install(base);
+        //MultiDex.install(base);
 
 
         // 安装tinker
