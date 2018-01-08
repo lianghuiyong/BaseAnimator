@@ -13,8 +13,8 @@
             android:gravity="center">
 
             <com.better.anime.dynamic2d.WaveAntiAliased_Shader
-                android:layout_width="200dp"
-                android:layout_height="200dp" />
+                android:layout_width="300dp"
+                android:layout_height="300dp" />
 
             <com.better.anime.dynamic2d.WaveTest
                 android:layout_width="200dp"

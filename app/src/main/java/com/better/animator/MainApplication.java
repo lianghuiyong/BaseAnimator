@@ -19,7 +19,7 @@ public class MainApplication extends Application {
         super.onCreate();
 
         //Bugly 异常上报
-        Bugly.init(getApplicationContext(), BUGLY_ID, BuildConfig.DEBUG);
+        Bugly.init(getApplicationContext(), BUGLY_ID, !BuildConfig.DEBUG);
     }
 
     @Override
