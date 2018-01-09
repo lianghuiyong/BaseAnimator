@@ -88,8 +88,8 @@ public class WaveTest extends BaseCustomView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        drawSinPath1(canvas);
-        drawSinPath2(canvas);
+        drawWave1(canvas);
+        drawWave2(canvas);
     }
 
     @Override
@@ -103,25 +103,15 @@ public class WaveTest extends BaseCustomView {
     }
 
     /**
-     * sin函数图像的波形
+     * 波形1
      *
      * @param canvas
      */
-    private void drawSinPath1(Canvas canvas) {
+    private void drawWave1(Canvas canvas) {
         mWavePath.reset();
 
-        //角度
-        float deg = mOffset / mViewWidth * 360;
-        //角度转弧度
-        Double rad = deg * Math.PI / 180;
-
-        //波形的起点Sin后偏移量
-        float mOffsetSin = mOffset + (float) Math.sin(rad) * (mViewWidth * 0.3f);
         //波形的起点
         mWavePath.moveTo(-mViewWidth + mOffset, mViewHeight / 2);
-
-        //控制点的偏移高度
-        float quadHeightOffset = (float) Math.sin(rad) * (mViewHeight / 30);
 
         //控制点的高度
         float quadHeight = mViewHeight / 10;
@@ -137,19 +127,19 @@ public class WaveTest extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-        //mWavePaint.setColor(Color.parseColor("#A0607D8B"));
-        Shader shader = new LinearGradient(0, 0, 0, mViewHeight / 2, Color.parseColor("#e0d5c8"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
-        mWavePaint.setShader(shader);
+        mWavePaint.setColor(Color.parseColor("#A0607D8B"));
+//        Shader shader = new LinearGradient(0, 0, 0, mViewHeight / 2, Color.parseColor("#e0d5c8"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+//        mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
-        mWavePaint.setShader(null);
+//        mWavePaint.setShader(null);
     }
 
     /**
-     * sin函数图像的波形
+     * 波形2
      *
      * @param canvas
      */
-    private void drawSinPath2(Canvas canvas) {
+    private void drawWave2(Canvas canvas) {
         mWavePath.reset();
 
         //角度
@@ -179,12 +169,12 @@ public class WaveTest extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-        //mWavePaint.setColor(Color.parseColor("#A0388E3C"));
+        mWavePaint.setColor(Color.parseColor("#A0388E3C"));
 
-        Shader shader = new LinearGradient(0, 0, 0, mViewHeight / 2, Color.parseColor("#e0d2c3"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
-        mWavePaint.setShader(shader);
+//        Shader shader = new LinearGradient(0, 0, 0, mViewHeight / 2, Color.parseColor("#e0d2c3"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+//        mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
-        mWavePaint.setShader(null);
+//        mWavePaint.setShader(null);
     }
 
     public void setOffset(float Offset) {
