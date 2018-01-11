@@ -51,17 +51,18 @@ public class WaveTest extends BaseCustomView {
     /**
      * 一个屏幕内显示几个周期
      */
-    private int mWaveCount;
+    private int mWaveCount = 2;
 
-    /**
-     * 振幅
-     */
-    private float mWaveAmplitude;
 
     /**
      * 波浪的路径
      */
     private Path mWavePath;
+
+    public enum ShapeType {
+        CIRCLE,
+        SQUARE
+    }
 
     public WaveTest(Context context) {
         super(context);
@@ -88,18 +89,35 @@ public class WaveTest extends BaseCustomView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        drawWave1(canvas);
-        drawWave2(canvas);
-    }
+        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas waveCanvas = new Canvas(bitmap);
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+        drawWave1(waveCanvas);
+        drawWave2(waveCanvas);
 
+        // use the bitamp to create the shader
+        BitmapShader mWaveShader = new BitmapShader(bitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
+        mWavePaint.setShader(mWaveShader);
 
-        mWaveAmplitude = mViewHeight * 0.1f;
+        canvas.drawRect(0, 0, mViewWidth , mViewHeight , mWavePaint);
 
-        mWaveCount = 2;
+/*        switch (mShapeType) {
+            case CIRCLE:
+                if (borderWidth > 0) {
+                    canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f,
+                            (mViewWidth - borderWidth) / 2f - 1f, mBorderPaint);
+                }
+                float radius = mViewWidth / 2f - borderWidth;
+                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, radius, mViewPaint);
+                break;
+            case SQUARE:*/
+                //if (borderWidth > 0) {
+
+               // }
+               // canvas.drawRect(borderWidth, borderWidth, mViewWidth - borderWidth,
+                       // mViewHeight - borderWidth, mViewPaint);
+             //   break;
+        //}
     }
 
     /**
