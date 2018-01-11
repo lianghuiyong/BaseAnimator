@@ -89,7 +89,7 @@ public class WaveTest extends BaseCustomView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
         Canvas waveCanvas = new Canvas(bitmap);
 
         drawWave1(waveCanvas);
