@@ -59,6 +59,9 @@ public class WaveTest extends BaseCustomView {
      */
     private Path mWavePath;
 
+    private Canvas waveCanvas;
+    private Bitmap waveBitmap;
+
     public enum ShapeType {
         CIRCLE,
         SQUARE
@@ -83,21 +86,38 @@ public class WaveTest extends BaseCustomView {
         mWavePaint = new Paint();
         mWavePaint.setStrokeWidth(0);
         mWavePaint.setAntiAlias(true);
+
+        createWaveCanvas();
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        createWaveCanvas();
+
+        invalidate();
+    }
+
+    private void createWaveCanvas() {
+        Bitmap waveBitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
+        waveBitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
+        waveCanvas = new Canvas(waveBitmap);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        Bitmap bitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
-        Canvas waveCanvas = new Canvas(bitmap);
 
         drawWave1(waveCanvas);
         drawWave2(waveCanvas);
 
         // use the bitamp to create the shader
-        BitmapShader mWaveShader = new BitmapShader(bitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
-        mWavePaint.setShader(mWaveShader);
+        if (waveBitmap != null){
+            BitmapShader mWaveShader = new BitmapShader(waveBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
+            mWavePaint.setShader(mWaveShader);
+        }
 
         canvas.drawRect(0, 0, mViewWidth , mViewHeight , mWavePaint);
 
@@ -145,11 +165,11 @@ public class WaveTest extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-        mWavePaint.setColor(Color.parseColor("#A0607D8B"));
-//        Shader shader = new LinearGradient(0, 0, 0, mViewHeight / 2, Color.parseColor("#e0d5c8"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
-//        mWavePaint.setShader(shader);
+       // mWavePaint.setColor(Color.parseColor("#A0607D8B"));
+        Shader shader = new LinearGradient(0, mViewHeight/2, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+        mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
-//        mWavePaint.setShader(null);
+        mWavePaint.setShader(null);
     }
 
     /**
@@ -187,12 +207,11 @@ public class WaveTest extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-        mWavePaint.setColor(Color.parseColor("#A0388E3C"));
-
-//        Shader shader = new LinearGradient(0, 0, 0, mViewHeight / 2, Color.parseColor("#e0d2c3"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
-//        mWavePaint.setShader(shader);
+       // mWavePaint.setColor(Color.parseColor("#A0388E3C"));
+        Shader shader = new LinearGradient(0, mViewHeight/2, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+        mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
-//        mWavePaint.setShader(null);
+        mWavePaint.setShader(null);
     }
 
     public void setOffset(float Offset) {
