@@ -1,29 +1,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <com.better.anime.dynamic2d.WaveTest
-                android:id="@+id/wave"
-                android:layout_width="350dp"
-                android:layout_height="350dp" />
-
-            <com.better.animator.modules.dynamic2d.WaveView
-                android:id="@+id/wave_view"
-                android:layout_width="match_parent"
-                android:layout_height="300dp" />
-
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"/>
 
 </FrameLayout>

@@ -1,29 +1,20 @@
 package com.better.anime.dynamic2d;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ComposeShader;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.animation.LinearInterpolator;
 
 import com.better.anime.base.BaseCustomView;
 
-import static com.better.anime.dynamic2d.WaveTest.ShapeType.CIRCLE;
-import static com.better.anime.dynamic2d.WaveTest.ShapeType.SQUARE;
+import static com.better.anime.dynamic2d.WaveView.ShapeType.CIRCLE;
 
 /*
  * -----------------------------------------------------------------
@@ -39,7 +30,7 @@ import static com.better.anime.dynamic2d.WaveTest.ShapeType.SQUARE;
  * 2018/1/5 : Create WaveTest.java (梁惠涌);
  * -----------------------------------------------------------------
  */
-public class WaveTest extends BaseCustomView {
+public class WaveView extends BaseCustomView {
 
     /**
      * 波浪的画笔
@@ -72,15 +63,15 @@ public class WaveTest extends BaseCustomView {
         SQUARE
     }
 
-    public WaveTest(Context context) {
+    public WaveView(Context context) {
         super(context);
     }
 
-    public WaveTest(Context context, @Nullable AttributeSet attrs) {
+    public WaveView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public WaveTest(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public WaveView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
