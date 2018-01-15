@@ -62,13 +62,10 @@ public class WaveTest extends BaseCustomView {
     //波浪显示高度
     private float waveLevel = 0;
 
-
-    /**
-     * 波浪的路径
-     */
+    //波浪的路径
     private Path mWavePath;
 
-    private ShapeType mShapeType = CIRCLE;
+    private ShapeType waveType = CIRCLE;
 
     public enum ShapeType {
         CIRCLE,
@@ -111,7 +108,7 @@ public class WaveTest extends BaseCustomView {
 
     private void createWaveCanvas() {
         Bitmap waveBitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
-        // waveBitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
+        waveBitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
         Canvas waveCanvas = new Canvas(waveBitmap);
 
         drawWave1(waveCanvas);
@@ -125,31 +122,25 @@ public class WaveTest extends BaseCustomView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        //绘制波浪
         createWaveCanvas();
 
-        canvas.drawRect(0, 0, mViewWidth, mViewHeight, mWavePaint);
-
-        //边框
         float borderWidth = mBorderPaint == null ? 0f : mBorderPaint.getStrokeWidth();
-        switch (mShapeType) {
+        switch (waveType) {
             case CIRCLE:
-                if (borderWidth > 0) {
-                    canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f,
-                            (mViewWidth - borderWidth) / 2f - 1f, mBorderPaint);
-                }
-                float radius = mViewWidth / 2f - borderWidth;
-                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, radius, mWavePaint);
+                //波浪
+                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, mViewWidth / 2f - borderWidth, mWavePaint);
+
+                //边框
+                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, (mViewWidth - borderWidth) / 2f, mBorderPaint);
                 break;
             case SQUARE:
-                if (borderWidth > 0) {
-                    canvas.drawRect(
-                            borderWidth / 2f,
-                            borderWidth / 2f,
-                            mViewWidth - borderWidth / 2f - 0.5f,
-                            mViewHeight - borderWidth / 2f - 0.5f,
-                            mBorderPaint);
-                }
+                //波浪
                 canvas.drawRect(borderWidth, borderWidth, mViewWidth - borderWidth, mViewHeight - borderWidth, mWavePaint);
+
+                //边框
+                canvas.drawRect(borderWidth / 2f, borderWidth / 2f,
+                        mViewWidth - borderWidth / 2f - 0.5f, mViewHeight - borderWidth / 2f - 0.5f, mBorderPaint);
                 break;
         }
     }
@@ -163,11 +154,11 @@ public class WaveTest extends BaseCustomView {
         mWavePath.reset();
 
         //波形的起点
-        float waveHeight = mViewHeight * 19 / 20 - (mViewHeight * 18) / 20 * waveLevel;
+        float waveHeight = mViewHeight * 19 / 20 - (mViewHeight * 19) / 20 * waveLevel;
         mWavePath.moveTo(-mViewWidth + mOffset, waveHeight);
 
         //控制点的高度
-        float quadHeight = mViewHeight / 10 -  Math.abs(0.5f - waveLevel) * (mViewHeight / 20);
+        float quadHeight = mViewHeight / 15 - Math.abs(0.5f - waveLevel) * (mViewHeight / 20);
         for (int i = 0; i < mWaveCount; i++) {
 
             //rQuadTo参数  dx1, dy1：控制点相对起始点偏移量
@@ -204,13 +195,13 @@ public class WaveTest extends BaseCustomView {
         float mOffsetCos = mOffset + (float) Math.sin(rad) * (mViewWidth * 0.06f);
 
         //波形的起点
-        float waveHeight = mViewHeight * 19 / 20 - (mViewHeight * 18) / 20 * waveLevel;
+        float waveHeight = mViewHeight * 19 / 20 - (mViewHeight * 19) / 20 * waveLevel;
         mWavePath.moveTo(-2 * mViewWidth + mOffsetCos + mViewWidth * 0.3f, waveHeight);
 
         //控制点的sin后偏移高度
         float quadHeightCos = (float) Math.sin(rad) * (mViewHeight / 50);
         //控制点的高度
-        float quadHeight = mViewHeight / 10 - Math.abs(0.5f - waveLevel) * (mViewHeight / 20) + quadHeightCos;
+        float quadHeight = mViewHeight / 15 - Math.abs(0.5f - waveLevel) * (mViewHeight / 20) + quadHeightCos;
         for (int i = 0; i < mWaveCount + 1; i++) {
 
             //rQuadTo参数  dx1, dy1：控制点相对起始点偏移量
