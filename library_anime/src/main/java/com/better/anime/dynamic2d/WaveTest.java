@@ -22,6 +22,9 @@ import android.view.animation.LinearInterpolator;
 
 import com.better.anime.base.BaseCustomView;
 
+import static com.better.anime.dynamic2d.WaveTest.ShapeType.CIRCLE;
+import static com.better.anime.dynamic2d.WaveTest.ShapeType.SQUARE;
+
 /*
  * -----------------------------------------------------------------
  * Copyright (C) 2014-2017, by Better, All rights reserved.
@@ -43,6 +46,9 @@ public class WaveTest extends BaseCustomView {
      */
     private Paint mWavePaint;
 
+    // 边框线画笔
+    private Paint mBorderPaint;
+
     /**
      * 平移偏移量
      */
@@ -59,8 +65,7 @@ public class WaveTest extends BaseCustomView {
      */
     private Path mWavePath;
 
-    private Canvas waveCanvas;
-    private Bitmap waveBitmap;
+    private ShapeType mShapeType = CIRCLE;
 
     public enum ShapeType {
         CIRCLE,
@@ -86,15 +91,16 @@ public class WaveTest extends BaseCustomView {
         mWavePaint = new Paint();
         mWavePaint.setStrokeWidth(0);
         mWavePaint.setAntiAlias(true);
-
-        createWaveCanvas();
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        createWaveCanvas();
+    public void setBorder(int width, int color) {
+        if (mBorderPaint == null) {
+            mBorderPaint = new Paint();
+            mBorderPaint.setAntiAlias(true);
+            mBorderPaint.setStyle(Paint.Style.STROKE);
+        }
+        mBorderPaint.setColor(color);
+        mBorderPaint.setStrokeWidth(width);
 
         invalidate();
     }
@@ -102,42 +108,46 @@ public class WaveTest extends BaseCustomView {
     private void createWaveCanvas() {
         Bitmap waveBitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
         waveBitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
-        waveCanvas = new Canvas(waveBitmap);
+        Canvas waveCanvas = new Canvas(waveBitmap);
+
+        drawWave1(waveCanvas);
+        drawWave2(waveCanvas);
+
+        BitmapShader mWaveShader = new BitmapShader(waveBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
+        mWavePaint.setShader(mWaveShader);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        createWaveCanvas();
 
-        drawWave1(waveCanvas);
-        drawWave2(waveCanvas);
+        canvas.drawRect(0, 0, mViewWidth, mViewHeight, mWavePaint);
 
-        // use the bitamp to create the shader
-        if (waveBitmap != null){
-            BitmapShader mWaveShader = new BitmapShader(waveBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
-            mWavePaint.setShader(mWaveShader);
-        }
-
-        canvas.drawRect(0, 0, mViewWidth , mViewHeight , mWavePaint);
-
-/*        switch (mShapeType) {
+        //边框
+        float borderWidth = mBorderPaint == null ? 0f : mBorderPaint.getStrokeWidth();
+        switch (mShapeType) {
             case CIRCLE:
                 if (borderWidth > 0) {
                     canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f,
                             (mViewWidth - borderWidth) / 2f - 1f, mBorderPaint);
                 }
                 float radius = mViewWidth / 2f - borderWidth;
-                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, radius, mViewPaint);
+                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, radius, mWavePaint);
                 break;
-            case SQUARE:*/
-                //if (borderWidth > 0) {
-
-               // }
-               // canvas.drawRect(borderWidth, borderWidth, mViewWidth - borderWidth,
-                       // mViewHeight - borderWidth, mViewPaint);
-             //   break;
-        //}
+            case SQUARE:
+                if (borderWidth > 0) {
+                    canvas.drawRect(
+                            borderWidth / 2f,
+                            borderWidth / 2f,
+                            mViewWidth - borderWidth / 2f - 0.5f,
+                            mViewHeight - borderWidth / 2f - 0.5f,
+                            mBorderPaint);
+                }
+                canvas.drawRect(borderWidth, borderWidth, mViewWidth - borderWidth, mViewHeight - borderWidth, mWavePaint);
+                break;
+        }
     }
 
     /**
@@ -165,8 +175,8 @@ public class WaveTest extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-       // mWavePaint.setColor(Color.parseColor("#A0607D8B"));
-        Shader shader = new LinearGradient(0, mViewHeight/2, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+        // mWavePaint.setColor(Color.parseColor("#A0607D8B"));
+        Shader shader = new LinearGradient(0, mViewHeight / 2, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
         mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
         mWavePaint.setShader(null);
@@ -207,8 +217,8 @@ public class WaveTest extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-       // mWavePaint.setColor(Color.parseColor("#A0388E3C"));
-        Shader shader = new LinearGradient(0, mViewHeight/2, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+        // mWavePaint.setColor(Color.parseColor("#A0388E3C"));
+        Shader shader = new LinearGradient(0, mViewHeight / 2, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
         mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
         mWavePaint.setShader(null);
