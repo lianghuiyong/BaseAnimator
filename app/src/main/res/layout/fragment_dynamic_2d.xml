@@ -12,14 +12,10 @@
             android:orientation="vertical"
             android:gravity="center">
 
-            <com.better.anime.dynamic2d.WaveAntiAliased_Shader
-                android:layout_width="300dp"
-                android:layout_height="300dp" />
-
             <com.better.anime.dynamic2d.WaveTest
                 android:id="@+id/wave"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_width="350dp"
+                android:layout_height="350dp" />
 
             <com.better.animator.modules.dynamic2d.WaveView
                 android:id="@+id/wave_view"

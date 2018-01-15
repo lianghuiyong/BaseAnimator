@@ -1,6 +1,7 @@
 package com.better.animator;
 
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 
 import com.better.animator.base.BaseFragment;
@@ -38,7 +40,6 @@ public class Dynamic2DFragment extends BaseFragment {
 
     @BindView(R.id.wave_view)
     WaveView waveView;
-    Unbinder unbinder;
     @BindView(R.id.wave)
     WaveTest wave;
 
@@ -51,27 +52,21 @@ public class Dynamic2DFragment extends BaseFragment {
     public void initData() {
         waveView.setWaveColor(Color.parseColor("#e0d5c8"), Color.parseColor("#e0d2c3"));
 
+        wave.setBorder(5, Color.parseColor("#660066"));
         wave.post(() -> {
-            ValueAnimator waveAnimator = ObjectAnimator.ofFloat(wave, "offset", 0, wave.getWidth());
-            waveAnimator.setInterpolator(new LinearInterpolator());
-            waveAnimator.setDuration(3000);
-            waveAnimator.setRepeatCount(ValueAnimator.INFINITE);
-            waveAnimator.setRepeatMode(ValueAnimator.RESTART);
-            waveAnimator.start();
+            ValueAnimator waveAnimator1 = ObjectAnimator.ofFloat(wave, "offset", 0, wave.getWidth());
+            ValueAnimator waveAnimator2 = ObjectAnimator.ofFloat(wave, "waveLevel", 0, 1);
+
+            waveAnimator1.setRepeatCount(ValueAnimator.INFINITE);
+            waveAnimator1.setRepeatMode(ValueAnimator.RESTART);
+            waveAnimator1.setDuration(3000);
+            waveAnimator2.setDuration(12000);
+
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.setInterpolator(new LinearInterpolator());
+            animatorSet.play(waveAnimator1).with(waveAnimator2);
+            animatorSet.start();
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

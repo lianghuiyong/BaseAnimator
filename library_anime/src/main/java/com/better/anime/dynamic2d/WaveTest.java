@@ -59,6 +59,9 @@ public class WaveTest extends BaseCustomView {
      */
     private int mWaveCount = 2;
 
+    //波浪显示高度
+    private float waveLevel = 0;
+
 
     /**
      * 波浪的路径
@@ -93,6 +96,7 @@ public class WaveTest extends BaseCustomView {
         mWavePaint.setAntiAlias(true);
     }
 
+    //设置边线
     public void setBorder(int width, int color) {
         if (mBorderPaint == null) {
             mBorderPaint = new Paint();
@@ -107,13 +111,13 @@ public class WaveTest extends BaseCustomView {
 
     private void createWaveCanvas() {
         Bitmap waveBitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
-        waveBitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
+        // waveBitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
         Canvas waveCanvas = new Canvas(waveBitmap);
 
         drawWave1(waveCanvas);
         drawWave2(waveCanvas);
 
-        BitmapShader mWaveShader = new BitmapShader(waveBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
+        BitmapShader mWaveShader = new BitmapShader(waveBitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
         mWavePaint.setShader(mWaveShader);
     }
 
@@ -159,10 +163,11 @@ public class WaveTest extends BaseCustomView {
         mWavePath.reset();
 
         //波形的起点
-        mWavePath.moveTo(-mViewWidth + mOffset, mViewHeight / 2);
+        float waveHeight = mViewHeight * 19 / 20 - (mViewHeight * 18) / 20 * waveLevel;
+        mWavePath.moveTo(-mViewWidth + mOffset, waveHeight);
 
         //控制点的高度
-        float quadHeight = mViewHeight / 10;
+        float quadHeight = mViewHeight / 10 -  Math.abs(0.5f - waveLevel) * (mViewHeight / 20);
         for (int i = 0; i < mWaveCount; i++) {
 
             //rQuadTo参数  dx1, dy1：控制点相对起始点偏移量
@@ -176,7 +181,7 @@ public class WaveTest extends BaseCustomView {
         mWavePath.close();
 
         // mWavePaint.setColor(Color.parseColor("#A0607D8B"));
-        Shader shader = new LinearGradient(0, mViewHeight / 2, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+        Shader shader = new LinearGradient(0, waveHeight, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
         mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
         mWavePaint.setShader(null);
@@ -199,12 +204,13 @@ public class WaveTest extends BaseCustomView {
         float mOffsetCos = mOffset + (float) Math.sin(rad) * (mViewWidth * 0.06f);
 
         //波形的起点
-        mWavePath.moveTo(-2 * mViewWidth + mOffsetCos + mViewWidth * 0.3f, mViewHeight / 2);
+        float waveHeight = mViewHeight * 19 / 20 - (mViewHeight * 18) / 20 * waveLevel;
+        mWavePath.moveTo(-2 * mViewWidth + mOffsetCos + mViewWidth * 0.3f, waveHeight);
 
         //控制点的sin后偏移高度
         float quadHeightCos = (float) Math.sin(rad) * (mViewHeight / 50);
         //控制点的高度
-        float quadHeight = mViewHeight / 10 + quadHeightCos;
+        float quadHeight = mViewHeight / 10 - Math.abs(0.5f - waveLevel) * (mViewHeight / 20) + quadHeightCos;
         for (int i = 0; i < mWaveCount + 1; i++) {
 
             //rQuadTo参数  dx1, dy1：控制点相对起始点偏移量
@@ -218,7 +224,7 @@ public class WaveTest extends BaseCustomView {
         mWavePath.close();
 
         // mWavePaint.setColor(Color.parseColor("#A0388E3C"));
-        Shader shader = new LinearGradient(0, mViewHeight / 2, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
+        Shader shader = new LinearGradient(0, waveHeight, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
         mWavePaint.setShader(shader);
         canvas.drawPath(mWavePath, mWavePaint);
         mWavePaint.setShader(null);
@@ -227,5 +233,9 @@ public class WaveTest extends BaseCustomView {
     public void setOffset(float Offset) {
         this.mOffset = Offset;
         invalidate();
+    }
+
+    public void setWaveLevel(float waveLevel) {
+        this.waveLevel = waveLevel;
     }
 }
