@@ -1,6 +1,7 @@
 package com.better.animator.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.better.animator.R;
@@ -23,7 +24,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * -----------------------------------------------------------------
  */
 
-public class Dynamic2DAdapter extends BaseQuickAdapter<BaseRecyclerFragment, BaseViewHolder>{
+public class Dynamic2DAdapter extends BaseQuickAdapter<BaseRecyclerFragment, BaseViewHolder> {
     private FragmentManager fragmentManager;
 
     public Dynamic2DAdapter(@NonNull FragmentManager fragmentManager) {
@@ -34,7 +35,22 @@ public class Dynamic2DAdapter extends BaseQuickAdapter<BaseRecyclerFragment, Bas
     @Override
     protected void convert(BaseViewHolder helper, BaseRecyclerFragment itemFragment) {
 
+/*        // Delete old fragment
+        String containerTag = (String) helper.getView(R.id.container).getTag();// Get container id
+
+        if (containerTag != null) {
+            Fragment oldFragment = fragmentManager.findFragmentByTag(containerTag);
+            fragmentManager.beginTransaction().remove(oldFragment).commit();
+        }
+
+        String newContainerTag = GetUniqueID();// My method
+        helper.getView(R.id.container).setTag(newContainerTag);// Set container id*/
+
         // Add new fragment
-        fragmentManager.beginTransaction().replace(R.id.container, itemFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.container, itemFragment, itemFragment.getClass().toString()+helper.getLayoutPosition()).commit();
+    }
+
+    private String GetUniqueID() {
+        return 111 + (int) (Math.random() * 9999) +"";
     }
 }
