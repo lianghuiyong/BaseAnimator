@@ -1,5 +1,8 @@
 package com.better.animator.adapter;
 
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+
 import com.better.animator.R;
 import com.better.animator.base.BaseRecyclerFragment;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -21,12 +24,17 @@ import com.chad.library.adapter.base.BaseViewHolder;
  */
 
 public class Dynamic2DAdapter extends BaseQuickAdapter<BaseRecyclerFragment, BaseViewHolder>{
-    public Dynamic2DAdapter() {
+    private FragmentManager fragmentManager;
+
+    public Dynamic2DAdapter(@NonNull FragmentManager fragmentManager) {
         super(R.layout.item_fragment_layout);
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, BaseRecyclerFragment item) {
+    protected void convert(BaseViewHolder helper, BaseRecyclerFragment itemFragment) {
 
+        // Add new fragment
+        fragmentManager.beginTransaction().replace(R.id.container, itemFragment).commit();
     }
 }

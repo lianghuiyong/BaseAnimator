@@ -1,6 +1,8 @@
 package com.better.anime.base;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -42,6 +44,12 @@ public abstract class BaseCustomView extends View {
 
     public BaseCustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initCustomView(context);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public BaseCustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
         initCustomView(context);
     }
 

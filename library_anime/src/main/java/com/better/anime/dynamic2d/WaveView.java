@@ -51,7 +51,7 @@ public class WaveView extends BaseCustomView {
     private int mWaveCount = 2;
 
     //波浪显示高度
-    private float waveLevel = 0;
+    private float waveLevel = 0.5f;
 
     //波浪的路径
     private Path mWavePath;
@@ -73,6 +73,10 @@ public class WaveView extends BaseCustomView {
 
     public WaveView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public WaveView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
@@ -123,15 +127,19 @@ public class WaveView extends BaseCustomView {
                 canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, mViewWidth / 2f - borderWidth, mWavePaint);
 
                 //边框
-                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, (mViewWidth - borderWidth) / 2f, mBorderPaint);
+                if (mBorderPaint != null) {
+                    canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, (mViewWidth - borderWidth) / 2f, mBorderPaint);
+                }
                 break;
             case SQUARE:
                 //波浪
                 canvas.drawRect(borderWidth, borderWidth, mViewWidth - borderWidth, mViewHeight - borderWidth, mWavePaint);
 
                 //边框
-                canvas.drawRect(borderWidth / 2f, borderWidth / 2f,
-                        mViewWidth - borderWidth / 2f - 0.5f, mViewHeight - borderWidth / 2f - 0.5f, mBorderPaint);
+                if (mBorderPaint != null) {
+                    canvas.drawRect(borderWidth / 2f, borderWidth / 2f,
+                            mViewWidth - borderWidth / 2f - 0.5f, mViewHeight - borderWidth / 2f - 0.5f, mBorderPaint);
+                }
                 break;
         }
     }
@@ -219,5 +227,7 @@ public class WaveView extends BaseCustomView {
 
     public void setWaveLevel(float waveLevel) {
         this.waveLevel = waveLevel;
+
+        invalidate();
     }
 }

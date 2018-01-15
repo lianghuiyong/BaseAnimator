@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.better.animator.adapter.Dynamic2DAdapter;
 import com.better.animator.base.BaseFragment;
 import com.better.animator.base.BaseRecyclerFragment;
+import com.better.animator.modules.dynamic2d.WaveViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class Dynamic2DFragment extends BaseFragment {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    Dynamic2DAdapter adapter;
+    private Dynamic2DAdapter adapter;
 
     @Override
     public int setViewId() {
@@ -47,12 +48,17 @@ public class Dynamic2DFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        adapter =new Dynamic2DAdapter();
+        adapter =new Dynamic2DAdapter(getFragmentManager());
         recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
 
-        //List<BaseRecyclerFragment> list= new ArrayList<>();
-        //list.add()
+        List<BaseRecyclerFragment> list= new ArrayList<>();
+        list.add(new WaveViewFragment());
+        list.add(new WaveViewFragment());
+        list.add(new WaveViewFragment());
+        list.add(new WaveViewFragment());
+        list.add(new WaveViewFragment());
 
-        //adapter.addData();
+        adapter.setNewData(list);
     }
 }
