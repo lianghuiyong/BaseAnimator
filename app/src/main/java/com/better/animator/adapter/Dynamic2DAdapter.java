@@ -1,5 +1,6 @@
 package com.better.animator.adapter;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,6 +33,7 @@ public class Dynamic2DAdapter extends BaseQuickAdapter<BaseRecyclerFragment, Bas
         this.fragmentManager = fragmentManager;
     }
 
+    @SuppressLint("CommitTransaction")
     @Override
     protected void convert(BaseViewHolder helper, BaseRecyclerFragment itemFragment) {
 
@@ -40,7 +42,7 @@ public class Dynamic2DAdapter extends BaseQuickAdapter<BaseRecyclerFragment, Bas
 
         if (containerTag != null) {
             //Fragment oldFragment = fragmentManager.findFragmentByTag(containerTag);
-            fragmentManager.beginTransaction().replace(R.id.container,itemFragment).commit();
+            fragmentManager.beginTransaction().show(itemFragment).commit();
         }else {
             String newContainerTag = GetUniqueID();// My method
             helper.getView(R.id.container).setTag(newContainerTag);// Set container id
