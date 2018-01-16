@@ -35,19 +35,19 @@ public class Dynamic2DAdapter extends BaseQuickAdapter<BaseRecyclerFragment, Bas
     @Override
     protected void convert(BaseViewHolder helper, BaseRecyclerFragment itemFragment) {
 
-/*        // Delete old fragment
+        // Delete old fragment
         String containerTag = (String) helper.getView(R.id.container).getTag();// Get container id
 
         if (containerTag != null) {
-            Fragment oldFragment = fragmentManager.findFragmentByTag(containerTag);
-            fragmentManager.beginTransaction().remove(oldFragment).commit();
+            //Fragment oldFragment = fragmentManager.findFragmentByTag(containerTag);
+            fragmentManager.beginTransaction().replace(R.id.container,itemFragment).commit();
+        }else {
+            String newContainerTag = GetUniqueID();// My method
+            helper.getView(R.id.container).setTag(newContainerTag);// Set container id
+
+            // Add new fragment
+            fragmentManager.beginTransaction().add(R.id.container, itemFragment, itemFragment.getClass().toString()+helper.getLayoutPosition()).commit();
         }
-
-        String newContainerTag = GetUniqueID();// My method
-        helper.getView(R.id.container).setTag(newContainerTag);// Set container id*/
-
-        // Add new fragment
-        fragmentManager.beginTransaction().add(R.id.container, itemFragment, itemFragment.getClass().toString()+helper.getLayoutPosition()).commit();
     }
 
     private String GetUniqueID() {

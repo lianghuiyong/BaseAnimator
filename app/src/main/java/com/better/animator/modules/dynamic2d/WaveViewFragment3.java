@@ -1,39 +1,27 @@
 package com.better.animator.modules.dynamic2d;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
-
 import com.better.animator.R;
 import com.better.animator.base.BaseRecyclerFragment;
 import com.better.anime.dynamic2d.WaveView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * -----------------------------------------------------------------
  * Copyright (C) 2017-2018, by Better, All rights reserved.
  * -----------------------------------------------------------------
  * <p>
- * File: WaveViewFragment.java
+ * File: WaveViewFragment6.java
  * Author: Liang
  * Create: 2018/1/15 22:40
  * <p>
  * Changes (from 2018/1/15)
  * -----------------------------------------------------------------
- * 2018/1/15 : Create WaveViewFragment.java (梁惠涌);
+ * 2018/1/15 : Create WaveViewFragment6.java (梁惠涌);
  * -----------------------------------------------------------------
  */
 
-public class WaveViewFragment extends BaseRecyclerFragment {
+public class WaveViewFragment3 extends BaseRecyclerFragment {
     @BindView(R.id.wave1)
     WaveView wave1;
 
