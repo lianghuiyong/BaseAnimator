@@ -1,17 +1,9 @@
 package com.better.animator.adapter;
 
-import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-
 import com.better.animator.R;
-import com.better.animator.base.BaseRecyclerFragment;
 import com.better.animator.bean.MultiItem;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 import java.util.ArrayList;
 import java.util.List;

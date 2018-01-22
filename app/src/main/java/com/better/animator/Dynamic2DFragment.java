@@ -6,17 +6,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.better.animator.adapter.Dynamic2DAdapter;
 import com.better.animator.base.BaseFragment;
-import com.better.animator.base.BaseRecyclerFragment;
-import com.better.animator.modules.dynamic2d.WaveViewFragment1;
-import com.better.animator.modules.dynamic2d.WaveViewFragment2;
-import com.better.animator.modules.dynamic2d.WaveViewFragment3;
-import com.better.animator.modules.dynamic2d.WaveViewFragment4;
-import com.better.animator.modules.dynamic2d.WaveViewFragment5;
-import com.better.animator.modules.dynamic2d.WaveViewFragment6;
-import com.chad.library.adapter.base.animation.BaseAnimation;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 
