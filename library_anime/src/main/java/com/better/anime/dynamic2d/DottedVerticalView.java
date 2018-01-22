@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -70,6 +71,6 @@ public class DottedVerticalView extends BaseCustomView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawLine(0, mViewHeight / 2, mViewWidth, mViewHeight / 2, paint);
+        canvas.drawLine(mViewWidth / 2, 0, mViewWidth / 2, mViewHeight, paint);
     }
 }

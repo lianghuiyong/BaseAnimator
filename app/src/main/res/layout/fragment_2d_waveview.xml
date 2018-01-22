@@ -10,12 +10,12 @@
         android:layout_width="@dimen/b_dp300"
         android:layout_height="@dimen/b_dp300" />
 
-    <com.better.anime.dynamic2d.DottedVerticalView
+    <com.better.anime.dynamic2d.DottedHorizontalView
         android:layout_width="match_parent"
         android:layout_height="@dimen/b_dp10"
         app:color="#333" />
 
-    <com.better.anime.dynamic2d.DottedHorizontalView
+    <com.better.anime.dynamic2d.DottedVerticalView
         android:layout_width="10dp"
         android:layout_height="match_parent"
         app:color="#333" />
