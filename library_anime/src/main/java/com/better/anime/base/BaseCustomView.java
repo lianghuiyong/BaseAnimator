@@ -32,25 +32,20 @@ public abstract class BaseCustomView extends View {
      */
     protected int mViewHeight;
 
-    public BaseCustomView(Context context) {
-        super(context);
-        initCustomView(context);
-    }
-
     public BaseCustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initCustomView(context);
+        initCustomView(context, attrs);
     }
 
     public BaseCustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initCustomView(context);
+        initCustomView(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public BaseCustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initCustomView(context);
+        initCustomView(context, attrs);
     }
 
     @Override
@@ -60,5 +55,5 @@ public abstract class BaseCustomView extends View {
         mViewHeight = h;
     }
 
-    public abstract void initCustomView(Context context);
+    public abstract void initCustomView(Context context, AttributeSet attrs);
 }
