@@ -56,6 +56,6 @@ public class CircleView extends BaseCustomView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawCircle(mViewHeight / 2, mViewWidth, mViewHeight / 2, paint);
+        canvas.drawCircle(mViewHeight / 2, mViewWidth / 2, mViewHeight / 2, paint);
     }
 }
