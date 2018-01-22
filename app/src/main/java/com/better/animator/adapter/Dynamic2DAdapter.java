@@ -7,8 +7,14 @@ import android.support.v4.app.FragmentManager;
 
 import com.better.animator.R;
 import com.better.animator.base.BaseRecyclerFragment;
+import com.better.animator.bean.MultiItem;
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * -----------------------------------------------------------------
@@ -25,34 +31,39 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * -----------------------------------------------------------------
  */
 
-public class Dynamic2DAdapter extends BaseQuickAdapter<BaseRecyclerFragment, BaseViewHolder> {
-    private FragmentManager fragmentManager;
+public class Dynamic2DAdapter extends BaseMultiItemQuickAdapter<MultiItem, BaseViewHolder> {
 
-    public Dynamic2DAdapter(@NonNull FragmentManager fragmentManager) {
-        super(R.layout.item_fragment_layout);
-        this.fragmentManager = fragmentManager;
+
+    public static List<MultiItem> initData() {
+
+        List<MultiItem> data = new ArrayList<>();
+        data.add(new MultiItem(0,R.layout.fragment_2d_waveview));
+        data.add(new MultiItem(1,R.layout.fragment_2d_waveview));
+        data.add(new MultiItem(1,R.layout.fragment_2d_waveview));
+        data.add(new MultiItem(1,R.layout.fragment_2d_waveview));
+        data.add(new MultiItem(1,R.layout.fragment_2d_waveview));
+
+        return data;
     }
 
-    @SuppressLint("CommitTransaction")
-    @Override
-    protected void convert(BaseViewHolder helper, BaseRecyclerFragment itemFragment) {
+    /**
+     * Same as QuickAdapter#QuickAdapter(Context,int) but with
+     * some initialization data.
+     *
+     * @param data A new list is created out of this one to avoid mutable list
+     */
+    public Dynamic2DAdapter(List<MultiItem> data) {
+        super(data);
 
-        // Delete old fragment
-        String containerTag = (String) helper.getView(R.id.container).getTag();// Get container id
-
-        if (containerTag != null) {
-            //Fragment oldFragment = fragmentManager.findFragmentByTag(containerTag);
-            fragmentManager.beginTransaction().show(itemFragment).commit();
-        }else {
-            String newContainerTag = GetUniqueID();// My method
-            helper.getView(R.id.container).setTag(newContainerTag);// Set container id
-
-            // Add new fragment
-            fragmentManager.beginTransaction().add(R.id.container, itemFragment, itemFragment.getClass().toString()+helper.getLayoutPosition()).commit();
+        for (MultiItem item : data) {
+            addItemType(item.getItemType(), item.getResLayout());
         }
     }
 
-    private String GetUniqueID() {
-        return 111 + (int) (Math.random() * 9999) +"";
+    @Override
+    protected void convert(BaseViewHolder helper, MultiItem item) {
+/*        switch (helper.getItemViewType()) {
+
+        }*/
     }
 }

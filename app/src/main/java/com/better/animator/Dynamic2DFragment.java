@@ -1,6 +1,7 @@
 package com.better.animator;
 
 
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 
 import com.better.animator.adapter.Dynamic2DAdapter;
@@ -12,6 +13,7 @@ import com.better.animator.modules.dynamic2d.WaveViewFragment3;
 import com.better.animator.modules.dynamic2d.WaveViewFragment4;
 import com.better.animator.modules.dynamic2d.WaveViewFragment5;
 import com.better.animator.modules.dynamic2d.WaveViewFragment6;
+import com.chad.library.adapter.base.animation.BaseAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,17 +49,10 @@ public class Dynamic2DFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        adapter =new Dynamic2DAdapter(getFragmentManager());
+        adapter =new Dynamic2DAdapter(Dynamic2DAdapter.initData());
+        adapter.openLoadAnimation();
         recyclerView.setAdapter(adapter);
-
-        List<BaseRecyclerFragment> list= new ArrayList<>();
-        list.add(new WaveViewFragment1());
-        list.add(new WaveViewFragment2());
-        list.add(new WaveViewFragment3());
-        list.add(new WaveViewFragment4());
-        list.add(new WaveViewFragment5());
-        list.add(new WaveViewFragment6());
-
-        adapter.setNewData(list);
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(recyclerView);
     }
 }
