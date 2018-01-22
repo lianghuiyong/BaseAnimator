@@ -1,5 +1,9 @@
 package com.better.anime.dynamic2d;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -11,10 +15,12 @@ import android.graphics.Path;
 import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 
 import com.better.anime.base.BaseCustomView;
 
-import static com.better.anime.dynamic2d.WaveView.ShapeType.CIRCLE;
+import static com.better.anime.dynamic2d.WaveView.ShapeType.*;
 
 /*
  * -----------------------------------------------------------------
@@ -56,7 +62,7 @@ public class WaveView extends BaseCustomView {
     //波浪的路径
     private Path mWavePath;
 
-    private ShapeType waveType = CIRCLE;
+    private ShapeType waveType = SQUARE;
 
     public enum ShapeType {
         CIRCLE,
@@ -73,6 +79,18 @@ public class WaveView extends BaseCustomView {
 
     public WaveView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    @Override
+    public Animator getAnimator() {
+        ValueAnimator waveAnimator = ObjectAnimator.ofFloat(this, "offset", 0, mViewWidth);
+        waveAnimator.setInterpolator(new LinearInterpolator());
+        waveAnimator.setDuration(3000);
+        waveAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        waveAnimator.setRepeatMode(ValueAnimator.RESTART);
+        waveAnimator.start();
+
+        return waveAnimator;
     }
 
     @Override
