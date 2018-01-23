@@ -12,7 +12,7 @@
     <declare-styleable name="BaseCustomView">
         <attr name="better_color" format="color"/>
 
-        <attr name="better_image_mode" format="enum">
+        <attr name="better_mode" format="enum">
             <enum name="round_rect" value="1" />
             <enum name="circle" value="2" />
         </attr>

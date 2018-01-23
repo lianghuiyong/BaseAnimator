@@ -51,7 +51,7 @@ public class DottedHorizontalView extends BaseCustomView {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseCustomView);
-        int color = typedArray.getColor(R.styleable.BaseCustomView_color, Color.parseColor("#ececec"));
+        int color = typedArray.getColor(R.styleable.BaseCustomView_better_color, Color.parseColor("#ececec"));
 
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
 

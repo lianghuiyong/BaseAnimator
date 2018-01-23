@@ -46,7 +46,7 @@ public class CircleView extends BaseCustomView {
     @Override
     public void initCustomView(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseCustomView);
-        int color = typedArray.getColor(R.styleable.BaseCustomView_color, Color.parseColor("#ececec"));
+        int color = typedArray.getColor(R.styleable.BaseCustomView_better_color, Color.parseColor("#ececec"));
 
         paint = new Paint();
         paint.setColor(color);
