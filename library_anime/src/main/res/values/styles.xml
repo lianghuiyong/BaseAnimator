@@ -10,7 +10,15 @@
     </declare-styleable>
 
     <declare-styleable name="BaseCustomView">
-        <attr name="color" format="color"/>
+        <attr name="better_color" format="color"/>
+
+        <attr name="better_image_mode" format="enum">
+            <enum name="round_rect" value="1" />
+            <enum name="circle" value="2" />
+        </attr>
+        <attr name="better_round_radius" format="dimension" />
+        <attr name="better_border_width" format="dimension" />
+        <attr name="better_border_color" format="color|reference" />
     </declare-styleable>
 
 </resources>
