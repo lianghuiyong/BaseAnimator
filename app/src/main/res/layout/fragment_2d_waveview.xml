@@ -5,25 +5,45 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.better.anime.dynamic2d.WaveView
-        android:id="@+id/wave1"
-        android:layout_width="@dimen/b_dp300"
-        android:layout_height="@dimen/b_dp300" />
 
-    <com.better.anime.dynamic2d.CircleView
-        android:layout_width="@dimen/b_dp30"
-        android:layout_height="@dimen/b_dp30"
-        app:color="#336633"/>
-
-    <com.better.anime.dynamic2d.DottedHorizontalView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/b_dp10"
-        app:color="#333" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <com.better.anime.dynamic2d.DottedVerticalView
-        android:layout_width="10dp"
-        android:layout_height="match_parent"
-        app:color="#333" />
+        <com.better.anime.dynamic2d.WaveView
+            android:id="@+id/wave1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
+
+        <com.better.anime.dynamic2d.WaveView
+            android:id="@+id/wave2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.better.anime.dynamic2d.WaveView
+            android:id="@+id/wave3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+
+        <com.better.anime.dynamic2d.WaveView
+            android:id="@+id/wave4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 </LinearLayout>

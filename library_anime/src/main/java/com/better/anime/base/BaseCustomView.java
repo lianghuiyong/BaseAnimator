@@ -1,11 +1,13 @@
 package com.better.anime.base;
 
+import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
 
 /*
  * -----------------------------------------------------------------
@@ -22,14 +24,10 @@ import android.view.View;
  * -----------------------------------------------------------------
  */
 public abstract class BaseCustomView extends View {
-    /**
-     * the width of current view.
-     */
-    protected int mViewWidth;
 
-    /**
-     * the height of current view.
-     */
+    public abstract void initCustomView(Context context, AttributeSet attrs);
+
+    protected int mViewWidth;
     protected int mViewHeight;
 
     public BaseCustomView(Context context, @Nullable AttributeSet attrs) {
@@ -48,12 +46,14 @@ public abstract class BaseCustomView extends View {
         initCustomView(context, attrs);
     }
 
+    public Animator getAnimator() {
+        return null;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mViewWidth = w;
         mViewHeight = h;
     }
-
-    public abstract void initCustomView(Context context, AttributeSet attrs);
 }
