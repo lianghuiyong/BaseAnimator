@@ -26,29 +26,37 @@ import android.view.animation.Animation;
  */
 public abstract class BaseCustomView extends View {
 
-    public abstract void initCustomView(@NonNull Context context,@NonNull AttributeSet attrs);
+    public abstract void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs);
+
 
     protected int mViewWidth;
     protected int mViewHeight;
+    protected Animator animator;
 
     public BaseCustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initCustomView(context, attrs);
+        initAnimator();
     }
 
     public BaseCustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initCustomView(context, attrs);
+        initAnimator();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public BaseCustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initCustomView(context, attrs);
+        initAnimator();
+    }
+
+    public void initAnimator() {
     }
 
     public Animator getAnimator() {
-        return null;
+        return animator;
     }
 
     @Override

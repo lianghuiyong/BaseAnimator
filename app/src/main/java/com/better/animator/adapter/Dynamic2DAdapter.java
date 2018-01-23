@@ -1,7 +1,13 @@
 package com.better.animator.adapter;
 
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
 import com.better.animator.R;
 import com.better.animator.bean.MultiItem;
+import com.better.anime.base.BaseCustomView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -29,11 +35,11 @@ public class Dynamic2DAdapter extends BaseMultiItemQuickAdapter<MultiItem, BaseV
     public static List<MultiItem> initData() {
 
         List<MultiItem> data = new ArrayList<>();
-        data.add(new MultiItem(0,R.layout.fragment_2d_waveview));
-        data.add(new MultiItem(1,R.layout.fragment_2d_waveview));
-        data.add(new MultiItem(1,R.layout.fragment_2d_waveview));
-        data.add(new MultiItem(1,R.layout.fragment_2d_waveview));
-        data.add(new MultiItem(1,R.layout.fragment_2d_waveview));
+        data.add(new MultiItem(0, R.layout.fragment_2d_waveview));
+        data.add(new MultiItem(1, R.layout.fragment_2d_waveview));
+        data.add(new MultiItem(1, R.layout.fragment_2d_waveview));
+        data.add(new MultiItem(1, R.layout.fragment_2d_waveview));
+        data.add(new MultiItem(1, R.layout.fragment_2d_waveview));
 
         return data;
     }
@@ -53,9 +59,72 @@ public class Dynamic2DAdapter extends BaseMultiItemQuickAdapter<MultiItem, BaseV
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, MultiItem item) {
-/*        switch (helper.getItemViewType()) {
+    protected void convert(BaseViewHolder holder, MultiItem item) {
+        ViewGroup rootItem = holder.getView(R.id.root_item);
 
-        }*/
+        rootItem.post(() -> {
+            for (View itemView : getAllChildren(rootItem)) {
+                if (itemView instanceof BaseCustomView) {
+                    ((BaseCustomView) itemView).getAnimator().start();
+                    Log.e("convert", "rootItem =[" + holder.getLayoutPosition() + "] | itemView =[" + itemView.getId() + "]");
+                }
+            }
+        });
+    }
+
+    //列表项出现到可视界面的时候调用
+    @Override
+    public void onViewAttachedToWindow(BaseViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+
+        ViewGroup rootItem = holder.getView(R.id.root_item);
+
+        rootItem.post(() -> {
+            for (View itemView : getAllChildren(rootItem)) {
+                if (itemView instanceof BaseCustomView) {
+                    ((BaseCustomView) itemView).getAnimator().resume();
+                    Log.e("onViewAttached", "rootItem =[" + holder.getLayoutPosition() + "] | itemView =[" + itemView.getId() + "]");
+                }
+            }
+        });
+    }
+
+    //消失在可视界面时
+    @Override
+    public void onViewDetachedFromWindow(BaseViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+
+        ViewGroup rootItem = holder.getView(R.id.root_item);
+
+        rootItem.post(() -> {
+            for (View itemView : getAllChildren(rootItem)) {
+                if (itemView instanceof BaseCustomView) {
+                    ((BaseCustomView) itemView).getAnimator().pause();
+
+                    Log.e("onViewDetached", "rootItem =[" + holder.getLayoutPosition() + "] | itemView =[" + itemView.getId() + "]");
+                }
+            }
+        });
+    }
+
+    private List<View> getAllChildren(View v) {
+
+        if (!(v instanceof ViewGroup)) {
+            ArrayList<View> viewArrayList = new ArrayList<View>();
+            viewArrayList.add(v);
+            return viewArrayList;
+        }
+
+        ArrayList<View> result = new ArrayList<View>();
+
+        ViewGroup viewGroup = (ViewGroup) v;
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+
+            View child = viewGroup.getChildAt(i);
+
+            //Do not add any parents, just add child elements
+            result.addAll(getAllChildren(child));
+        }
+        return result;
     }
 }

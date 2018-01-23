@@ -16,6 +16,7 @@ import android.graphics.Shader;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
 import com.better.anime.R;
@@ -69,15 +70,12 @@ public class WaveView extends BaseCustomView {
     }
 
     @Override
-    public Animator getAnimator() {
-        ValueAnimator waveAnimator = ObjectAnimator.ofFloat(this, "offset", 0, mViewWidth);
-        waveAnimator.setInterpolator(new LinearInterpolator());
-        waveAnimator.setDuration(3000);
-        waveAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        waveAnimator.setRepeatMode(ValueAnimator.RESTART);
-        waveAnimator.start();
-
-        return waveAnimator;
+    public void initAnimator() {
+        animator = ObjectAnimator.ofFloat(this, "offset", 0, mViewWidth);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(3000);
+        ((ValueAnimator) animator).setRepeatCount(ValueAnimator.INFINITE);
+        ((ValueAnimator) animator).setRepeatMode(ValueAnimator.RESTART);
     }
 
     @Override
@@ -239,8 +237,8 @@ public class WaveView extends BaseCustomView {
         mWavePaint.setShader(null);
     }
 
-    public void setOffset(float Offset) {
-        this.mOffset = Offset;
+    public void setOffset(float offset) {
+        this.mOffset = offset;
         invalidate();
     }
 
