@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -25,7 +26,7 @@ import android.view.animation.Animation;
  */
 public abstract class BaseCustomView extends View {
 
-    public abstract void initCustomView(Context context, AttributeSet attrs);
+    public abstract void initCustomView(@NonNull Context context,@NonNull AttributeSet attrs);
 
     protected int mViewWidth;
     protected int mViewHeight;

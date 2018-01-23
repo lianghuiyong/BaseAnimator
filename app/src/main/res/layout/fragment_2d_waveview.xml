@@ -15,14 +15,21 @@
             android:id="@+id/wave1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:better_color="#5E35B1"
+            app:better_mode="circle" />
 
 
         <com.better.anime.dynamic2d.WaveView
             android:id="@+id/wave2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:better_border_color="#FF1744"
+            app:better_border_width="@dimen/b_dp2"
+            app:better_color_bottom="#BBDEFB"
+            app:better_color_top="#1565C0"
+            app:better_mode="circle" />
 
     </LinearLayout>
 
@@ -35,14 +42,21 @@
             android:id="@+id/wave3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:better_color="#2E7D32"
+            app:better_mode="square" />
 
 
         <com.better.anime.dynamic2d.WaveView
             android:id="@+id/wave4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:better_border_color="#FF1744"
+            app:better_border_width="@dimen/b_dp2"
+            app:better_color_bottom="#B2EBF2"
+            app:better_color_top="#00838F"
+            app:better_mode="square" />
 
     </LinearLayout>
 

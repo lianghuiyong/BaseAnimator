@@ -1,10 +1,10 @@
 package com.better.anime.dynamic2d;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -13,14 +13,13 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Shader;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 
+import com.better.anime.R;
 import com.better.anime.base.BaseCustomView;
-
-import static com.better.anime.dynamic2d.WaveView.ShapeType.*;
 
 /*
  * -----------------------------------------------------------------
@@ -38,36 +37,24 @@ import static com.better.anime.dynamic2d.WaveView.ShapeType.*;
  */
 public class WaveView extends BaseCustomView {
 
-    /**
-     * 波浪的画笔
-     */
+    //波浪的画笔
     private Paint mWavePaint;
-
     // 边框线画笔
     private Paint mBorderPaint;
-
-    /**
-     * 平移偏移量
-     */
+    //平移偏移量
     private float mOffset;
-
-    /**
-     * 一个屏幕内显示几个周期
-     */
+    //一个屏幕内显示几个周期
     private int mWaveCount = 2;
-
     //波浪显示高度
     private float waveLevel = 0.5f;
-
     //波浪的路径
     private Path mWavePath;
 
-    private ShapeType waveType = SQUARE;
+    private int color;
+    private int color_top;
+    private int color_bottom;
 
-    public enum ShapeType {
-        CIRCLE,
-        SQUARE
-    }
+    private int waveType;
 
     public WaveView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -94,25 +81,34 @@ public class WaveView extends BaseCustomView {
     }
 
     @Override
-    public void initCustomView(Context context, AttributeSet attrs) {
+    public void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs) {
+
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BaseCustomView);
+        waveType = typedArray.getInt(R.styleable.BaseCustomView_better_mode, 0);
+
+        float border_width = typedArray.getDimension(R.styleable.BaseCustomView_better_border_width, 0);
+        int border_color = typedArray.getColor(R.styleable.BaseCustomView_better_border_color, Color.parseColor("#000000"));
+
+        color = typedArray.getColor(R.styleable.BaseCustomView_better_color, Color.parseColor("#80000000"));
+        color_top = typedArray.getColor(R.styleable.BaseCustomView_better_color_top, 0);
+        color_bottom = typedArray.getColor(R.styleable.BaseCustomView_better_color_bottom, 0);
+
+        typedArray.recycle();
+
+        //init border
+        mBorderPaint = new Paint();
+        mBorderPaint.setAntiAlias(true);
+        mBorderPaint.setStyle(Paint.Style.STROKE);
+        mBorderPaint.setColor(border_color);
+        mBorderPaint.setStrokeWidth(border_width);
+
+        //init path
         mWavePath = new Path();
 
+        //init paint
         mWavePaint = new Paint();
         mWavePaint.setStrokeWidth(0);
         mWavePaint.setAntiAlias(true);
-    }
-
-    //设置边线
-    public void setBorder(int width, int color) {
-        if (mBorderPaint == null) {
-            mBorderPaint = new Paint();
-            mBorderPaint.setAntiAlias(true);
-            mBorderPaint.setStyle(Paint.Style.STROKE);
-        }
-        mBorderPaint.setColor(color);
-        mBorderPaint.setStrokeWidth(width);
-
-        invalidate();
     }
 
     private void createWaveCanvas() {
@@ -134,25 +130,28 @@ public class WaveView extends BaseCustomView {
         //绘制波浪
         createWaveCanvas();
 
-        float borderWidth = mBorderPaint == null ? 0f : mBorderPaint.getStrokeWidth();
+        float borderWidth = mBorderPaint.getStrokeWidth();
         switch (waveType) {
-            case CIRCLE:
-                //波浪
-                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, mViewWidth / 2f - borderWidth, mWavePaint);
-
-                //边框
-                if (mBorderPaint != null) {
-                    canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, (mViewWidth - borderWidth) / 2f, mBorderPaint);
-                }
-                break;
-            case SQUARE:
+            //矩形 0
+            case 0:
                 //波浪
                 canvas.drawRect(borderWidth, borderWidth, mViewWidth - borderWidth, mViewHeight - borderWidth, mWavePaint);
 
                 //边框
-                if (mBorderPaint != null) {
+                if (borderWidth != 0) {
                     canvas.drawRect(borderWidth / 2f, borderWidth / 2f,
                             mViewWidth - borderWidth / 2f - 0.5f, mViewHeight - borderWidth / 2f - 0.5f, mBorderPaint);
+                }
+                break;
+
+            //圆形 1
+            case 1:
+                //波浪
+                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, mViewWidth / 2f - borderWidth, mWavePaint);
+
+                //边框
+                if (borderWidth != 0) {
+                    canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, (mViewWidth - borderWidth) / 2f, mBorderPaint);
                 }
                 break;
         }
@@ -184,9 +183,12 @@ public class WaveView extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-        // mWavePaint.setColor(Color.parseColor("#A0607D8B"));
-        Shader shader = new LinearGradient(0, waveHeight, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
-        mWavePaint.setShader(shader);
+        if (color_top != 0) {
+            Shader shader = new LinearGradient(0, waveHeight, 0, mViewHeight, color_top, color_bottom, Shader.TileMode.CLAMP);
+            mWavePaint.setShader(shader);
+        } else {
+            mWavePaint.setColor(color);
+        }
         canvas.drawPath(mWavePath, mWavePaint);
         mWavePaint.setShader(null);
     }
@@ -227,9 +229,12 @@ public class WaveView extends BaseCustomView {
         mWavePath.lineTo(0, mViewHeight);
         mWavePath.close();
 
-        // mWavePaint.setColor(Color.parseColor("#A0388E3C"));
-        Shader shader = new LinearGradient(0, waveHeight, 0, mViewHeight, Color.parseColor("#A01976d2"), Color.parseColor("#00FFFFFF"), Shader.TileMode.CLAMP);
-        mWavePaint.setShader(shader);
+        if (color_top != 0) {
+            Shader shader = new LinearGradient(0, waveHeight, 0, mViewHeight, color_top, color_bottom, Shader.TileMode.CLAMP);
+            mWavePaint.setShader(shader);
+        } else {
+            mWavePaint.setColor(color);
+        }
         canvas.drawPath(mWavePath, mWavePaint);
         mWavePaint.setShader(null);
     }

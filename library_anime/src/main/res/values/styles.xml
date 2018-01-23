@@ -10,15 +10,30 @@
     </declare-styleable>
 
     <declare-styleable name="BaseCustomView">
+
+        <!--色值-->
         <attr name="better_color" format="color"/>
 
         <attr name="better_mode" format="enum">
-            <enum name="round_rect" value="1" />
-            <enum name="circle" value="2" />
+            <!--矩形-->
+            <enum name="square" value="0" />
+            <!--圆形-->
+            <enum name="circle" value="1" />
         </attr>
+
+        <!--圆角半径-->
         <attr name="better_round_radius" format="dimension" />
+
+        <!--边线属性-->
         <attr name="better_border_width" format="dimension" />
-        <attr name="better_border_color" format="color|reference" />
+        <attr name="better_border_color" format="color" />
+
+        <!--位置颜色-->
+        <attr name="better_color_top" format="color" />
+        <attr name="better_color_bottom" format="color" />
+        <attr name="better_color_left" format="color" />
+        <attr name="better_color_right" format="color" />
+
     </declare-styleable>
 
 </resources>
