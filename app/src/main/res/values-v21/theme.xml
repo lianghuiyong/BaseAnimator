@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--标题栏透明-->
+    <style name="AppTheme" parent="BaseAppTheme">
+        <!--状态栏是否覆盖在ContentView上-->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>

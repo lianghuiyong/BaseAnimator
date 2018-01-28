@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--标题栏透明-->
+    <style name="AppTheme" parent="BaseAppTheme">
+    </style>
+
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:actionBarSize">@dimen/b_sp45</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <!--欢迎页主题-->
+    <style name="SplashTheme" parent="BaseAppTheme">
+        <item name="android:windowBackground">@android:color/white</item>
+        <!-- AppCompat主题 全屏方法 -->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+</resources>

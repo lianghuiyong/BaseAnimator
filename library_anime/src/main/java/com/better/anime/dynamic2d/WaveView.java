@@ -111,7 +111,6 @@ public class WaveView extends BaseCustomView {
 
     private void createWaveCanvas() {
         Bitmap waveBitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
-        waveBitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
         Canvas waveCanvas = new Canvas(waveBitmap);
 
         drawWave1(waveCanvas);
@@ -188,7 +187,6 @@ public class WaveView extends BaseCustomView {
             mWavePaint.setColor(color);
         }
         canvas.drawPath(mWavePath, mWavePaint);
-        mWavePaint.setShader(null);
     }
 
     /**
@@ -234,7 +232,6 @@ public class WaveView extends BaseCustomView {
             mWavePaint.setColor(color);
         }
         canvas.drawPath(mWavePath, mWavePaint);
-        mWavePaint.setShader(null);
     }
 
     public void setOffset(float offset) {

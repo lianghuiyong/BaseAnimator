@@ -1,5 +1,6 @@
 package com.better.animator.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -25,12 +26,13 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private Context context;
+
     //初始化布局
     public abstract int setViewId();
 
     // 初始化数据
     public abstract void initData();
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,4 +46,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initData();
     }
+
+    protected Context getContext() {
+        return this;
+    }
+
+
+
 }

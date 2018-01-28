@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:better_color="#5E35B1"
+            app:better_color="#A05E35B1"
             app:better_mode="circle" />
 
 

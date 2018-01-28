@@ -65,7 +65,7 @@ public class Dynamic2DAdapter extends BaseMultiItemQuickAdapter<MultiItem, BaseV
         rootItem.post(() -> {
             for (View itemView : getAllChildren(rootItem)) {
                 if (itemView instanceof BaseCustomView) {
-                    ((BaseCustomView) itemView).getAnimator().start();
+                    //((BaseCustomView) itemView).getAnimator().start();
                     Log.e("convert", "rootItem =[" + holder.getLayoutPosition() + "] | itemView =[" + itemView.getId() + "]");
                 }
             }
@@ -82,7 +82,7 @@ public class Dynamic2DAdapter extends BaseMultiItemQuickAdapter<MultiItem, BaseV
         rootItem.post(() -> {
             for (View itemView : getAllChildren(rootItem)) {
                 if (itemView instanceof BaseCustomView) {
-                    ((BaseCustomView) itemView).getAnimator().resume();
+                    //((BaseCustomView) itemView).getAnimator().resume();
                     Log.e("onViewAttached", "rootItem =[" + holder.getLayoutPosition() + "] | itemView =[" + itemView.getId() + "]");
                 }
             }
