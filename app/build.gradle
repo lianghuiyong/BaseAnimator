@@ -30,7 +30,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            //去除没有用到的资源
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
         }
