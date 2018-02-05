@@ -28,7 +28,6 @@ public abstract class BaseCustomView extends View {
 
     public abstract void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs);
 
-
     protected int mViewWidth;
     protected int mViewHeight;
     protected Animator animator;
@@ -49,7 +48,7 @@ public abstract class BaseCustomView extends View {
     public BaseCustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initCustomView(context, attrs);
-        initAnimator();
+
     }
 
     public void initAnimator() {
@@ -64,5 +63,7 @@ public abstract class BaseCustomView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         mViewWidth = w;
         mViewHeight = h;
+
+        initAnimator();
     }
 }

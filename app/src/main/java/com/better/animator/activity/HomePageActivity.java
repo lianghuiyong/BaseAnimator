@@ -1,5 +1,7 @@
 package com.better.animator.activity;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 
@@ -33,6 +35,13 @@ public class HomePageActivity extends BaseActivity {
     ViewPager viewPager;
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        overridePendingTransition(R.anim.activity_splash_enter,R.anim.activity_splash_exit);
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public int setViewId() {

@@ -1,6 +1,7 @@
 package com.better.anime.dynamic2d;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 
 import com.better.anime.R;
@@ -71,11 +73,23 @@ public class WaveView extends BaseCustomView {
 
     @Override
     public void initAnimator() {
-        animator = ObjectAnimator.ofFloat(this, "offset", 0, mViewWidth);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(3000);
-        ((ValueAnimator) animator).setRepeatCount(ValueAnimator.INFINITE);
-        ((ValueAnimator) animator).setRepeatMode(ValueAnimator.RESTART);
+
+        animator = new AnimatorSet();
+
+        ValueAnimator animator1 = ObjectAnimator.ofFloat(this, "offset", 0, mViewWidth);
+        ValueAnimator animator2 = ObjectAnimator.ofFloat(this, "waveLevel", 0.5f, 0.8f);
+
+        animator1.setDuration(4000);
+        animator1.setRepeatCount(ValueAnimator.INFINITE);
+        animator1.setRepeatMode(ValueAnimator.RESTART);
+        animator1.setInterpolator(new LinearInterpolator());
+
+        animator2.setDuration(10000);
+        animator2.setRepeatCount(ValueAnimator.INFINITE);
+        animator2.setRepeatMode(ValueAnimator.REVERSE);
+        animator2.setInterpolator(new LinearInterpolator());
+
+        ((AnimatorSet)animator).play(animator1).with(animator2);
     }
 
     @Override
@@ -111,6 +125,7 @@ public class WaveView extends BaseCustomView {
 
     private void createWaveCanvas() {
         Bitmap waveBitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
+        waveBitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
         Canvas waveCanvas = new Canvas(waveBitmap);
 
         drawWave1(waveCanvas);

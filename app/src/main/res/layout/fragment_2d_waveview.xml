@@ -17,7 +17,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:better_color="#A05E35B1"
+            app:better_color_bottom="#605E35B1"
+            app:better_color_top="#F05E35B1"
             app:better_mode="circle" />
 
 
@@ -28,8 +29,8 @@
             android:layout_weight="1"
             app:better_border_color="#FF1744"
             app:better_border_width="@dimen/b_dp2"
-            app:better_color_bottom="#BBDEFB"
-            app:better_color_top="#1565C0"
+            app:better_color_bottom="#605E35B1"
+            app:better_color_top="#F05E35B1"
             app:better_mode="circle" />
 
     </LinearLayout>
@@ -44,7 +45,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:better_color="#2E7D32"
+            app:better_color_bottom="#605E35B1"
+            app:better_color_top="#F05E35B1"
             app:better_mode="square" />
 
 
@@ -55,8 +57,8 @@
             android:layout_weight="1"
             app:better_border_color="#FF1744"
             app:better_border_width="@dimen/b_dp2"
-            app:better_color_bottom="#B2EBF2"
-            app:better_color_top="#00838F"
+            app:better_color_bottom="#605E35B1"
+            app:better_color_top="#F05E35B1"
             app:better_mode="square" />
 
     </LinearLayout>

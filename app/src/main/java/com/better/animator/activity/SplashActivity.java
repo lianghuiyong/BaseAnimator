@@ -66,6 +66,12 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.activity_splash_enter,R.anim.activity_splash_exit);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
