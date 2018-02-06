@@ -27,7 +27,7 @@ import android.view.animation.LinearInterpolator;
  *
  * Changes (from 2017/12/18)
  * -----------------------------------------------------------------
- * 2017/12/18 : Create CoordinateView.java (梁惠涌);
+ * 2017/12/18 : Create 坐标视图UI (梁惠涌);
  * -----------------------------------------------------------------
  */
 public class CoordinateView extends View {

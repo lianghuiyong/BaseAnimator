@@ -11,6 +11,7 @@ import com.better.animator.InterpolatorFragment;
 import com.better.animator.R;
 import com.better.animator.base.BaseActivity;
 import com.better.animator.base.BaseViewpagerAdapter;
+import com.better.animator.widget.BaseStatusBar;
 
 import butterknife.BindView;
 
@@ -33,6 +34,8 @@ public class HomePageActivity extends BaseActivity {
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+    @BindView(R.id.status_bar)
+    BaseStatusBar statusBar;
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
@@ -50,9 +53,11 @@ public class HomePageActivity extends BaseActivity {
 
     @Override
     public void initData() {
+
+        statusBar.setStatusBarDark(this);
+
         BaseViewpagerAdapter viewpagerAdapter = new BaseViewpagerAdapter(getSupportFragmentManager());
         viewpagerAdapter.addFragment(new InterpolatorFragment());   // Interpolator
-        //viewpagerAdapter.addFragment(new EvaluatorFragment());      // Evaluator
         viewpagerAdapter.addFragment(new Dynamic2DFragment());      // 动效2D
         viewpagerAdapter.addFragment(new Dynamic3DFragment());      // 动效3D
         viewPager.setAdapter(viewpagerAdapter);
