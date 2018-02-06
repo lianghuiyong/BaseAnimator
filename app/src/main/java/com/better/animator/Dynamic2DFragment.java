@@ -96,9 +96,6 @@ public class Dynamic2DFragment extends BaseFragment {
     }
 
     public void startAnimator(int itemPosition) {
-
-        Log.e("lhy", "startAnimator = " + itemPosition);
-
         recyclerView.post(() -> {
             for (View itemView : getAllChildren(layoutManager.findViewByPosition(itemPosition))) {
                 if (itemView instanceof BaseCustomView) {
@@ -114,9 +111,6 @@ public class Dynamic2DFragment extends BaseFragment {
     }
 
     public void stopAnimator(int itemPosition) {
-
-        Log.e("lhy", "stopAnimator = " + itemPosition);
-
         recyclerView.post(() -> {
             for (View itemView : getAllChildren(layoutManager.findViewByPosition(itemPosition))) {
                 if (itemView instanceof BaseCustomView) {

@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +40,10 @@ import com.better.anime.base.BaseCustomView;
  * -----------------------------------------------------------------
  */
 public class WaveView extends BaseCustomView {
+
+    Bitmap waveBitmap;
+    Canvas waveCanvas;
+    BitmapShader mWaveShader;
 
     //波浪的画笔
     private Paint mWavePaint;
@@ -67,10 +72,6 @@ public class WaveView extends BaseCustomView {
         super(context, attrs, defStyleAttr);
     }
 
-    public WaveView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     @Override
     public void initAnimator() {
 
@@ -89,7 +90,7 @@ public class WaveView extends BaseCustomView {
         animator2.setRepeatMode(ValueAnimator.REVERSE);
         animator2.setInterpolator(new LinearInterpolator());
 
-        ((AnimatorSet)animator).play(animator1).with(animator2);
+        ((AnimatorSet) animator).play(animator1).with(animator2);
     }
 
     @Override
@@ -124,48 +125,57 @@ public class WaveView extends BaseCustomView {
     }
 
     private void createWaveCanvas() {
-        Bitmap waveBitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
+        waveBitmap = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
         waveBitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
-        Canvas waveCanvas = new Canvas(waveBitmap);
+        waveCanvas = new Canvas(waveBitmap);
 
-        drawWave1(waveCanvas);
-        drawWave2(waveCanvas);
+        mWaveShader = new BitmapShader(waveBitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+    }
 
-        BitmapShader mWaveShader = new BitmapShader(waveBitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
-        mWavePaint.setShader(mWaveShader);
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        //绘制波浪
+        createWaveCanvas();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //绘制波浪
-        createWaveCanvas();
+        if (waveCanvas != null) {
+            waveCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            drawWave1(waveCanvas);
+            drawWave2(waveCanvas);
 
-        float borderWidth = mBorderPaint.getStrokeWidth();
-        switch (waveType) {
-            //矩形 0
-            case 0:
-                //波浪
-                canvas.drawRect(borderWidth, borderWidth, mViewWidth - borderWidth, mViewHeight - borderWidth, mWavePaint);
+            mWavePaint.setShader(mWaveShader);
 
-                //边框
-                if (borderWidth != 0) {
-                    canvas.drawRect(borderWidth / 2f, borderWidth / 2f,
-                            mViewWidth - borderWidth / 2f - 0.5f, mViewHeight - borderWidth / 2f - 0.5f, mBorderPaint);
-                }
-                break;
+            float borderWidth = mBorderPaint.getStrokeWidth();
+            switch (waveType) {
+                //矩形 0
+                case 0:
+                    //波浪
+                    canvas.drawRect(borderWidth, borderWidth, mViewWidth - borderWidth, mViewHeight - borderWidth, mWavePaint);
 
-            //圆形 1
-            case 1:
-                //波浪
-                canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, mViewWidth / 2f - borderWidth, mWavePaint);
+                    //边框
+                    if (borderWidth != 0) {
+                        canvas.drawRect(borderWidth / 2f, borderWidth / 2f,
+                                mViewWidth - borderWidth / 2f - 0.5f, mViewHeight - borderWidth / 2f - 0.5f, mBorderPaint);
+                    }
+                    break;
 
-                //边框
-                if (borderWidth != 0) {
-                    canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, (mViewWidth - borderWidth) / 2f, mBorderPaint);
-                }
-                break;
+                //圆形 1
+                case 1:
+                    //波浪
+                    canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, mViewWidth / 2f - borderWidth, mWavePaint);
+
+                    //边框
+                    if (borderWidth != 0) {
+                        canvas.drawCircle(mViewWidth / 2f, mViewHeight / 2f, (mViewWidth - borderWidth) / 2f, mBorderPaint);
+                    }
+                    break;
+            }
         }
     }
 
@@ -202,6 +212,7 @@ public class WaveView extends BaseCustomView {
             mWavePaint.setColor(color);
         }
         canvas.drawPath(mWavePath, mWavePaint);
+        mWavePaint.setShader(null);
     }
 
     /**
@@ -211,6 +222,9 @@ public class WaveView extends BaseCustomView {
      */
     private void drawWave2(Canvas canvas) {
         mWavePath.reset();
+        mWavePaint.reset();
+        mWavePaint.setStrokeWidth(0);
+        mWavePaint.setAntiAlias(true);
 
         //角度
         float deg = (mOffset + (mViewWidth / 4)) / mViewWidth * 360;
@@ -247,6 +261,7 @@ public class WaveView extends BaseCustomView {
             mWavePaint.setColor(color);
         }
         canvas.drawPath(mWavePath, mWavePaint);
+        mWavePaint.setShader(null);
     }
 
     public void setOffset(float offset) {
@@ -256,7 +271,6 @@ public class WaveView extends BaseCustomView {
 
     public void setWaveLevel(float waveLevel) {
         this.waveLevel = waveLevel;
-
         invalidate();
     }
 }
