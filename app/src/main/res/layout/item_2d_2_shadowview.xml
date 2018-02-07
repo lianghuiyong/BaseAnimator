@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/b_dp340"
+    android:layout_height="@dimen/b_dp420"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginBottom="@dimen/b_dp10"
+    android:layout_marginLeft="@dimen/b_dp20"
+    android:layout_marginRight="@dimen/b_dp20"
+    android:background="@android:color/black"
+    app:cardCornerRadius="@dimen/b_dp10"
+    app:cardElevation="@dimen/b_dp4">
+
+    <com.better.anime.dynamic2d.BetterCardView
+        android:layout_width="@dimen/b_dp150"
+        android:layout_height="@dimen/b_dp150"
+        android:layout_margin="@dimen/b_dp10" />
+
+    <com.better.anime.dynamic2d.BetterCardView
+        android:layout_width="@dimen/b_dp150"
+        android:layout_height="@dimen/b_dp150"
+        android:layout_gravity="right"
+        android:layout_margin="@dimen/b_dp10"
+        android:background="#778899" />
+
+    <com.better.anime.dynamic2d.BetterCardView
+        android:layout_width="@dimen/b_dp150"
+        android:layout_height="@dimen/b_dp150"
+        android:layout_marginLeft="@dimen/b_dp10"
+        android:layout_marginTop="@dimen/b_dp170"
+        android:background="#778899" />
+
+    <com.better.anime.dynamic2d.BetterCardView
+        android:layout_width="@dimen/b_dp150"
+        android:layout_height="@dimen/b_dp150"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/b_dp10"
+        android:layout_marginTop="@dimen/b_dp170"
+        android:background="#778899" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/b_dp20"
+        android:text="BetterCardView"
+        android:textColor="#000000"
+        android:textSize="@dimen/b_sp25"
+        android:textStyle="bold" />
+
+</android.support.v7.widget.CardView>

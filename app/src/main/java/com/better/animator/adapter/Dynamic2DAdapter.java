@@ -31,7 +31,7 @@ public class Dynamic2DAdapter extends BaseMultiItemQuickAdapter<MultiItem, BaseV
         List<MultiItem> data = new ArrayList<>();
         data.add(new MultiItem(0, R.layout.item_2d_0_title));
         data.add(new MultiItem(1, R.layout.item_2d_1_waveview));
-        data.add(new MultiItem(1, R.layout.item_2d_1_waveview));
+        data.add(new MultiItem(2, R.layout.item_2d_2_shadowview));
         data.add(new MultiItem(1, R.layout.item_2d_1_waveview));
         return data;
     }

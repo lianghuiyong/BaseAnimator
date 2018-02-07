@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -14,7 +13,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.better.anime.R;
-import com.better.anime.base.BaseCustomView;
+import com.better.anime.base.BaseView;
 
 /**
  * -----------------------------------------------------------------
@@ -31,7 +30,7 @@ import com.better.anime.base.BaseCustomView;
  * -----------------------------------------------------------------
  */
 
-public class DottedVerticalView extends BaseCustomView {
+public class DottedVerticalView extends BaseView {
 
     private Paint paint;
 
@@ -51,8 +50,8 @@ public class DottedVerticalView extends BaseCustomView {
     public void initCustomView(Context context, AttributeSet attrs) {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseCustomView);
-        int color = typedArray.getColor(R.styleable.BaseCustomView_better_color, Color.parseColor("#ececec"));
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseView);
+        int color = typedArray.getColor(R.styleable.BaseView_better_color, Color.parseColor("#ececec"));
 
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
 

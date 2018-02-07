@@ -4,13 +4,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.better.anime.R;
-import com.better.anime.base.BaseCustomView;
+import com.better.anime.base.BaseView;
 
 /**
  * -----------------------------------------------------------------
@@ -27,7 +26,7 @@ import com.better.anime.base.BaseCustomView;
  * -----------------------------------------------------------------
  */
 
-public class CircleView extends BaseCustomView {
+public class CircleView extends BaseView {
 
     private Paint paint;
 
@@ -45,8 +44,8 @@ public class CircleView extends BaseCustomView {
 
     @Override
     public void initCustomView(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseCustomView);
-        int color = typedArray.getColor(R.styleable.BaseCustomView_better_color, Color.parseColor("#ececec"));
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseView);
+        int color = typedArray.getColor(R.styleable.BaseView_better_color, Color.parseColor("#ececec"));
 
         paint = new Paint();
         paint.setColor(color);

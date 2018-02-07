@@ -86,12 +86,12 @@ public class RoundImageView extends AppCompatImageView {
     private void init(AttributeSet attrs) {
         setLayerType(LAYER_TYPE_HARDWARE, null);
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.BaseCustomView);
-            mShapeMode = a.getInt(R.styleable.BaseCustomView_better_mode, 0);
-            mRadius = a.getDimension(R.styleable.BaseCustomView_better_round_radius, 0);
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.BaseView);
+            mShapeMode = a.getInt(R.styleable.BaseView_better_mode, 0);
+            mRadius = a.getDimension(R.styleable.BaseView_better_round_radius, 0);
 
-            mStrokeWidth = a.getDimension(R.styleable.BaseCustomView_better_border_width, 0);
-            mStrokeColor = a.getColor(R.styleable.BaseCustomView_better_border_color, mStrokeColor);
+            mStrokeWidth = a.getDimension(R.styleable.BaseView_better_border_width, 0);
+            mStrokeColor = a.getColor(R.styleable.BaseView_better_border_color, mStrokeColor);
             a.recycle();
         }
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

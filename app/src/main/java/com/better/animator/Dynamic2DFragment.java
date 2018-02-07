@@ -3,15 +3,13 @@ package com.better.animator;
 
 import android.animation.Animator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.better.animator.adapter.Dynamic2DAdapter;
 import com.better.animator.base.BaseFragment;
-import com.better.anime.base.BaseCustomView;
+import com.better.anime.base.BaseView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +59,7 @@ public class Dynamic2DFragment extends BaseFragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                int itemPosition = layoutManager.findFirstVisibleItemPosition();
+                int itemPosition = layoutManager.findFirstVisibleItemPosition()+1;
                 switch (newState) {
                     case SCROLL_STATE_IDLE:
                         //静止,没有滚动
@@ -89,7 +87,7 @@ public class Dynamic2DFragment extends BaseFragment {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dx == 0 && dy == 0) {
-                    startAnimator(0);
+                    startAnimator(1);
                 }
             }
         });
@@ -98,8 +96,8 @@ public class Dynamic2DFragment extends BaseFragment {
     public void startAnimator(int itemPosition) {
         recyclerView.post(() -> {
             for (View itemView : getAllChildren(layoutManager.findViewByPosition(itemPosition))) {
-                if (itemView instanceof BaseCustomView) {
-                    Animator animator = ((BaseCustomView) itemView).getAnimator();
+                if (itemView instanceof BaseView) {
+                    Animator animator = ((BaseView) itemView).getAnimator();
                     if (animator.isPaused()) {
                         animator.resume();
                     } else {
@@ -113,8 +111,8 @@ public class Dynamic2DFragment extends BaseFragment {
     public void stopAnimator(int itemPosition) {
         recyclerView.post(() -> {
             for (View itemView : getAllChildren(layoutManager.findViewByPosition(itemPosition))) {
-                if (itemView instanceof BaseCustomView) {
-                    ((BaseCustomView) itemView).getAnimator().pause();
+                if (itemView instanceof BaseView) {
+                    ((BaseView) itemView).getAnimator().pause();
                 }
             }
         });

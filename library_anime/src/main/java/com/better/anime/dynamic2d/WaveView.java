@@ -1,6 +1,5 @@
 package com.better.anime.dynamic2d;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -18,12 +17,10 @@ import android.graphics.Shader;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 
 import com.better.anime.R;
-import com.better.anime.base.BaseCustomView;
+import com.better.anime.base.BaseView;
 
 /*
  * -----------------------------------------------------------------
@@ -39,7 +36,7 @@ import com.better.anime.base.BaseCustomView;
  * 2018/1/5 : Create WaveTest.java (梁惠涌);
  * -----------------------------------------------------------------
  */
-public class WaveView extends BaseCustomView {
+public class WaveView extends BaseView {
 
     Bitmap waveBitmap;
     Canvas waveCanvas;
@@ -96,15 +93,15 @@ public class WaveView extends BaseCustomView {
     @Override
     public void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs) {
 
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BaseCustomView);
-        waveType = typedArray.getInt(R.styleable.BaseCustomView_better_mode, 0);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BaseView);
+        waveType = typedArray.getInt(R.styleable.BaseView_better_mode, 0);
 
-        float border_width = typedArray.getDimension(R.styleable.BaseCustomView_better_border_width, 0);
-        int border_color = typedArray.getColor(R.styleable.BaseCustomView_better_border_color, Color.parseColor("#000000"));
+        float border_width = typedArray.getDimension(R.styleable.BaseView_better_border_width, 0);
+        int border_color = typedArray.getColor(R.styleable.BaseView_better_border_color, Color.parseColor("#000000"));
 
-        color = typedArray.getColor(R.styleable.BaseCustomView_better_color, Color.parseColor("#80000000"));
-        color_top = typedArray.getColor(R.styleable.BaseCustomView_better_color_top, 0);
-        color_bottom = typedArray.getColor(R.styleable.BaseCustomView_better_color_bottom, 0);
+        color = typedArray.getColor(R.styleable.BaseView_better_color, Color.parseColor("#80000000"));
+        color_top = typedArray.getColor(R.styleable.BaseView_better_color_top, 0);
+        color_bottom = typedArray.getColor(R.styleable.BaseView_better_color_bottom, 0);
 
         typedArray.recycle();
 

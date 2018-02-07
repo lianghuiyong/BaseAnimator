@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="ShadowLayout">
-        <attr name="sl_cornerRadius" format="dimension"/>
-        <attr name="sl_shadowRadius" format="dimension"/>
-        <attr name="sl_shadowColor" format="color"/>
-        <attr name="sl_dx" format="dimension"/>
-        <attr name="sl_dy" format="dimension"/>
-    </declare-styleable>
 
-    <declare-styleable name="BaseCustomView">
+    <declare-styleable name="BaseView">
 
         <!--色值-->
         <attr name="better_color" format="color"/>
@@ -34,6 +27,26 @@
         <attr name="better_color_left" format="color" />
         <attr name="better_color_right" format="color" />
 
+    </declare-styleable>
+
+
+    <declare-styleable name="BetterCardView">
+        <!--阴影颜色-->
+        <attr name="shadowColor" format="color"/>
+        <!--阴影偏移量-->
+        <attr name="shadowDx" format="dimension"/>
+        <attr name="shadowDy" format="dimension"/>
+
+
+        <attr name="cardCornerRadius" format="dimension"/>
+        <attr name="cardElevation" format="dimension"/>
+        <attr name="cardCornerRadiusTL" format="dimension"/>
+        <attr name="cardCornerRadiusTR" format="dimension"/>
+        <attr name="cardCornerRadiusBL" format="dimension"/>
+        <attr name="cardCornerRadiusBR" format="dimension"/>
+
+        <attr name="backgroundColor" format="color"/>
+        <attr name="foregroundColor" format="color"/>
     </declare-styleable>
 
 </resources>
