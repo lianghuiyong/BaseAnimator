@@ -1,13 +1,7 @@
 package com.better.animator.adapter;
 
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
 import com.better.animator.R;
 import com.better.animator.bean.MultiItem;
-import com.better.anime.base.BaseCustomView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -35,12 +29,10 @@ public class Dynamic2DAdapter extends BaseMultiItemQuickAdapter<MultiItem, BaseV
     public static List<MultiItem> initData() {
 
         List<MultiItem> data = new ArrayList<>();
-        data.add(new MultiItem(0, R.layout.fragment_2d_waveview));
-        data.add(new MultiItem(1, R.layout.fragment_2d_waveview));
-        data.add(new MultiItem(1, R.layout.fragment_2d_waveview));
-        data.add(new MultiItem(1, R.layout.fragment_2d_waveview));
-        data.add(new MultiItem(1, R.layout.fragment_2d_waveview));
-
+        data.add(new MultiItem(0, R.layout.item_2d_0_title));
+        data.add(new MultiItem(1, R.layout.item_2d_1_waveview));
+        data.add(new MultiItem(1, R.layout.item_2d_1_waveview));
+        data.add(new MultiItem(1, R.layout.item_2d_1_waveview));
         return data;
     }
 

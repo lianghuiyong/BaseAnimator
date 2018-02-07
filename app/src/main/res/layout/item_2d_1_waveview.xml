@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_item"
+    android:layout_width="@dimen/b_dp340"
+    android:layout_height="@dimen/b_dp420"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginLeft="@dimen/b_dp20"
+    android:layout_marginRight="@dimen/b_dp20"
+    android:layout_marginBottom="@dimen/b_dp10"
+    app:cardCornerRadius="@dimen/b_dp10"
+    app:cardElevation="@dimen/b_dp4">
+
+    <com.better.anime.dynamic2d.WaveView
+        android:id="@+id/wave1"
+        android:layout_width="@dimen/b_dp150"
+        android:layout_height="@dimen/b_dp150"
+        android:layout_margin="@dimen/b_dp10"
+        app:better_color_bottom="#605E35B1"
+        app:better_color_top="#F05E35B1"
+        app:better_mode="circle" />
+
+    <com.better.anime.dynamic2d.WaveView
+        android:id="@+id/wave2"
+        android:layout_width="@dimen/b_dp150"
+        android:layout_height="@dimen/b_dp150"
+        android:layout_margin="@dimen/b_dp10"
+        android:layout_gravity="right"
+        app:better_border_color="#FF1744"
+        app:better_border_width="@dimen/b_dp2"
+        app:better_color_bottom="#605E35B1"
+        app:better_color_top="#F05E35B1"
+        app:better_mode="circle" />
+
+    <com.better.anime.dynamic2d.WaveView
+        android:id="@+id/wave3"
+        android:layout_width="@dimen/b_dp150"
+        android:layout_height="@dimen/b_dp150"
+        android:layout_marginTop="@dimen/b_dp170"
+        android:layout_marginLeft="@dimen/b_dp10"
+        app:better_color_bottom="#605E35B1"
+        app:better_color_top="#F05E35B1"
+        app:better_mode="square" />
+
+    <com.better.anime.dynamic2d.WaveView
+        android:id="@+id/wave4"
+        android:layout_width="@dimen/b_dp150"
+        android:layout_height="@dimen/b_dp150"
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/b_dp170"
+        android:layout_marginRight="@dimen/b_dp10"
+        app:better_border_color="#FF1744"
+        app:better_border_width="@dimen/b_dp2"
+        app:better_color_bottom="#605E35B1"
+        app:better_color_top="#F05E35B1"
+        app:better_mode="square" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/b_sp25"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/b_dp20"
+        android:text="波浪动画"
+        android:textStyle="bold"
+        android:textColor="#000000"/>
+
+</android.support.v7.widget.CardView>
