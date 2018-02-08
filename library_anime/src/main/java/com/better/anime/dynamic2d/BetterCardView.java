@@ -11,6 +11,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.better.anime.R;
 import com.better.anime.base.BaseGroup;
@@ -45,6 +48,11 @@ public class BetterCardView extends BaseGroup {
 
     public BetterCardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+
     }
 
     private int shadowColor;
@@ -121,6 +129,49 @@ public class BetterCardView extends BaseGroup {
         canvas.clipPath(path);
         //drawForeground(canvas);
         canvas.restore();*/
+    }
+
+
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int maxHeight = 0;
+        int maxWidth = 0;
+        int childState = 0;
+        this.setMeasuredDimension(ViewGroup.getDefaultSize(0, widthMeasureSpec), ViewGroup.getDefaultSize(0, heightMeasureSpec));
+        boolean shadowMeasureWidthMatchParent = this.getLayoutParams().width == -1;
+        boolean shadowMeasureHeightMatchParent = this.getLayoutParams().height == -1;
+        int widthSpec = widthMeasureSpec;
+        int heightSpec;
+        if(shadowMeasureWidthMatchParent) {
+            heightSpec = this.getMeasuredWidth();
+            widthSpec = MeasureSpec.makeMeasureSpec(heightSpec, MeasureSpec.EXACTLY);
+        }
+
+        heightSpec = heightMeasureSpec;
+        if(shadowMeasureHeightMatchParent) {
+            int childHeightSize = this.getMeasuredHeight();
+            heightSpec = MeasureSpec.makeMeasureSpec(childHeightSize, MeasureSpec.EXACTLY);
+        }
+
+        View child = this.getChildAt(0);
+        if(child != null && child.getVisibility() != View.GONE) {
+            this.measureChildWithMargins(child, widthSpec, 0, heightSpec, 0);
+            android.view.ViewGroup.LayoutParams lp = child.getLayoutParams();
+            maxWidth = shadowMeasureWidthMatchParent?Math.max(maxWidth, child.getMeasuredWidth() ):Math.max(maxWidth, child.getMeasuredWidth() );
+            maxHeight = shadowMeasureHeightMatchParent?Math.max(maxHeight, child.getMeasuredHeight() ):Math.max(maxHeight, child.getMeasuredHeight());
+            childState = View.combineMeasuredStates(childState, child.getMeasuredState());
+        }
+
+        maxWidth += this.getPaddingLeft() + this.getPaddingRight();
+        maxHeight += this.getPaddingTop() + this.getPaddingBottom();
+        maxHeight = Math.max(maxHeight, this.getSuggestedMinimumHeight());
+        maxWidth = Math.max(maxWidth, this.getSuggestedMinimumWidth());
+/*      Drawable drawable = this.getForeground();
+        if(drawable != null) {
+            maxHeight = Math.max(maxHeight, drawable.getMinimumHeight());
+            maxWidth = Math.max(maxWidth, drawable.getMinimumWidth());
+        }*/
+
+        this.setMeasuredDimension(View.resolveSizeAndState(maxWidth, shadowMeasureWidthMatchParent?widthMeasureSpec:widthSpec, childState), View.resolveSizeAndState(maxHeight, shadowMeasureHeightMatchParent?heightMeasureSpec:heightSpec, View.MEASURED_HEIGHT_STATE_SHIFT));
     }
 
     private Path roundedRect(float left, float top, float right, float bottom, float tl, float tr, float br, float bl) {

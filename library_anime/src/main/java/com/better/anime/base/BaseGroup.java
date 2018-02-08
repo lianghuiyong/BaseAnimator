@@ -25,7 +25,7 @@ import android.widget.FrameLayout;
  * 2017/12/25 : Create BaseCustomView.java (梁惠涌);
  * -----------------------------------------------------------------
  */
-public abstract class BaseGroup extends FrameLayout {
+public abstract class BaseGroup extends ViewGroup {
 
     public abstract void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs);
 
