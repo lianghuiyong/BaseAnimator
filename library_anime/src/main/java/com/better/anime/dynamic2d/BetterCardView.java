@@ -93,10 +93,10 @@ public class BetterCardView extends BaseGroup {
         if (cornerRadius >0) {
             cornerRadiusTL = cornerRadiusTR = cornerRadiusBL = cornerRadiusBR = cornerRadius;
         } else {
-            cornerRadiusTL = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTL, 0);
+/*            cornerRadiusTL = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTL, 0);
             cornerRadiusTR = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTR, 0);
             cornerRadiusBL = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBL, 0);
-            cornerRadiusBR = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBR, 0);
+            cornerRadiusBR = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBR, 0);*/
         }
         typedArray.recycle();
 
