@@ -26,6 +26,7 @@
 
         <TextView
             android:layout_width="match_parent"
+            android:background="#006400"
             android:layout_height="wrap_content"
             android:text="Google Developer Days Europe 2017 took place in Krakow, Poland. In this playlist, you can find all the recorded sessions from the event, across all tracks (Develop on Mobile, Mobile Web, Beyond Mobile, and Android)." />
     </com.better.anime.dynamic2d.BetterCardView2>

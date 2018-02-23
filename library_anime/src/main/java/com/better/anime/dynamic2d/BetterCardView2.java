@@ -259,7 +259,7 @@ public class BetterCardView2 extends BaseGroup {
     }
 
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        this.layoutChildren();
+        layoutChildren();
     }
 
     private void layoutChildren() {
@@ -345,7 +345,7 @@ public class BetterCardView2 extends BaseGroup {
     protected void onDraw(@org.jetbrains.annotations.Nullable Canvas canvas) {
         super.onDraw(canvas);
         if (canvas != null) {
-            Path path = roundedRect((float) shadowMarginLeft, (float) shadowMarginTop, (float) (getMeasuredWidth() - shadowMarginRight), (float) (getMeasuredHeight() - shadowMarginBottom), cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
+            Path path = roundedRect(shadowMarginLeft, shadowMarginTop, getMeasuredWidth() - shadowMarginRight, getMeasuredHeight() - shadowMarginBottom, cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
             canvas.drawPath(path, paint);
         }
     }
@@ -354,7 +354,7 @@ public class BetterCardView2 extends BaseGroup {
         super.draw(canvas);
         if (canvas != null) {
             canvas.save();
-            Path path = roundedRect((float) shadowMarginLeft, (float) shadowMarginTop, (float) (getMeasuredWidth() - shadowMarginRight), (float) (getMeasuredHeight() - shadowMarginBottom), cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
+            Path path = roundedRect(shadowMarginLeft, shadowMarginTop, getMeasuredWidth() - shadowMarginRight, getMeasuredHeight() - shadowMarginBottom, cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
             canvas.clipPath(path);
             drawForeground(canvas);
             canvas.restore();
