@@ -21,7 +21,8 @@
         android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="4dp"
         app:cardElevation="10dp"
-        app:cardShadowMargin="20dp">
+        android:layout_gravity="right"
+        app:cardShadowMargin="10dp">
 
         <TextView
             android:layout_width="match_parent"

@@ -16,9 +16,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.better.anime.R;
 import com.better.anime.base.BaseGroup;
@@ -209,6 +211,80 @@ public class BetterCardView2 extends BaseGroup {
         super(context, attrs, defStyleAttr);
     }
 
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int maxHeight = 0;
+        int maxWidth = 0;
+        int childState = 0;
+        this.setMeasuredDimension(FrameLayout.getDefaultSize(0, widthMeasureSpec), FrameLayout.getDefaultSize(0, heightMeasureSpec));
+        boolean shadowMeasureWidthMatchParent = this.getLayoutParams().width == ViewGroup.LayoutParams.MATCH_PARENT;
+        boolean shadowMeasureHeightMatchParent = this.getLayoutParams().height == ViewGroup.LayoutParams.MATCH_PARENT;
+        int widthSpec = widthMeasureSpec;
+        int heightSpec;
+        if (shadowMeasureWidthMatchParent) {
+            heightSpec = this.getMeasuredWidth() - (int) shadowMarginRight - (int) shadowMarginLeft;
+            widthSpec = MeasureSpec.makeMeasureSpec(heightSpec, MeasureSpec.EXACTLY);
+        }
+
+        heightSpec = heightMeasureSpec;
+        if (shadowMeasureHeightMatchParent) {
+            int childHeightSize = this.getMeasuredHeight() - (int) shadowMarginTop - (int) shadowMarginBottom;
+            heightSpec = MeasureSpec.makeMeasureSpec(childHeightSize, MeasureSpec.EXACTLY);
+        }
+
+        View child = this.getChildAt(0);
+        if (child != null && child.getVisibility() != View.GONE) {
+            this.measureChildWithMargins(child, widthSpec, 0, heightSpec, 0);
+            ViewGroup.MarginLayoutParams var10000 = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+            if (var10000 == null) {
+                return;
+            }
+
+            MarginLayoutParams lp = (MarginLayoutParams) var10000;
+            maxWidth = shadowMeasureWidthMatchParent ? Math.max(maxWidth, child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin) : (int) Math.max(maxWidth, child.getMeasuredWidth() + this.shadowMarginLeft + this.shadowMarginRight + lp.leftMargin + lp.rightMargin);
+            maxHeight = shadowMeasureHeightMatchParent ? Math.max(maxHeight, child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin) : (int) Math.max(maxHeight, child.getMeasuredHeight() + this.shadowMarginTop + this.shadowMarginBottom + lp.topMargin + lp.bottomMargin);
+            childState = View.combineMeasuredStates(childState, child.getMeasuredState());
+        }
+
+        maxWidth += this.getPaddingLeft() + this.getPaddingRight();
+        maxHeight += this.getPaddingTop() + this.getPaddingBottom();
+        maxHeight = Math.max(maxHeight, this.getSuggestedMinimumHeight());
+        maxWidth = Math.max(maxWidth, this.getSuggestedMinimumWidth());
+        Drawable drawable = this.getForeground();
+        if (drawable != null) {
+            maxHeight = Math.max(maxHeight, drawable.getMinimumHeight());
+            maxWidth = Math.max(maxWidth, drawable.getMinimumWidth());
+        }
+
+        this.setMeasuredDimension(View.resolveSizeAndState(maxWidth, shadowMeasureWidthMatchParent ? widthMeasureSpec : widthSpec, childState), View.resolveSizeAndState(maxHeight, shadowMeasureHeightMatchParent ? heightMeasureSpec : heightSpec, childState << 16));
+    }
+
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        this.layoutChildren();
+    }
+
+    private void layoutChildren() {
+        for (int i = 0; i < getChildCount(); ++i) {
+            View child = getChildAt(i);
+            if (child != null && child.getVisibility() != View.GONE) {
+                LayoutParams lp = (LayoutParams) child.getLayoutParams();
+                if (lp == null) {
+                    break;
+                }
+
+                int childLeft = (int) (getPaddingLeft() + lp.leftMargin + shadowMarginLeft);
+                int childTop = (int) (getPaddingTop() + lp.topMargin + shadowMarginTop);
+
+                int groupWidth = (int) (mViewWidth - shadowMarginLeft - shadowMarginRight);
+                int groupHeight = (int) (mViewHeight - shadowMarginTop - shadowMarginBottom);
+
+                int childRight = childLeft + (child.getMeasuredWidth() > groupWidth ? groupWidth : child.getMeasuredWidth());
+                int childBottom = childTop + (child.getMeasuredHeight() > groupHeight ? groupHeight : child.getMeasuredHeight());
+                child.layout(childLeft, childTop, childRight, childBottom);
+            }
+        }
+    }
+
+
     @Override
     public void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs) {
         SIZE_UNSET = -1;
@@ -220,19 +296,19 @@ public class BetterCardView2 extends BaseGroup {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BetterCardView);
 
 
-        setShadowColor(typedArray.getColor(R.styleable.BetterCardView_shadowColor,  Color.parseColor("#778899")));
+        setShadowColor(typedArray.getColor(R.styleable.BetterCardView_shadowColor, Color.parseColor("#778899")));
         setForegroundColor(typedArray.getColor(R.styleable.BetterCardView_foregroundColor, Color.parseColor("#1f000000")));
         setBackgroundClr(typedArray.getColor(R.styleable.BetterCardView_backgroundColor, Color.WHITE));
         setShadowDx(typedArray.getFloat(R.styleable.BetterCardView_shadowDx, 0.0F));
         setShadowDy(typedArray.getFloat(R.styleable.BetterCardView_shadowDy, 1.0F));
         setShadowRadius(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardElevation, 0));
         Drawable drawable = typedArray.getDrawable(R.styleable.BetterCardView_android_foreground);
-        if(drawable != null) {
+        if (drawable != null) {
             setForeground(drawable);
         }
 
         int shadowMargin = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMargin, SIZE_UNSET);
-        if(shadowMargin >= 0) {
+        if (shadowMargin >= 0) {
             setShadowMarginTop(shadowMargin);
             setShadowMarginLeft(shadowMargin);
             setShadowMarginRight(shadowMargin);
@@ -244,41 +320,41 @@ public class BetterCardView2 extends BaseGroup {
             setShadowMarginBottom(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginBottom, SIZE_DEFAULT));
         }
 
-        float cornerRadius = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadius, SIZE_UNSET);
-        if(cornerRadius >= (float)0) {
+        float cornerRadius = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadius, SIZE_UNSET);
+        if (cornerRadius >= (float) 0) {
             cornerRadiusTL = cornerRadius;
             cornerRadiusTR = cornerRadius;
             cornerRadiusBL = cornerRadius;
             cornerRadiusBR = cornerRadius;
         } else {
-            cornerRadiusTL = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTL, SIZE_DEFAULT);
-            cornerRadiusTR = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTR, SIZE_DEFAULT);
-            cornerRadiusBL = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBL, SIZE_DEFAULT);
-            cornerRadiusBR = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBR, SIZE_DEFAULT);
+            cornerRadiusTL = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTL, SIZE_DEFAULT);
+            cornerRadiusTR = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTR, SIZE_DEFAULT);
+            cornerRadiusBL = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBL, SIZE_DEFAULT);
+            cornerRadiusBR = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBR, SIZE_DEFAULT);
         }
         typedArray.recycle();
-        
+
         paint.setColor(backgroundColor);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
-        setLayerType(1, (Paint)null);
+        setLayerType(1, (Paint) null);
         setWillNotDraw(false);
-        setBackground((Drawable)null);
+        setBackground((Drawable) null);
     }
 
     protected void onDraw(@org.jetbrains.annotations.Nullable Canvas canvas) {
         super.onDraw(canvas);
-        if(canvas != null) {
-            Path path = roundedRect((float)shadowMarginLeft, (float)shadowMarginTop, (float)(getMeasuredWidth() - shadowMarginRight), (float)(getMeasuredHeight() - shadowMarginBottom), cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
+        if (canvas != null) {
+            Path path = roundedRect((float) shadowMarginLeft, (float) shadowMarginTop, (float) (getMeasuredWidth() - shadowMarginRight), (float) (getMeasuredHeight() - shadowMarginBottom), cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
             canvas.drawPath(path, paint);
         }
     }
 
     public void draw(@org.jetbrains.annotations.Nullable Canvas canvas) {
         super.draw(canvas);
-        if(canvas != null) {
+        if (canvas != null) {
             canvas.save();
-            Path path = roundedRect((float)shadowMarginLeft, (float)shadowMarginTop, (float)(getMeasuredWidth() - shadowMarginRight), (float)(getMeasuredHeight() - shadowMarginBottom), cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
+            Path path = roundedRect((float) shadowMarginLeft, (float) shadowMarginTop, (float) (getMeasuredWidth() - shadowMarginRight), (float) (getMeasuredHeight() - shadowMarginBottom), cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
             canvas.clipPath(path);
             drawForeground(canvas);
             canvas.restore();
@@ -287,7 +363,7 @@ public class BetterCardView2 extends BaseGroup {
 
     public final void drawForeground(@org.jetbrains.annotations.Nullable Canvas canvas) {
         Drawable var10000 = foregroundDraw;
-        if(foregroundDraw != null) {
+        if (foregroundDraw != null) {
             Drawable var2 = var10000;
             int w = getRight() - getLeft();
             int h = getBottom() - getTop();
@@ -311,7 +387,7 @@ public class BetterCardView2 extends BaseGroup {
     public void jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState();
         Drawable var10000 = foregroundDraw;
-        if(foregroundDraw != null) {
+        if (foregroundDraw != null) {
             Drawable var1 = var10000;
             var1.jumpToCurrentState();
         }
@@ -321,10 +397,10 @@ public class BetterCardView2 extends BaseGroup {
     protected void drawableStateChanged() {
         super.drawableStateChanged();
         Drawable var10000 = foregroundDraw;
-        if(foregroundDraw != null) {
+        if (foregroundDraw != null) {
             Drawable var1 = var10000;
-            var10000 = var1.isStateful()?var1:null;
-            if(var10000 != null) {
+            var10000 = var1.isStateful() ? var1 : null;
+            if (var10000 != null) {
                 var1 = var10000;
                 var1.setState(getDrawableState());
             }
@@ -333,10 +409,10 @@ public class BetterCardView2 extends BaseGroup {
     }
 
     public void setForeground(@Nullable Drawable drawable) {
-        if(foregroundDraw != null) {
+        if (foregroundDraw != null) {
             Drawable var10000 = foregroundDraw;
-            if(foregroundDraw != null) {
-                var10000.setCallback((Drawable.Callback)null);
+            if (foregroundDraw != null) {
+                var10000.setCallback((Drawable.Callback) null);
             }
 
             unscheduleDrawable(foregroundDraw);
@@ -344,10 +420,10 @@ public class BetterCardView2 extends BaseGroup {
 
         foregroundDraw = drawable;
         updateForegroundColor();
-        if(drawable != null) {
+        if (drawable != null) {
             setWillNotDraw(false);
-            drawable.setCallback((Drawable.Callback)this);
-            if(drawable.isStateful()) {
+            drawable.setCallback((Drawable.Callback) this);
+            if (drawable.isStateful()) {
                 drawable.setState(getDrawableState());
             }
 
@@ -360,14 +436,14 @@ public class BetterCardView2 extends BaseGroup {
     }
 
     private final void updateForegroundColor() {
-        if(Build.VERSION.SDK_INT >= 21) {
-            RippleDrawable var10000 = (RippleDrawable)foregroundDraw;
-            if((RippleDrawable)foregroundDraw != null) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            RippleDrawable var10000 = (RippleDrawable) foregroundDraw;
+            if ((RippleDrawable) foregroundDraw != null) {
                 var10000.setColor(ColorStateList.valueOf(foregroundColor));
             }
         } else {
             Drawable var1 = foregroundDraw;
-            if(foregroundDraw != null) {
+            if (foregroundDraw != null) {
                 var1.setColorFilter(foregroundColor, PorterDuff.Mode.SRC_ATOP);
             }
         }
@@ -376,9 +452,9 @@ public class BetterCardView2 extends BaseGroup {
 
     public void drawableHotspotChanged(float x, float y) {
         super.drawableHotspotChanged(x, y);
-        if(Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             Drawable var10000 = foregroundDraw;
-            if(foregroundDraw != null) {
+            if (foregroundDraw != null) {
                 Drawable var3 = var10000;
                 var3.setHotspot(x, y);
             }
