@@ -25,7 +25,7 @@ import android.widget.FrameLayout;
  * 2017/12/25 : Create BaseCustomView.java (梁惠涌);
  * -----------------------------------------------------------------
  */
-public abstract class BaseGroup extends ViewGroup {
+public abstract class BaseGroup extends FrameLayout {
 
     public abstract void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs);
 
@@ -55,8 +55,8 @@ public abstract class BaseGroup extends ViewGroup {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mViewWidth = w;
-        mViewHeight = h;
+        mViewWidth = getMeasuredWidth();
+        mViewHeight = getMeasuredHeight();
 
         initAnimator();
     }

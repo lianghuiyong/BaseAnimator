@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import com.better.anime.R;
 import com.better.anime.base.BaseGroup;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * -----------------------------------------------------------------
  * Copyright (C) 2017-2018, by Better, All rights reserved.
@@ -34,13 +36,16 @@ import com.better.anime.base.BaseGroup;
  */
 
 public class BetterCardView extends BaseGroup {
+    private float cornerRadiusTL;
+    private float cornerRadiusTR ;
+    private float cornerRadiusBL;
+    private float cornerRadiusBR;
 
-    private int SIZE_DEFAULT = 0;
-
-    private float cornerRadiusTL = 8;
-    private float cornerRadiusTR = 8;
-    private float cornerRadiusBL = 8;
-    private float cornerRadiusBR = 8;
+    private float shadowMargin;
+    private float shadowMarginTop;
+    private float shadowMarginLeft;
+    private float shadowMarginRight;
+    private float shadowMarginBottom;
 
     public BetterCardView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -51,8 +56,8 @@ public class BetterCardView extends BaseGroup {
     }
 
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        layoutChildren(left, top, right, bottom, false);
     }
 
     private int shadowColor;
@@ -65,50 +70,48 @@ public class BetterCardView extends BaseGroup {
 
     @Override
     public void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs) {
-
-        Log.e("lhy", "initCustomView");
-
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BetterCardView);
 
-        shadowColor = typedArray.getColor(R.styleable.BetterCardView_shadowColor, Color.parseColor("#000000"));
+        shadowColor = typedArray.getColor(R.styleable.BetterCardView_shadowColor, Color.parseColor("#778899"));
         foregroundColor = typedArray.getColor(R.styleable.BetterCardView_foregroundColor, Color.parseColor("#1f000000"));
         backgroundColor = typedArray.getColor(R.styleable.BetterCardView_backgroundColor, Color.WHITE);
-        shadowDx = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_shadowDx, 0);
-        shadowDy = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_shadowDy, 1);
-        shadowRadius = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardElevation, SIZE_DEFAULT);
+        shadowDx = typedArray.getFloat(R.styleable.BetterCardView_shadowDx, 0f);
+        shadowDy = typedArray.getFloat(R.styleable.BetterCardView_shadowDy, 10f);
+        shadowRadius = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardElevation, 0);
 
+        float shadowMargin = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMargin, 0);
+        if (shadowMargin >= 0) {
+            shadowMarginTop = shadowMarginLeft = shadowMarginRight = shadowMarginBottom = shadowMargin;
+        } else {
+            shadowMarginTop = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginTop, 0);
+            shadowMarginLeft = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginLeft, 0);
+            shadowMarginRight = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginRight, 0);
+            shadowMarginBottom = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginBottom, 0);
+        }
 
-        Log.e("lhy", "shadowColor = " + shadowColor);
-        Log.e("lhy", "foregroundColor = " + foregroundColor);
-        Log.e("lhy", "backgroundColor = " + backgroundColor);
-        Log.e("lhy", "shadowDx = " + shadowDx);
-        Log.e("lhy", "shadowDy = " + shadowDy);
-        Log.e("lhy", "shadowRadius = " + shadowRadius);
+        int cornerRadius = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadius, 0);
+        if (cornerRadius >0) {
+            cornerRadiusTL = cornerRadiusTR = cornerRadiusBL = cornerRadiusBR = cornerRadius;
+        } else {
+            cornerRadiusTL = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTL, 0);
+            cornerRadiusTR = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTR, 0);
+            cornerRadiusBL = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBL, 0);
+            cornerRadiusBR = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBR, 0);
+        }
+        typedArray.recycle();
 
         paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(backgroundColor);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.parseColor("#778899"));
         paint.setAntiAlias(true);
-        paint.setShadowLayer(shadowRadius, shadowDx, shadowDy, shadowColor);
-
-        setLayerType(LAYER_TYPE_SOFTWARE, null);
-        setWillNotDraw(false);
+        paint.setShadowLayer(2, 0, 5, Color.parseColor("#778899"));
     }
 
-
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        Log.e("lhy", "onDraw");
-        Log.e("lhy", "mViewWidth = " + mViewWidth);
-        Log.e("lhy", "mViewHeight = " + mViewHeight);
-
-        Path path = roundedRect(0, 0, mViewWidth, mViewHeight
-                , cornerRadiusTL
-                , cornerRadiusTR
-                , cornerRadiusBR
-                , cornerRadiusBL);
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        Path path = roundedRect(shadowMarginLeft, shadowMarginTop, mViewWidth - shadowMarginRight, mViewHeight - shadowMarginBottom
+                , cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
         canvas.drawPath(path, paint);
     }
 
@@ -141,43 +144,100 @@ public class BetterCardView extends BaseGroup {
         boolean shadowMeasureHeightMatchParent = this.getLayoutParams().height == -1;
         int widthSpec = widthMeasureSpec;
         int heightSpec;
-        if(shadowMeasureWidthMatchParent) {
+        if (shadowMeasureWidthMatchParent) {
             heightSpec = this.getMeasuredWidth();
             widthSpec = MeasureSpec.makeMeasureSpec(heightSpec, MeasureSpec.EXACTLY);
         }
 
         heightSpec = heightMeasureSpec;
-        if(shadowMeasureHeightMatchParent) {
+        if (shadowMeasureHeightMatchParent) {
             int childHeightSize = this.getMeasuredHeight();
             heightSpec = MeasureSpec.makeMeasureSpec(childHeightSize, MeasureSpec.EXACTLY);
         }
 
         View child = this.getChildAt(0);
-        if(child != null && child.getVisibility() != View.GONE) {
+        if (child != null && child.getVisibility() != View.GONE) {
             this.measureChildWithMargins(child, widthSpec, 0, heightSpec, 0);
             android.view.ViewGroup.LayoutParams lp = child.getLayoutParams();
-            maxWidth = shadowMeasureWidthMatchParent?Math.max(maxWidth, child.getMeasuredWidth() ):Math.max(maxWidth, child.getMeasuredWidth() );
-            maxHeight = shadowMeasureHeightMatchParent?Math.max(maxHeight, child.getMeasuredHeight() ):Math.max(maxHeight, child.getMeasuredHeight());
+            maxWidth = shadowMeasureWidthMatchParent ? Math.max(maxWidth, child.getMeasuredWidth()) : Math.max(maxWidth, child.getMeasuredWidth());
+            maxHeight = shadowMeasureHeightMatchParent ? Math.max(maxHeight, child.getMeasuredHeight()) : Math.max(maxHeight, child.getMeasuredHeight());
             childState = View.combineMeasuredStates(childState, child.getMeasuredState());
         }
 
-        maxWidth += this.getPaddingLeft() + this.getPaddingRight();
-        maxHeight += this.getPaddingTop() + this.getPaddingBottom();
-        maxHeight = Math.max(maxHeight, this.getSuggestedMinimumHeight());
-        maxWidth = Math.max(maxWidth, this.getSuggestedMinimumWidth());
-/*      Drawable drawable = this.getForeground();
-        if(drawable != null) {
-            maxHeight = Math.max(maxHeight, drawable.getMinimumHeight());
-            maxWidth = Math.max(maxWidth, drawable.getMinimumWidth());
-        }*/
+        maxWidth += getPaddingLeft() + getPaddingRight();
+        maxHeight += getPaddingTop() + getPaddingBottom();
+        maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
+        maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
 
-        this.setMeasuredDimension(View.resolveSizeAndState(maxWidth, shadowMeasureWidthMatchParent?widthMeasureSpec:widthSpec, childState), View.resolveSizeAndState(maxHeight, shadowMeasureHeightMatchParent?heightMeasureSpec:heightSpec, View.MEASURED_HEIGHT_STATE_SHIFT));
+        setMeasuredDimension(View.resolveSizeAndState(maxWidth, shadowMeasureWidthMatchParent ? widthMeasureSpec : widthSpec, childState), View.resolveSizeAndState(maxHeight, shadowMeasureHeightMatchParent ? heightMeasureSpec : heightSpec, View.MEASURED_HEIGHT_STATE_SHIFT));
+    }
+
+    private final void layoutChildren(int left, int top, int right, int bottom, boolean forceLeftGravity) {
+        int count = this.getChildCount();
+        int parentLeft = this.getPaddingBottom();
+        int parentRight = right - left - this.getPaddingBottom();
+        int parentTop = this.getPaddingBottom();
+        int parentBottom = bottom - top - this.getPaddingBottom();
+        int i = 0;
+        int var12 = count - 1;
+        if (i <= var12) {
+            while (true) {
+                View child = this.getChildAt(i);
+                if (child.getVisibility() != GONE) {
+                    MarginLayoutParams layoutParams = (MarginLayoutParams) child.getLayoutParams();
+
+                    int width = child.getMeasuredWidth();
+                    int height = child.getMeasuredHeight();
+                    float childLeft;
+                    int gravity = Gravity.START;
+
+                    int layoutDirection = this.getLayoutDirection();
+                    int absoluteGravity = Gravity.getAbsoluteGravity(gravity, layoutDirection);
+                    int verticalGravity = gravity & 112;
+                    switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+                        case Gravity.CENTER_HORIZONTAL:
+                            childLeft = parentLeft + (parentRight - parentLeft - width) / 2 + layoutParams.leftMargin - layoutParams.rightMargin + this.shadowMarginLeft - this.shadowMarginRight;
+                            break;
+                        case Gravity.LEFT:
+                            childLeft = parentLeft + layoutParams.leftMargin + this.shadowMarginLeft;
+                            break;
+                        case Gravity.RIGHT:
+                            if (!forceLeftGravity) {
+                                childLeft = parentRight - width - layoutParams.rightMargin - this.shadowMarginRight;
+                            }
+                        default:
+                            childLeft = parentLeft + layoutParams.leftMargin + this.shadowMarginLeft;
+                    }
+
+                    float childTop;
+                    switch (verticalGravity) {
+                        case Gravity.CENTER_VERTICAL:
+                            childTop = parentTop + (parentBottom - parentTop - height) / 2 + layoutParams.topMargin - layoutParams.bottomMargin + this.shadowMarginTop - this.shadowMarginBottom;
+                            break;
+                        case Gravity.TOP:
+                            childTop = parentTop + layoutParams.topMargin + this.shadowMarginTop;
+                            break;
+                        case Gravity.BOTTOM:
+                            childTop = parentBottom - height - layoutParams.bottomMargin - this.shadowMarginBottom;
+                            break;
+                        default:
+                            childTop = parentTop + layoutParams.topMargin + this.shadowMarginTop;
+                    }
+
+                    child.layout((int) childLeft, (int) childTop, (int) childLeft + width, (int) childTop + height);
+                }
+
+                if (i == var12) {
+                    break;
+                }
+
+                ++i;
+            }
+        }
+
     }
 
     private Path roundedRect(float left, float top, float right, float bottom, float tl, float tr, float br, float bl) {
-
-        Log.e("lhy", "33333333333333");
-
         Path path = new Path();
         Float width = right - left;
         Float height = bottom - top;
@@ -185,15 +245,6 @@ public class BetterCardView extends BaseGroup {
         if (tr > Math.min(width, height) / 2) tr = Math.min(width, height) / 2;
         if (br > Math.min(width, height) / 2) br = Math.min(width, height) / 2;
         if (bl > Math.min(width, height) / 2) bl = Math.min(width, height) / 2;
-
-        Log.e("lhy", "left = "+left);
-        Log.e("lhy", "top = "+top);
-        Log.e("lhy", "right = "+right);
-        Log.e("lhy", "bottom = "+bottom);
-        Log.e("lhy", "tl = "+tl);
-        Log.e("lhy", "tr = "+tr);
-        Log.e("lhy", "br = "+br);
-        Log.e("lhy", "bl = "+bl);
 
         path.moveTo(right, top + tr);
         if (tr > 0)
@@ -228,7 +279,6 @@ public class BetterCardView extends BaseGroup {
 
         path.rLineTo(0f, -(height - br - tr));
 
-        Log.e("lhy", "22222222");
         path.close();
 
         return path;

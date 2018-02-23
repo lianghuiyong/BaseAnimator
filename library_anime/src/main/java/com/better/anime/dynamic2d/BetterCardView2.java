@@ -1,0 +1,435 @@
+package com.better.anime.dynamic2d;
+
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.better.anime.R;
+import com.better.anime.base.BaseGroup;
+
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * -----------------------------------------------------------------
+ * Copyright (C) 2017-2018, by Better, All rights reserved.
+ * -----------------------------------------------------------------
+ * <p>
+ * File: ShadowLayout.java
+ * Author: Better
+ * Create: 2018/1/19 19:05
+ * <p>
+ * Changes (from 2018/1/19)
+ * -----------------------------------------------------------------
+ * 2018/1/19 : Create ShadowLayout.java (梁惠涌);
+ * -----------------------------------------------------------------
+ */
+
+public class BetterCardView2 extends BaseGroup {
+
+    private int SIZE_UNSET;
+    private int SIZE_DEFAULT;
+
+    private Drawable foregroundDraw;
+    private Rect selfBounds = new Rect();
+    private Rect overlayBounds = new Rect();
+    private int shadowColor;
+    private int foregroundColor;
+    private int backgroundColor;
+    private float shadowRadius;
+    private float shadowDx;
+    private float shadowDy;
+
+    private float cornerRadiusTL;
+    private float cornerRadiusTR;
+    private float cornerRadiusBL;
+    private float cornerRadiusBR;
+
+    private Paint paint;
+
+    private float shadowMarginTop;
+    private float shadowMarginLeft;
+    private float shadowMarginRight;
+    private float shadowMarginBottom;
+
+
+    public final int getShadowColor() {
+        return shadowColor;
+    }
+
+    public final void setShadowColor(int value) {
+        shadowColor = value;
+        updatePaintShadow(shadowRadius, shadowDx, shadowDy, value);
+    }
+
+    public final int getForegroundColor() {
+        return foregroundColor;
+    }
+
+    public final void setForegroundColor(int value) {
+        foregroundColor = value;
+        updateForegroundColor();
+    }
+
+    public final int getBackgroundClr() {
+        return backgroundColor;
+    }
+
+    public final void setBackgroundClr(int value) {
+        backgroundColor = value;
+        paint.setColor(value);
+        invalidate();
+    }
+
+    public final float getShadowRadius() {
+        return shadowRadius;
+    }
+
+    public final void setShadowRadius(float value) {
+        shadowRadius = value;
+        updatePaintShadow(value, shadowDx, shadowDy, shadowColor);
+    }
+
+    public final float getShadowDx() {
+        return shadowDx;
+    }
+
+    public final void setShadowDx(float value) {
+        shadowDx = value;
+        updatePaintShadow(shadowRadius, value, shadowDy, shadowColor);
+    }
+
+    public final float getShadowDy() {
+        return shadowDy;
+    }
+
+    public final void setShadowDy(float value) {
+        shadowDy = value;
+        updatePaintShadow(shadowRadius, shadowDx, value, shadowColor);
+    }
+
+    public final float getCornerRadiusTL() {
+        return cornerRadiusTL;
+    }
+
+    public final void setCornerRadiusTL(float var1) {
+        cornerRadiusTL = var1;
+    }
+
+    public final float getCornerRadiusTR() {
+        return cornerRadiusTR;
+    }
+
+    public final void setCornerRadiusTR(float var1) {
+        cornerRadiusTR = var1;
+    }
+
+    public final float getCornerRadiusBL() {
+        return cornerRadiusBL;
+    }
+
+    public final void setCornerRadiusBL(float var1) {
+        cornerRadiusBL = var1;
+    }
+
+    public final float getCornerRadiusBR() {
+        return cornerRadiusBR;
+    }
+
+    public final void setCornerRadiusBR(float var1) {
+        cornerRadiusBR = var1;
+    }
+
+    public final float getShadowMarginTop() {
+        return shadowMarginTop;
+    }
+
+    public final void setShadowMarginTop(float value) {
+        shadowMarginTop = value;
+        updatePaintShadow();
+    }
+
+    public final float getShadowMarginLeft() {
+        return shadowMarginLeft;
+    }
+
+    public final void setShadowMarginLeft(float value) {
+        shadowMarginLeft = value;
+        updatePaintShadow();
+    }
+
+    public final float getShadowMarginRight() {
+        return shadowMarginRight;
+    }
+
+    public final void setShadowMarginRight(int value) {
+        shadowMarginRight = value;
+        updatePaintShadow();
+    }
+
+    public final float getShadowMarginBottom() {
+        return shadowMarginBottom;
+    }
+
+    public final void setShadowMarginBottom(float value) {
+        shadowMarginBottom = value;
+        updatePaintShadow();
+    }
+
+    private final void updatePaintShadow() {
+        updatePaintShadow(shadowRadius, shadowDx, shadowDy, shadowColor);
+    }
+
+    private final void updatePaintShadow(float radius, float dx, float dy, int color) {
+        paint.setShadowLayer(radius, dx, dy, color);
+        invalidate();
+    }
+
+
+    public BetterCardView2(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public BetterCardView2(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    public void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs) {
+        SIZE_UNSET = -1;
+
+        selfBounds = new Rect();
+        overlayBounds = new Rect();
+        paint = new Paint();
+
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BetterCardView);
+
+
+        setShadowColor(typedArray.getColor(R.styleable.BetterCardView_shadowColor,  Color.parseColor("#778899")));
+        setForegroundColor(typedArray.getColor(R.styleable.BetterCardView_foregroundColor, Color.parseColor("#1f000000")));
+        setBackgroundClr(typedArray.getColor(R.styleable.BetterCardView_backgroundColor, Color.WHITE));
+        setShadowDx(typedArray.getFloat(R.styleable.BetterCardView_shadowDx, 0.0F));
+        setShadowDy(typedArray.getFloat(R.styleable.BetterCardView_shadowDy, 1.0F));
+        setShadowRadius(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardElevation, 0));
+        Drawable drawable = typedArray.getDrawable(R.styleable.BetterCardView_android_foreground);
+        if(drawable != null) {
+            setForeground(drawable);
+        }
+
+        int shadowMargin = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMargin, SIZE_UNSET);
+        if(shadowMargin >= 0) {
+            setShadowMarginTop(shadowMargin);
+            setShadowMarginLeft(shadowMargin);
+            setShadowMarginRight(shadowMargin);
+            setShadowMarginBottom(shadowMargin);
+        } else {
+            setShadowMarginTop(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginTop, SIZE_DEFAULT));
+            setShadowMarginLeft(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginLeft, SIZE_DEFAULT));
+            setShadowMarginRight(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginRight, SIZE_DEFAULT));
+            setShadowMarginBottom(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginBottom, SIZE_DEFAULT));
+        }
+
+        float cornerRadius = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadius, SIZE_UNSET);
+        if(cornerRadius >= (float)0) {
+            cornerRadiusTL = cornerRadius;
+            cornerRadiusTR = cornerRadius;
+            cornerRadiusBL = cornerRadius;
+            cornerRadiusBR = cornerRadius;
+        } else {
+            cornerRadiusTL = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTL, SIZE_DEFAULT);
+            cornerRadiusTR = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTR, SIZE_DEFAULT);
+            cornerRadiusBL = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBL, SIZE_DEFAULT);
+            cornerRadiusBR = (float)typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBR, SIZE_DEFAULT);
+        }
+        typedArray.recycle();
+        
+        paint.setColor(backgroundColor);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+        setLayerType(1, (Paint)null);
+        setWillNotDraw(false);
+        setBackground((Drawable)null);
+    }
+
+    protected void onDraw(@org.jetbrains.annotations.Nullable Canvas canvas) {
+        super.onDraw(canvas);
+        if(canvas != null) {
+            Path path = roundedRect((float)shadowMarginLeft, (float)shadowMarginTop, (float)(getMeasuredWidth() - shadowMarginRight), (float)(getMeasuredHeight() - shadowMarginBottom), cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
+            canvas.drawPath(path, paint);
+        }
+    }
+
+    public void draw(@org.jetbrains.annotations.Nullable Canvas canvas) {
+        super.draw(canvas);
+        if(canvas != null) {
+            canvas.save();
+            Path path = roundedRect((float)shadowMarginLeft, (float)shadowMarginTop, (float)(getMeasuredWidth() - shadowMarginRight), (float)(getMeasuredHeight() - shadowMarginBottom), cornerRadiusTL, cornerRadiusTR, cornerRadiusBR, cornerRadiusBL);
+            canvas.clipPath(path);
+            drawForeground(canvas);
+            canvas.restore();
+        }
+    }
+
+    public final void drawForeground(@org.jetbrains.annotations.Nullable Canvas canvas) {
+        Drawable var10000 = foregroundDraw;
+        if(foregroundDraw != null) {
+            Drawable var2 = var10000;
+            int w = getRight() - getLeft();
+            int h = getBottom() - getTop();
+            selfBounds.set(getPaddingLeft(), getPaddingTop(), w - getPaddingRight(), h - getPaddingBottom());
+            Gravity.apply(119, var2.getIntrinsicWidth(), var2.getIntrinsicHeight(), selfBounds, overlayBounds);
+            var2.setBounds(overlayBounds);
+            var2.draw(canvas);
+        }
+
+    }
+
+    @org.jetbrains.annotations.Nullable
+    public Drawable getForeground() {
+        return foregroundDraw;
+    }
+
+    protected boolean verifyDrawable(@NotNull Drawable who) {
+        return super.verifyDrawable(who) || who == foregroundDraw;
+    }
+
+    public void jumpDrawablesToCurrentState() {
+        super.jumpDrawablesToCurrentState();
+        Drawable var10000 = foregroundDraw;
+        if(foregroundDraw != null) {
+            Drawable var1 = var10000;
+            var1.jumpToCurrentState();
+        }
+
+    }
+
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+        Drawable var10000 = foregroundDraw;
+        if(foregroundDraw != null) {
+            Drawable var1 = var10000;
+            var10000 = var1.isStateful()?var1:null;
+            if(var10000 != null) {
+                var1 = var10000;
+                var1.setState(getDrawableState());
+            }
+        }
+
+    }
+
+    public void setForeground(@Nullable Drawable drawable) {
+        if(foregroundDraw != null) {
+            Drawable var10000 = foregroundDraw;
+            if(foregroundDraw != null) {
+                var10000.setCallback((Drawable.Callback)null);
+            }
+
+            unscheduleDrawable(foregroundDraw);
+        }
+
+        foregroundDraw = drawable;
+        updateForegroundColor();
+        if(drawable != null) {
+            setWillNotDraw(false);
+            drawable.setCallback((Drawable.Callback)this);
+            if(drawable.isStateful()) {
+                drawable.setState(getDrawableState());
+            }
+
+            Rect padding = new Rect();
+            drawable.getPadding(padding);
+        }
+
+        requestLayout();
+        invalidate();
+    }
+
+    private final void updateForegroundColor() {
+        if(Build.VERSION.SDK_INT >= 21) {
+            RippleDrawable var10000 = (RippleDrawable)foregroundDraw;
+            if((RippleDrawable)foregroundDraw != null) {
+                var10000.setColor(ColorStateList.valueOf(foregroundColor));
+            }
+        } else {
+            Drawable var1 = foregroundDraw;
+            if(foregroundDraw != null) {
+                var1.setColorFilter(foregroundColor, PorterDuff.Mode.SRC_ATOP);
+            }
+        }
+
+    }
+
+    public void drawableHotspotChanged(float x, float y) {
+        super.drawableHotspotChanged(x, y);
+        if(Build.VERSION.SDK_INT >= 21) {
+            Drawable var10000 = foregroundDraw;
+            if(foregroundDraw != null) {
+                Drawable var3 = var10000;
+                var3.setHotspot(x, y);
+            }
+        }
+
+    }
+
+    private Path roundedRect(float left, float top, float right, float bottom, float tl, float tr, float br, float bl) {
+        Path path = new Path();
+        Float width = right - left;
+        Float height = bottom - top;
+        if (tl > Math.min(width, height) / 2) tl = Math.min(width, height) / 2;
+        if (tr > Math.min(width, height) / 2) tr = Math.min(width, height) / 2;
+        if (br > Math.min(width, height) / 2) br = Math.min(width, height) / 2;
+        if (bl > Math.min(width, height) / 2) bl = Math.min(width, height) / 2;
+
+        path.moveTo(right, top + tr);
+        if (tr > 0)
+            path.rQuadTo(0f, -tr, -tr, -tr);
+        else {
+            path.rLineTo(0f, -tr);
+            path.rLineTo(-tr, 0f);
+        }
+        path.rLineTo(-(width - tr - tl), 0f);
+        if (tl > 0)
+            path.rQuadTo(-tl, 0f, -tl, tl);
+        else {
+            path.rLineTo(-tl, 0f);
+            path.rLineTo(0f, tl);
+        }
+        path.rLineTo(0f, height - tl - bl);
+
+        if (bl > 0)
+            path.rQuadTo(0f, bl, bl, bl);
+        else {
+            path.rLineTo(0f, bl);
+            path.rLineTo(bl, 0f);
+        }
+
+        path.rLineTo(width - bl - br, 0f);
+        if (br > 0)
+            path.rQuadTo(br, 0f, br, -br);
+        else {
+            path.rLineTo(br, 0f);
+            path.rLineTo(0f, -br);
+        }
+
+        path.rLineTo(0f, -(height - br - tr));
+
+        path.close();
+
+        return path;
+    }
+}
