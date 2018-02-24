@@ -12,11 +12,13 @@ import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -24,6 +26,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.better.anime.R;
+import com.better.anime.asomeview.DrawableWrapper;
+import com.better.anime.asomeview.ShadowDrawableWrapper;
 import com.better.anime.base.BaseGroup;
 
 /**
@@ -174,13 +178,7 @@ public class BetterCardView extends BaseGroup {
         super(context, attrs, defStyleAttr);
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
 
-    }
-
-    /*
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int maxHeight = 0;
         int maxWidth = 0;
@@ -249,7 +247,7 @@ public class BetterCardView extends BaseGroup {
             }
         }
     }
-*/
+
 
 
     @Override
@@ -295,21 +293,48 @@ public class BetterCardView extends BaseGroup {
         paint.setStyle(Paint.Style.FILL);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
         setWillNotDraw(false);
-        setBackground(null);
+        //setBackground(null);
+    }
 
-        int xPadding = (int) (getShadowRadius() + Math.abs(getShadowDx()));
-        int yPadding = (int) (getShadowRadius() + Math.abs(getShadowDy()));
-        setPadding(xPadding, yPadding, xPadding, yPadding);
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        setBackgroundCompat(mViewWidth, mViewHeight);
     }
 
     //绘制主体
     protected void onDraw(@Nullable Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.save();
+/*        canvas.save();
         Path path = getRoundedPath();
         canvas.drawPath(path, paint);
-        canvas.restore();
+        canvas.restore();*/
+    }
+
+    private void setBackgroundCompat(int w, int h) {
+        // setBackground(drawable);
+        ShadowDrawableWrapper drawable = new ShadowDrawableWrapper(new BitmapDrawable(getResources(), createWaveCanvas()), getShadowRadius(), 20, 20);
+        setBackground(drawable);
+    }
+
+    private Bitmap createWaveCanvas() {
+        Bitmap bitmap = Bitmap.createBitmap(
+                (int) (mViewWidth - getShadowMarginLeft() - getShadowMarginRight()),
+                (int) (mViewHeight - getShadowMarginTop() - getShadowMarginBottom()),
+                Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
+
+        Canvas canvas = new Canvas(bitmap);
+        Path path = getRoundedPath();
+
+        paint.reset();
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawPath(path, paint);
+
+        return bitmap;
     }
 
     //绘制子View
@@ -320,7 +345,7 @@ public class BetterCardView extends BaseGroup {
         super.dispatchDraw(canvas);
     }
 
-    public void draw(@Nullable Canvas canvas) {
+/*    public void draw(@Nullable Canvas canvas) {
 
         super.draw(canvas);
 
@@ -329,7 +354,7 @@ public class BetterCardView extends BaseGroup {
         canvas.clipPath(path);
         drawForeground(canvas);
         canvas.restore();
-    }
+    }*/
 
     public final void drawForeground(@org.jetbrains.annotations.Nullable Canvas canvas) {
         Drawable var10000 = foregroundDraw;

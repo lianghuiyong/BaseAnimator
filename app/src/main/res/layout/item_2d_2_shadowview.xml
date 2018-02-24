@@ -22,7 +22,7 @@
         android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="2dp"
         app:cardElevation="2dp"
-        app:cardShadowMargin="10dp">
+        android:padding="@dimen/b_dp15">
 
         <TextView
             android:layout_width="match_parent"
