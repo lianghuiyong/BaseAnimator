@@ -5,10 +5,12 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
@@ -198,6 +200,10 @@ public class BetterCardView2 extends BaseGroup {
     }
 
     private final void updatePaintShadow(float radius, float dx, float dy, int color) {
+
+/*        paint.setShader(new LinearGradient(0, innerBounds.top, 0, outerBounds.top,
+                new int[]{Color.parseColor("#44000000"), Color.parseColor("#14000000"), Color.parseColor("#00000000")},
+                new float[]{0f, .5f, 1f}, Shader.TileMode.CLAMP));*/
         paint.setShadowLayer(radius, dx, dy, color);
         invalidate();
     }
@@ -339,17 +345,21 @@ public class BetterCardView2 extends BaseGroup {
         paint.setStyle(Paint.Style.FILL);
         setLayerType(1, (Paint) null);
         setWillNotDraw(false);
-        setBackground((Drawable) null);
+        setBackground(null);
     }
 
     protected void onDraw(@org.jetbrains.annotations.Nullable Canvas canvas) {
         super.onDraw(canvas);
         if (canvas != null) {
             Path path = getRoundedPath();
+
+
+
             canvas.drawPath(path, paint);
         }
     }
 
+    //限制子布局视图
     @Override
     protected void dispatchDraw(Canvas canvas) {
         Path path = getRoundedPath();
@@ -357,6 +367,7 @@ public class BetterCardView2 extends BaseGroup {
         super.dispatchDraw(canvas);
     }
 
+    //按下的水波样式
     public void draw(@org.jetbrains.annotations.Nullable Canvas canvas) {
         super.draw(canvas);
         if (canvas != null) {
