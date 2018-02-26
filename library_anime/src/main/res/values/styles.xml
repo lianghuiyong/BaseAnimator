@@ -41,6 +41,10 @@
         <attr name="cardElevation" format="dimension"/>\
 
         <attr name="cardCornerRadius" format="dimension"/>
+        <attr name="cardCornerRadiusTL" format="dimension"/>
+        <attr name="cardCornerRadiusTR" format="dimension"/>
+        <attr name="cardCornerRadiusBL" format="dimension"/>
+        <attr name="cardCornerRadiusBR" format="dimension"/>
 
         <attr name="cardShadowMargin" format="dimension"/>
         <attr name="cardShadowMarginTop" format="dimension"/>
