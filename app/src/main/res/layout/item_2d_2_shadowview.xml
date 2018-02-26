@@ -12,10 +12,8 @@
     app:cardElevation="@dimen/b_dp4">
 
     <com.better.anime.dynamic2d.BetterCardView
-        android:id="@+id/shadow_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
         android:layout_margin="12dp"
         android:clickable="true"
         android:focusable="true"
