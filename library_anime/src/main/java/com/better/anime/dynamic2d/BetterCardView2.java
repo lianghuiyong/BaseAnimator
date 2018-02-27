@@ -49,6 +49,13 @@ public class BetterCardView2 extends BaseGroup {
     private int SIZE_UNSET;
     private int SIZE_DEFAULT;
 
+    static final float SHADOW_MULTIPLIER = 1.5f;
+
+    static final float SHADOW_TOP_SCALE = 0.25f;
+    static final float SHADOW_HORIZ_SCALE = 0.5f;
+    static final float SHADOW_BOTTOM_SCALE = 1f;
+
+
     private Drawable foregroundDraw;
     private Rect selfBounds = new Rect();
     private Rect overlayBounds = new Rect();
@@ -344,20 +351,95 @@ public class BetterCardView2 extends BaseGroup {
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         setLayerType(1, (Paint) null);
-        setWillNotDraw(false);
+       // setWillNotDraw(false);
         setBackground(null);
     }
 
     protected void onDraw(@org.jetbrains.annotations.Nullable Canvas canvas) {
-        super.onDraw(canvas);
         if (canvas != null) {
             Path path = getRoundedPath();
 
 
-
             canvas.drawPath(path, paint);
         }
+
+        //drawShadow(canvas);
+        super.onDraw(canvas);
     }
+
+/*    private void drawShadow(Canvas canvas) {
+        final int rotateSaved = canvas.save();
+        canvas.rotate(mRotation, mContentBounds.centerX(), mContentBounds.centerY());
+
+        final float edgeShadowTop = -mCornerRadius - mShadowSize;
+        final float shadowOffset = mCornerRadius;
+        final boolean drawHorizontalEdges = mContentBounds.width() - 2 * shadowOffset > 0;
+        final boolean drawVerticalEdges = mContentBounds.height() - 2 * shadowOffset > 0;
+
+        final float shadowOffsetTop = mRawShadowSize - (mRawShadowSize * SHADOW_TOP_SCALE);
+        final float shadowOffsetHorizontal = mRawShadowSize - (mRawShadowSize * SHADOW_HORIZ_SCALE);
+        final float shadowOffsetBottom = mRawShadowSize - (mRawShadowSize * SHADOW_BOTTOM_SCALE);
+
+        final float shadowScaleHorizontal = shadowOffset / (shadowOffset + shadowOffsetHorizontal);
+        final float shadowScaleTop = shadowOffset / (shadowOffset + shadowOffsetTop);
+        final float shadowScaleBottom = shadowOffset / (shadowOffset + shadowOffsetBottom);
+
+        // LT
+        int saved = canvas.save();
+        canvas.translate(mContentBounds.left + shadowOffset, mContentBounds.top + shadowOffset);
+        canvas.scale(shadowScaleHorizontal, shadowScaleTop);
+        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+        if (drawHorizontalEdges) {
+            // TE
+            canvas.scale(1f / shadowScaleHorizontal, 1f);
+            canvas.drawRect(0, edgeShadowTop,
+                    mContentBounds.width() - 2 * shadowOffset, -mCornerRadius,
+                    mEdgeShadowPaint);
+        }
+        canvas.restoreToCount(saved);
+        // RB
+        saved = canvas.save();
+        canvas.translate(mContentBounds.right - shadowOffset, mContentBounds.bottom - shadowOffset);
+        canvas.scale(shadowScaleHorizontal, shadowScaleBottom);
+        canvas.rotate(180f);
+        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+        if (drawHorizontalEdges) {
+            // BE
+            canvas.scale(1f / shadowScaleHorizontal, 1f);
+            canvas.drawRect(0, edgeShadowTop,
+                    mContentBounds.width() - 2 * shadowOffset, -mCornerRadius + mShadowSize,
+                    mEdgeShadowPaint);
+        }
+        canvas.restoreToCount(saved);
+        // LB
+        saved = canvas.save();
+        canvas.translate(mContentBounds.left + shadowOffset, mContentBounds.bottom - shadowOffset);
+        canvas.scale(shadowScaleHorizontal, shadowScaleBottom);
+        canvas.rotate(270f);
+        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+        if (drawVerticalEdges) {
+            // LE
+            canvas.scale(1f / shadowScaleBottom, 1f);
+            canvas.drawRect(0, edgeShadowTop,
+                    mContentBounds.height() - 2 * shadowOffset, -mCornerRadius, mEdgeShadowPaint);
+        }
+        canvas.restoreToCount(saved);
+        // RT
+        saved = canvas.save();
+        canvas.translate(mContentBounds.right - shadowOffset, mContentBounds.top + shadowOffset);
+        canvas.scale(shadowScaleHorizontal, shadowScaleTop);
+        canvas.rotate(90f);
+        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+        if (drawVerticalEdges) {
+            // RE
+            canvas.scale(1f / shadowScaleTop, 1f);
+            canvas.drawRect(0, edgeShadowTop,
+                    mContentBounds.height() - 2 * shadowOffset, -mCornerRadius, mEdgeShadowPaint);
+        }
+        canvas.restoreToCount(saved);
+
+        canvas.restoreToCount(rotateSaved);
+    }*/
 
     //限制子布局视图
     @Override
@@ -368,7 +450,7 @@ public class BetterCardView2 extends BaseGroup {
     }
 
     //按下的水波样式
-    public void draw(@org.jetbrains.annotations.Nullable Canvas canvas) {
+    public void draw(@Nullable Canvas canvas) {
         super.draw(canvas);
         if (canvas != null) {
             canvas.save();
@@ -379,7 +461,7 @@ public class BetterCardView2 extends BaseGroup {
         }
     }
 
-    public final void drawForeground(@org.jetbrains.annotations.Nullable Canvas canvas) {
+    public final void drawForeground(@Nullable Canvas canvas) {
         Drawable var10000 = foregroundDraw;
         if (foregroundDraw != null) {
             Drawable var2 = var10000;

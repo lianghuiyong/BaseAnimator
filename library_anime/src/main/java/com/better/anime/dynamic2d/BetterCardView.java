@@ -3,28 +3,31 @@ package com.better.anime.dynamic2d;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.better.anime.R;
-import com.better.anime.asomeview.ShadowDrawableWrapper;
 import com.better.anime.base.BaseGroup;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * -----------------------------------------------------------------
@@ -46,6 +49,13 @@ public class BetterCardView extends BaseGroup {
     private int SIZE_UNSET;
     private int SIZE_DEFAULT;
 
+    static final float SHADOW_MULTIPLIER = 1.5f;
+
+    static final float SHADOW_TOP_SCALE = 0.25f;
+    static final float SHADOW_HORIZ_SCALE = 0.5f;
+    static final float SHADOW_BOTTOM_SCALE = 1f;
+
+
     private Drawable foregroundDraw;
     private Rect selfBounds = new Rect();
     private Rect overlayBounds = new Rect();
@@ -56,7 +66,10 @@ public class BetterCardView extends BaseGroup {
     private float shadowDx;
     private float shadowDy;
 
-    private float cornerRadius;
+    private float cornerRadiusTL;
+    private float cornerRadiusTR;
+    private float cornerRadiusBL;
+    private float cornerRadiusBR;
 
     private Paint paint;
 
@@ -64,6 +77,7 @@ public class BetterCardView extends BaseGroup {
     private float shadowMarginLeft;
     private float shadowMarginRight;
     private float shadowMarginBottom;
+
 
     public final int getShadowColor() {
         return shadowColor;
@@ -120,6 +134,38 @@ public class BetterCardView extends BaseGroup {
         updatePaintShadow(shadowRadius, shadowDx, value, shadowColor);
     }
 
+    public final float getCornerRadiusTL() {
+        return cornerRadiusTL;
+    }
+
+    public final void setCornerRadiusTL(float var1) {
+        cornerRadiusTL = var1;
+    }
+
+    public final float getCornerRadiusTR() {
+        return cornerRadiusTR;
+    }
+
+    public final void setCornerRadiusTR(float var1) {
+        cornerRadiusTR = var1;
+    }
+
+    public final float getCornerRadiusBL() {
+        return cornerRadiusBL;
+    }
+
+    public final void setCornerRadiusBL(float var1) {
+        cornerRadiusBL = var1;
+    }
+
+    public final float getCornerRadiusBR() {
+        return cornerRadiusBR;
+    }
+
+    public final void setCornerRadiusBR(float var1) {
+        cornerRadiusBR = var1;
+    }
+
     public final float getShadowMarginTop() {
         return shadowMarginTop;
     }
@@ -161,6 +207,10 @@ public class BetterCardView extends BaseGroup {
     }
 
     private final void updatePaintShadow(float radius, float dx, float dy, int color) {
+
+/*        paint.setShader(new LinearGradient(0, innerBounds.top, 0, outerBounds.top,
+                new int[]{Color.parseColor("#44000000"), Color.parseColor("#14000000"), Color.parseColor("#00000000")},
+                new float[]{0f, .5f, 1f}, Shader.TileMode.CLAMP));*/
         paint.setShadowLayer(radius, dx, dy, color);
         invalidate();
     }
@@ -173,7 +223,6 @@ public class BetterCardView extends BaseGroup {
     public BetterCardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int maxHeight = 0;
@@ -198,7 +247,7 @@ public class BetterCardView extends BaseGroup {
         View child = this.getChildAt(0);
         if (child != null && child.getVisibility() != View.GONE) {
             this.measureChildWithMargins(child, widthSpec, 0, heightSpec, 0);
-            MarginLayoutParams var10000 = (MarginLayoutParams) child.getLayoutParams();
+            ViewGroup.MarginLayoutParams var10000 = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
             if (var10000 == null) {
                 return;
             }
@@ -223,6 +272,10 @@ public class BetterCardView extends BaseGroup {
     }
 
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        layoutChildren();
+    }
+
+    private void layoutChildren() {
         for (int i = 0; i < getChildCount(); ++i) {
             View child = getChildAt(i);
             if (child != null && child.getVisibility() != View.GONE) {
@@ -245,7 +298,6 @@ public class BetterCardView extends BaseGroup {
     }
 
 
-
     @Override
     public void initCustomView(@NonNull Context context, @NonNull AttributeSet attrs) {
         SIZE_UNSET = -1;
@@ -255,6 +307,7 @@ public class BetterCardView extends BaseGroup {
         paint = new Paint();
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BetterCardView);
+
 
         setShadowColor(typedArray.getColor(R.styleable.BetterCardView_shadowColor, Color.parseColor("#778899")));
         setForegroundColor(typedArray.getColor(R.styleable.BetterCardView_foregroundColor, Color.parseColor("#1f000000")));
@@ -280,60 +333,38 @@ public class BetterCardView extends BaseGroup {
             setShadowMarginBottom(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginBottom, SIZE_DEFAULT));
         }
 
-        cornerRadius = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadius, SIZE_UNSET);
-
+        float cornerRadius = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadius, SIZE_UNSET);
+        if (cornerRadius >= (float) 0) {
+            cornerRadiusTL = cornerRadius;
+            cornerRadiusTR = cornerRadius;
+            cornerRadiusBL = cornerRadius;
+            cornerRadiusBR = cornerRadius;
+        } else {
+            cornerRadiusTL = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTL, SIZE_DEFAULT);
+            cornerRadiusTR = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTR, SIZE_DEFAULT);
+            cornerRadiusBL = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBL, SIZE_DEFAULT);
+            cornerRadiusBR = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBR, SIZE_DEFAULT);
+        }
         typedArray.recycle();
 
         paint.setColor(backgroundColor);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
-        setLayerType(LAYER_TYPE_SOFTWARE, null);
-        setWillNotDraw(false);
+        setLayerType(1, (Paint) null);
+        // setWillNotDraw(false);
         setBackground(null);
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        setBackgroundCompat(mViewWidth, mViewHeight);
-    }
-
-    //绘制主体
-    protected void onDraw(@Nullable Canvas canvas) {
+    protected void onDraw(@org.jetbrains.annotations.Nullable Canvas canvas) {
+        if (canvas != null) {
+            Path path = getRoundedPath();
+            canvas.drawPath(path, paint);
+        }
         super.onDraw(canvas);
-
-/*        canvas.save();
-        Path path = getRoundedPath();
-        canvas.drawPath(path, paint);
-        canvas.restore();*/
     }
 
-    private void setBackgroundCompat(int w, int h) {
-        // setBackground(drawable);
-        ShadowDrawableWrapper drawable = new ShadowDrawableWrapper(new BitmapDrawable(getResources(), createWaveCanvas()), getShadowRadius(), 20, 20);
-        setBackground(drawable);
-    }
 
-    private Bitmap createWaveCanvas() {
-        Bitmap bitmap = Bitmap.createBitmap(
-                (int) (mViewWidth - getShadowMarginLeft() - getShadowMarginRight()),
-                (int) (mViewHeight - getShadowMarginTop() - getShadowMarginBottom()),
-                Bitmap.Config.ARGB_8888);
-        bitmap.eraseColor(Color.TRANSPARENT);//把bitmap填充成透明色
-
-        Canvas canvas = new Canvas(bitmap);
-        Path path = getRoundedPath();
-
-        paint.reset();
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawPath(path, paint);
-
-        return bitmap;
-    }
-
-    //绘制子View
+    //限制子布局视图
     @Override
     protected void dispatchDraw(Canvas canvas) {
         Path path = getRoundedPath();
@@ -341,18 +372,19 @@ public class BetterCardView extends BaseGroup {
         super.dispatchDraw(canvas);
     }
 
-/*    public void draw(@Nullable Canvas canvas) {
-
+    //按下的水波样式
+    public void draw(@Nullable Canvas canvas) {
         super.draw(canvas);
+        if (canvas != null) {
+            canvas.save();
+            Path path = getRoundedPath();
+            canvas.clipPath(path);
+            drawForeground(canvas);
+            canvas.restore();
+        }
+    }
 
-        canvas.save();
-        Path path = getRoundedPath();
-        canvas.clipPath(path);
-        drawForeground(canvas);
-        canvas.restore();
-    }*/
-
-    public final void drawForeground(@org.jetbrains.annotations.Nullable Canvas canvas) {
+    public final void drawForeground(@Nullable Canvas canvas) {
         Drawable var10000 = foregroundDraw;
         if (foregroundDraw != null) {
             Drawable var2 = var10000;
@@ -366,12 +398,12 @@ public class BetterCardView extends BaseGroup {
 
     }
 
-    @Nullable
+    @org.jetbrains.annotations.Nullable
     public Drawable getForeground() {
         return foregroundDraw;
     }
 
-    protected boolean verifyDrawable(@NonNull Drawable who) {
+    protected boolean verifyDrawable(@NotNull Drawable who) {
         return super.verifyDrawable(who) || who == foregroundDraw;
     }
 
@@ -444,10 +476,13 @@ public class BetterCardView extends BaseGroup {
     public void drawableHotspotChanged(float x, float y) {
         super.drawableHotspotChanged(x, y);
         if (Build.VERSION.SDK_INT >= 21) {
+            Drawable var10000 = foregroundDraw;
             if (foregroundDraw != null) {
-                foregroundDraw.setHotspot(x, y);
+                Drawable var3 = var10000;
+                var3.setHotspot(x, y);
             }
         }
+
     }
 
     private Path getRoundedPath() {
@@ -456,10 +491,10 @@ public class BetterCardView extends BaseGroup {
         float top = shadowMarginTop;
         float right = getMeasuredWidth() - shadowMarginRight;
         float bottom = getMeasuredHeight() - shadowMarginBottom;
-        float tl = cornerRadius;
-        float tr = cornerRadius;
-        float br = cornerRadius;
-        float bl = cornerRadius;
+        float tl = cornerRadiusTL;
+        float tr = cornerRadiusTR;
+        float br = cornerRadiusBR;
+        float bl = cornerRadiusBL;
 
         Path path = new Path();
         Float width = right - left;
