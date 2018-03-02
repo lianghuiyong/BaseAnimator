@@ -88,7 +88,7 @@ public class InterpolatorFragment extends BaseFragment {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                  ListInfoBean infoBean = (ListInfoBean) adapter.getData().get(position);
+                ListInfoBean infoBean = (ListInfoBean) adapter.getData().get(position);
                 coordinate.setTitle(infoBean.getTitle());
                 switch (position) {
                     case 0:

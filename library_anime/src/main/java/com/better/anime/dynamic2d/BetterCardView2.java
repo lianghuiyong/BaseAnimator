@@ -9,7 +9,9 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
+import android.graphics.RadialGradient;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -47,14 +49,6 @@ import org.jetbrains.annotations.NotNull;
 public class BetterCardView2 extends BaseGroup {
 
     private int SIZE_UNSET;
-    private int SIZE_DEFAULT;
-
-    static final float SHADOW_MULTIPLIER = 1.5f;
-
-    static final float SHADOW_TOP_SCALE = 0.25f;
-    static final float SHADOW_HORIZ_SCALE = 0.5f;
-    static final float SHADOW_BOTTOM_SCALE = 1f;
-
 
     private Drawable foregroundDraw;
     private Rect selfBounds = new Rect();
@@ -77,6 +71,8 @@ public class BetterCardView2 extends BaseGroup {
     private float shadowMarginLeft;
     private float shadowMarginRight;
     private float shadowMarginBottom;
+
+    private Paint mCornerShadowPaint;
 
 
     public final int getShadowColor() {
@@ -188,7 +184,7 @@ public class BetterCardView2 extends BaseGroup {
         return shadowMarginRight;
     }
 
-    public final void setShadowMarginRight(int value) {
+    public final void setShadowMarginRight(float value) {
         shadowMarginRight = value;
         updatePaintShadow();
     }
@@ -322,124 +318,101 @@ public class BetterCardView2 extends BaseGroup {
 
         int shadowMargin = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMargin, SIZE_UNSET);
         if (shadowMargin >= 0) {
-            setShadowMarginTop(shadowMargin);
-            setShadowMarginLeft(shadowMargin);
-            setShadowMarginRight(shadowMargin);
+            setShadowMarginTop(shadowMargin * 0.25f);
+            setShadowMarginLeft(shadowMargin * 0.5f);
+            setShadowMarginRight(shadowMargin * 0.5f);
             setShadowMarginBottom(shadowMargin);
-        } else {
-            setShadowMarginTop(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginTop, SIZE_DEFAULT));
-            setShadowMarginLeft(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginLeft, SIZE_DEFAULT));
-            setShadowMarginRight(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginRight, SIZE_DEFAULT));
-            setShadowMarginBottom(typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardShadowMarginBottom, SIZE_DEFAULT));
         }
 
         float cornerRadius = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadius, SIZE_UNSET);
-        if (cornerRadius >= (float) 0) {
+        if (cornerRadius >= 0) {
             cornerRadiusTL = cornerRadius;
             cornerRadiusTR = cornerRadius;
             cornerRadiusBL = cornerRadius;
             cornerRadiusBR = cornerRadius;
         } else {
-            cornerRadiusTL = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTL, SIZE_DEFAULT);
-            cornerRadiusTR = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTR, SIZE_DEFAULT);
-            cornerRadiusBL = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBL, SIZE_DEFAULT);
-            cornerRadiusBR = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBR, SIZE_DEFAULT);
+            cornerRadiusTL = typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTL, 0);
+            cornerRadiusTR = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusTR, 0);
+            cornerRadiusBL = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBL, 0);
+            cornerRadiusBR = (float) typedArray.getDimensionPixelSize(R.styleable.BetterCardView_cardCornerRadiusBR, 0);
         }
         typedArray.recycle();
 
         paint.setColor(backgroundColor);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
-        setLayerType(1, (Paint) null);
-       // setWillNotDraw(false);
+
+        mCornerShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+        mCornerShadowPaint.setStyle(Paint.Style.FILL);
+
         setBackground(null);
     }
 
-    protected void onDraw(@org.jetbrains.annotations.Nullable Canvas canvas) {
-        if (canvas != null) {
+    protected void onDraw(@Nullable Canvas canvas) {
+/*        if (canvas != null) {
             Path path = getRoundedPath();
 
 
             canvas.drawPath(path, paint);
-        }
+        }*/
 
-        //drawShadow(canvas);
+
+        drawShadow(canvas);
         super.onDraw(canvas);
     }
 
-/*    private void drawShadow(Canvas canvas) {
+    private void drawShadow(Canvas canvas) {
+
+        //canvas.drawPath(getRoundedPath(), mCornerShadowPaint);
+
         final int rotateSaved = canvas.save();
-        canvas.rotate(mRotation, mContentBounds.centerX(), mContentBounds.centerY());
 
-        final float edgeShadowTop = -mCornerRadius - mShadowSize;
-        final float shadowOffset = mCornerRadius;
-        final boolean drawHorizontalEdges = mContentBounds.width() - 2 * shadowOffset > 0;
-        final boolean drawVerticalEdges = mContentBounds.height() - 2 * shadowOffset > 0;
 
-        final float shadowOffsetTop = mRawShadowSize - (mRawShadowSize * SHADOW_TOP_SCALE);
-        final float shadowOffsetHorizontal = mRawShadowSize - (mRawShadowSize * SHADOW_HORIZ_SCALE);
-        final float shadowOffsetBottom = mRawShadowSize - (mRawShadowSize * SHADOW_BOTTOM_SCALE);
+        mCornerShadowPaint.setShader(new LinearGradient(
+                0, 0, 0, shadowMarginBottom / 2,
+                new int[]{Color.parseColor("#00000000"), Color.parseColor("#14000000"), Color.parseColor("#44000000")},
+                new float[]{0f, 0.5f, 1f},
+                Shader.TileMode.CLAMP));
 
-        final float shadowScaleHorizontal = shadowOffset / (shadowOffset + shadowOffsetHorizontal);
-        final float shadowScaleTop = shadowOffset / (shadowOffset + shadowOffsetTop);
-        final float shadowScaleBottom = shadowOffset / (shadowOffset + shadowOffsetBottom);
-
-        // LT
+        // line_shadow_top
         int saved = canvas.save();
-        canvas.translate(mContentBounds.left + shadowOffset, mContentBounds.top + shadowOffset);
-        canvas.scale(shadowScaleHorizontal, shadowScaleTop);
-        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
-        if (drawHorizontalEdges) {
-            // TE
-            canvas.scale(1f / shadowScaleHorizontal, 1f);
-            canvas.drawRect(0, edgeShadowTop,
-                    mContentBounds.width() - 2 * shadowOffset, -mCornerRadius,
-                    mEdgeShadowPaint);
-        }
+        canvas.drawRect(shadowMarginLeft + cornerRadiusTL, 0, mViewWidth - shadowMarginRight - cornerRadiusTR, shadowMarginTop + 1, mCornerShadowPaint);
         canvas.restoreToCount(saved);
-        // RB
+
+        // line_shadow_right
         saved = canvas.save();
-        canvas.translate(mContentBounds.right - shadowOffset, mContentBounds.bottom - shadowOffset);
-        canvas.scale(shadowScaleHorizontal, shadowScaleBottom);
-        canvas.rotate(180f);
-        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
-        if (drawHorizontalEdges) {
-            // BE
-            canvas.scale(1f / shadowScaleHorizontal, 1f);
-            canvas.drawRect(0, edgeShadowTop,
-                    mContentBounds.width() - 2 * shadowOffset, -mCornerRadius + mShadowSize,
-                    mEdgeShadowPaint);
-        }
-        canvas.restoreToCount(saved);
-        // LB
-        saved = canvas.save();
-        canvas.translate(mContentBounds.left + shadowOffset, mContentBounds.bottom - shadowOffset);
-        canvas.scale(shadowScaleHorizontal, shadowScaleBottom);
-        canvas.rotate(270f);
-        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
-        if (drawVerticalEdges) {
-            // LE
-            canvas.scale(1f / shadowScaleBottom, 1f);
-            canvas.drawRect(0, edgeShadowTop,
-                    mContentBounds.height() - 2 * shadowOffset, -mCornerRadius, mEdgeShadowPaint);
-        }
-        canvas.restoreToCount(saved);
-        // RT
-        saved = canvas.save();
-        canvas.translate(mContentBounds.right - shadowOffset, mContentBounds.top + shadowOffset);
-        canvas.scale(shadowScaleHorizontal, shadowScaleTop);
         canvas.rotate(90f);
-        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
-        if (drawVerticalEdges) {
-            // RE
-            canvas.scale(1f / shadowScaleTop, 1f);
-            canvas.drawRect(0, edgeShadowTop,
-                    mContentBounds.height() - 2 * shadowOffset, -mCornerRadius, mEdgeShadowPaint);
-        }
+        canvas.translate(0, -mViewWidth);
+        canvas.drawRect(shadowMarginTop + cornerRadiusTL, 0, mViewHeight - shadowMarginBottom - cornerRadiusBL, shadowMarginRight, mCornerShadowPaint);
         canvas.restoreToCount(saved);
+
+        // line_shadow_left
+        saved = canvas.save();
+        canvas.rotate(-90f);
+        canvas.translate(-mViewHeight, 0);
+        canvas.drawRect(shadowMarginBottom + cornerRadiusBL, 0, mViewHeight - shadowMarginTop - cornerRadiusTL, shadowMarginLeft, mCornerShadowPaint);
+        canvas.restoreToCount(saved);
+
+        // line_shadow_bottom
+        saved = canvas.save();
+        canvas.rotate(180f);
+        canvas.translate(-mViewWidth, -mViewHeight);
+        canvas.drawRect(shadowMarginLeft + cornerRadiusBL, 0, mViewWidth - shadowMarginRight - cornerRadiusBR, shadowMarginBottom, mCornerShadowPaint);
+        canvas.restoreToCount(saved);
+
+        //Top_left_circle
+        mCornerShadowPaint.setShader(new RadialGradient(0, 0, shadowRadius,
+                new int[]{Color.parseColor("#00000000"), Color.parseColor("#14000000"), Color.parseColor("#44000000")},
+                new float[]{0f, 0.5f, 1f},
+                Shader.TileMode.CLAMP));
+
+        canvas.drawCircle(300, 300, 200, paint);
+
+        RectF rectF = new RectF(0, 0, mViewHeight, mViewHeight);
+        canvas.drawArc(rectF, 270, 0, true, mCornerShadowPaint);
 
         canvas.restoreToCount(rotateSaved);
-    }*/
+    }
 
     //限制子布局视图
     @Override
