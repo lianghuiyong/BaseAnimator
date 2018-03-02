@@ -48,13 +48,6 @@
              android:text="Google Developer Days Europe 2017 took place in Krakow, Poland. In this playlist, you can find all the recorded sessions from the event, across all tracks (Develop on Mobile, Mobile Web, Beyond Mobile, and Android)." />
  -->    </com.better.anime.dynamic2d.BetterCardView2>
 
-    <com.better.anime.dynamic2d.TestView
-        android:layout_width="@dimen/b_dp30"
-        android:layout_height="@dimen/b_dp30"
-        android:visibility="gone"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/b_dp300" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
