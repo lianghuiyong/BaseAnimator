@@ -371,7 +371,7 @@ public class BetterCardView2 extends BaseGroup {
         mCornerShadowPaint.setShader(new LinearGradient(
                 0, 0, 0, shadowMarginBottom / 2,
                 new int[]{Color.parseColor("#00000000"), Color.parseColor("#14000000"), Color.parseColor("#44000000")},
-                new float[]{0f, 0.5f, 1f},
+                new float[]{0f, 0.7f, 1f},
                 Shader.TileMode.CLAMP));
 
         // line_shadow_top
@@ -400,14 +400,14 @@ public class BetterCardView2 extends BaseGroup {
         canvas.drawRect(shadowMarginLeft + cornerRadiusBL, 0, mViewWidth - shadowMarginRight - cornerRadiusBR, shadowMarginBottom, mCornerShadowPaint);
         canvas.restoreToCount(saved);
 
-        //Top_left_circle
-        mCornerShadowPaint.setShader(new RadialGradient(0, 0, shadowRadius,
-                new int[]{Color.parseColor("#00000000"), Color.parseColor("#14000000"), Color.parseColor("#44000000")},
+
+        //circle_top_left
+        mCornerShadowPaint.setShader(new RadialGradient(shadowMarginLeft + cornerRadiusTL, shadowMarginTop + cornerRadiusTL, cornerRadiusTL + shadowMarginTop,
+                new int[]{Color.parseColor("#44000000"), Color.parseColor("#14000000"), Color.parseColor("#00000000")},
                 new float[]{0f, 0.5f, 1f},
                 Shader.TileMode.CLAMP));
-/*
-        RectF rectF = new RectF(0, 0, mViewHeight, mViewHeight);
-        canvas.drawArc(rectF, 270, 0, true, mCornerShadowPaint);*/
+        RectF rectF = new RectF(shadowMarginLeft - cornerRadiusTL, 0, (shadowMarginTop + cornerRadiusTL) * 2 + (shadowMarginLeft - cornerRadiusTL), (shadowMarginTop + cornerRadiusTL) * 2);
+        canvas.drawArc(rectF, 180, 90, true, mCornerShadowPaint);
 
         canvas.restoreToCount(rotateSaved);
     }
