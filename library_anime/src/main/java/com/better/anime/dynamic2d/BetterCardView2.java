@@ -405,11 +405,9 @@ public class BetterCardView2 extends BaseGroup {
                 new int[]{Color.parseColor("#00000000"), Color.parseColor("#14000000"), Color.parseColor("#44000000")},
                 new float[]{0f, 0.5f, 1f},
                 Shader.TileMode.CLAMP));
-
-        canvas.drawCircle(300, 300, 200, paint);
-
+/*
         RectF rectF = new RectF(0, 0, mViewHeight, mViewHeight);
-        canvas.drawArc(rectF, 270, 0, true, mCornerShadowPaint);
+        canvas.drawArc(rectF, 270, 0, true, mCornerShadowPaint);*/
 
         canvas.restoreToCount(rotateSaved);
     }
