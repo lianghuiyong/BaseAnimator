@@ -73,6 +73,7 @@ public class BetterCardView2 extends BaseGroup {
     private float shadowMarginBottom;
 
     private Paint mCornerShadowPaint;
+    private Paint mEdgeShadowPaint;
 
 
     public final int getShadowColor() {
@@ -342,9 +343,6 @@ public class BetterCardView2 extends BaseGroup {
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
 
-        mCornerShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
-        mCornerShadowPaint.setStyle(Paint.Style.FILL);
-
         setBackground(null);
     }
 
@@ -363,54 +361,72 @@ public class BetterCardView2 extends BaseGroup {
 
     private void drawShadow(Canvas canvas) {
 
-        //canvas.drawPath(getRoundedPath(), mCornerShadowPaint);
+        mEdgeShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+        mEdgeShadowPaint.setStyle(Paint.Style.FILL);
+        mEdgeShadowPaint.setShader(new LinearGradient(
+                0, 0, 0, shadowMarginBottom,
+                new int[]{Color.parseColor("#00000000"), Color.parseColor("#05000000"), Color.parseColor("#13000000"), Color.parseColor("#44000000")},
+                new float[]{0f, 0.25f, 0.6f, 1f},
+                Shader.TileMode.CLAMP));
+
+        mCornerShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+        mCornerShadowPaint.setStyle(Paint.Style.FILL);
+        mCornerShadowPaint.setShader(new RadialGradient(0, 0, shadowRadius,
+                new int[]{0, Color.parseColor("#44000000"), Color.parseColor("#14000000"), Color.parseColor("#00000000")},
+                new float[]{0f, 0.5f, 0.75f, 1f}, Shader.TileMode.CLAMP));
+
+        Path mCornerShadowPath = new Path();
+        RectF innerBounds = new RectF(0, 0, (shadowMarginBottom / 2 + cornerRadiusBL) * 2, (shadowMarginBottom + cornerRadiusBL) * 2);
+        RectF outerBounds = new RectF(innerBounds);
+        outerBounds.inset(-shadowMarginBottom, -shadowMarginBottom);
+
+        mCornerShadowPath.setFillType(Path.FillType.EVEN_ODD);
+        mCornerShadowPath.moveTo(-(shadowMarginBottom + cornerRadiusBL), 0);
+        mCornerShadowPath.rLineTo(-(shadowMarginBottom + cornerRadiusBL), 0);
+        // outer arc
+        mCornerShadowPath.arcTo(outerBounds, 180f, 90f, false);
+        // inner arc
+        mCornerShadowPath.arcTo(innerBounds, 270f, -90f, false);
+        mCornerShadowPath.close();
 
         final int rotateSaved = canvas.save();
 
-
-        mCornerShadowPaint.setShader(new LinearGradient(
-                0, 0, 0, shadowMarginBottom / 2,
-                new int[]{Color.parseColor("#00000000"), Color.parseColor("#14000000"), Color.parseColor("#44000000")},
-                new float[]{0f, 0.7f, 1f},
-                Shader.TileMode.CLAMP));
-
         // line_shadow_top
         int saved = canvas.save();
-        canvas.drawRect(shadowMarginLeft + cornerRadiusTL, 0, mViewWidth - shadowMarginRight - cornerRadiusTR, shadowMarginTop + 1, mCornerShadowPaint);
+        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+        canvas.drawRect(shadowMarginLeft + cornerRadiusTL, 0, mViewWidth - shadowMarginRight - cornerRadiusTR, shadowMarginTop + 1, mEdgeShadowPaint);
         canvas.restoreToCount(saved);
 
         // line_shadow_right
         saved = canvas.save();
         canvas.rotate(90f);
         canvas.translate(0, -mViewWidth);
-        canvas.drawRect(shadowMarginTop + cornerRadiusTL, 0, mViewHeight - shadowMarginBottom - cornerRadiusBL, shadowMarginRight, mCornerShadowPaint);
+        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+        canvas.drawRect(shadowMarginTop + cornerRadiusTL, 0, mViewHeight - shadowMarginBottom - cornerRadiusBL, shadowMarginRight, mEdgeShadowPaint);
         canvas.restoreToCount(saved);
 
         // line_shadow_left
         saved = canvas.save();
         canvas.rotate(-90f);
         canvas.translate(-mViewHeight, 0);
-        canvas.drawRect(shadowMarginBottom + cornerRadiusBL, 0, mViewHeight - shadowMarginTop - cornerRadiusTL, shadowMarginLeft, mCornerShadowPaint);
+        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+        canvas.drawRect(shadowMarginBottom + cornerRadiusBL, 0, mViewHeight - shadowMarginTop - cornerRadiusTL, shadowMarginLeft, mEdgeShadowPaint);
         canvas.restoreToCount(saved);
 
         // line_shadow_bottom
         saved = canvas.save();
         canvas.rotate(180f);
         canvas.translate(-mViewWidth, -mViewHeight);
-        canvas.drawRect(shadowMarginLeft + cornerRadiusBL, 0, mViewWidth - shadowMarginRight - cornerRadiusBR, shadowMarginBottom, mCornerShadowPaint);
+        canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+        canvas.drawRect(shadowMarginLeft + cornerRadiusBL, 0, mViewWidth - shadowMarginRight - cornerRadiusBR, shadowMarginBottom, mEdgeShadowPaint);
         canvas.restoreToCount(saved);
 
-
         //circle_top_left
-        mCornerShadowPaint.setShader(new RadialGradient(shadowMarginLeft + cornerRadiusTL, shadowMarginTop + cornerRadiusTL, cornerRadiusTL + shadowMarginTop,
-                new int[]{Color.parseColor("#44000000"), Color.parseColor("#14000000"), Color.parseColor("#00000000")},
-                new float[]{0f, 0.5f, 1f},
-                Shader.TileMode.CLAMP));
-        RectF rectF = new RectF(shadowMarginLeft - cornerRadiusTL, 0, (shadowMarginTop + cornerRadiusTL) * 2 + (shadowMarginLeft - cornerRadiusTL), (shadowMarginTop + cornerRadiusTL) * 2);
-        canvas.drawArc(rectF, 180, 90, true, mCornerShadowPaint);
+
 
         canvas.restoreToCount(rotateSaved);
     }
+
 
     //限制子布局视图
     @Override

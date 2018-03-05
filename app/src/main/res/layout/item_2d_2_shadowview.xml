@@ -34,7 +34,26 @@
         android:layout_height="@dimen/b_dp100"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:layout_marginTop="@dimen/b_dp180"
+        android:layout_marginTop="@dimen/b_dp120"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="10dp"
+        app:cardShadowMargin="10dp">
+
+        <!-- <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Google Developer Days Europe 2017 took place in Krakow, Poland. In this playlist, you can find all the recorded sessions from the event, across all tracks (Develop on Mobile, Mobile Web, Beyond Mobile, and Android)." />
+ -->    </com.better.anime.dynamic2d.BetterCardView2>
+
+    <com.better.anime.dynamic2d.BetterCardView2
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/b_dp100"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="@dimen/b_dp240"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
