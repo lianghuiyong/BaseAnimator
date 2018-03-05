@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:layout_marginLeft="@dimen/b_dp20"
-    android:layout_marginRight="@dimen/b_dp20"
     android:layout_marginTop="@dimen/b_dp20"
-    android:layout_marginBottom="@dimen/b_dp10"
+    android:paddingLeft="@dimen/b_dp20"
     android:paddingTop="@dimen/app_bar_height">
 
     <TextView
@@ -19,16 +18,27 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/b_dp30"
         android:text="2D动效"
         android:textColor="#000000"
-        android:layout_marginTop="@dimen/b_dp30"
         android:textSize="@dimen/b_sp30"
         android:textStyle="bold" />
 
-    <ImageView
-        android:layout_width="@dimen/b_dp45"
-        android:layout_height="@dimen/b_dp45"
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:src="@mipmap/img_avatar"/>
+        android:layout_marginBottom="@dimen/b_dp10"
+        android:layout_marginRight="@dimen/b_dp20"
+        app:cardCornerRadius="@dimen/b_dp23"
+        app:cardElevation="15dp">
+
+        <ImageView
+            android:layout_width="@dimen/b_dp46"
+            android:layout_height="@dimen/b_dp46"
+            android:background="@drawable/circle_shape"
+            android:src="@mipmap/img_avatar" />
+    </android.support.v7.widget.CardView>
 
 </FrameLayout>
