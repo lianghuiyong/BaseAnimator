@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
-//apply from:'tinker-support.gradle'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.1'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.better.animator"
         minSdkVersion 19

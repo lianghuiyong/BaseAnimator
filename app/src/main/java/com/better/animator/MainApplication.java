@@ -18,17 +18,6 @@ public class MainApplication extends Application {
         super.onCreate();
 
         //Bugly 异常上报
-        Bugly.init(getApplicationContext(), BUGLY_ID, !BuildConfig.DEBUG);
-    }
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        // you must install multiDex whatever tinker is installed!
-        //MultiDex.install(base);
-
-
-        // 安装tinker
-        Beta.installTinker();
+        Bugly.init(getApplicationContext(), BUGLY_ID, false);
     }
 }
