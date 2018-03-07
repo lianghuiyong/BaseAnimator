@@ -1,9 +1,11 @@
 package com.better.animator.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 
 import com.better.animator.Dynamic2DFragment;
 import com.better.animator.Dynamic3DFragment;
@@ -38,6 +40,7 @@ public class HomePageActivity extends BaseActivity {
     BaseStatusBar statusBar;
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
+    private long exitTime = 0;  // 双击返回键退出
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,5 +97,23 @@ public class HomePageActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - exitTime > 1000)) {
+                exitTime = System.currentTimeMillis();
+            } else {
+
+
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }
