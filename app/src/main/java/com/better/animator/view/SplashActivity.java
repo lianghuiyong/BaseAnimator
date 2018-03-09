@@ -1,4 +1,4 @@
-package com.better.animator.activity;
+package com.better.animator.view;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
