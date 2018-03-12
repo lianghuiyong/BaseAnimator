@@ -17,17 +17,14 @@
 package com.better.anime.dynamic2d.tablayout;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,37 +37,37 @@ import android.widget.TextView;
 import com.better.anime.R;
 
 
-/**
- * ATTR	描述
- * tabIndicatorAlwaysInCenter	    如果设置为true，默认为false
- * tabIndicatorWithoutPadding	    如果设置为true，则绘制指示符，而不填充tab，默认为false
- * tabIndicatorInFront	            在下划线前绘制指标，默认为false
- *
- * tabIndicatorGravity	            指示器的绘图位置：“底部”或“顶部”或“中心”，默认“底部”
- *
- * tabIndicatorHeight	            指示灯的高度，默认为 b_dp2
- * tabIndicatorWidth	            指示灯的宽度，默认为“自动”
- *
- * topLineColor     	            顶线颜色
- * topLineHeight        	        顶线的厚度
- * bottomLineColor  	            底线颜色
- * bottomLineHeight     	        底线厚度
- *
- * tabDividerColor	                分隔线的颜色
- * tabDividerHeight	                分隔线的厚度
- *
- * tabBackground        	        每个标签的背景画。一般来说，它设置StateListDrawable
- * tabViewTextAllCaps       	    如果设置为true，则所有选项卡标题都将大写，默认为true
- * tabTextColor         	        默认情况下包含的选项卡的文本颜色
- * tabTextSize          	        默认情况下包含的选项卡的文本大小
- * tabViewTextHorizontalPadding 	默认情况下包含的选项卡的文本布局填充
- * tabTextMinWidth          	    标签的最小宽度
- * tabLayoutId              	    布局ID定义自定义选项卡。如果不指定布局，请使用默认选项卡
- * tabTextViewId        	        自定义选项卡布局中的文本视图ID。如果没有使用customTabTextLayoutId定义，则不起作用
- * tabDistributeEvenly	            如果设置为true，则每个选项卡的权重相同，默认为false
- * tabClickable 	                如果设置为false，则禁用选项卡单击的选择，默认为true
- * tabTitleOffset	                如果设置为“auto_center”，则中间的选项卡的滑动位置将保持在中间。如果指定尺寸，它将从左边缘偏移，默认为24dp
- * */
+// 
+//  ATTR	描述
+//  tabIndicatorAlwaysInCenter	    如果设置为true，默认为false
+//  tabIndicatorWithoutPadding	    如果设置为true，则绘制指示符，而不填充tab，默认为false
+//  tabIndicatorInFront	            在下划线前绘制指标，默认为false
+// 
+//  tabIndicatorGravity	            指示器的绘图位置：“底部”或“顶部”或“中心”，默认“底部”
+// 
+//  tabIndicatorHeight	            指示灯的高度，默认为 b_dp2
+//  tabIndicatorWidth	            指示灯的宽度，默认为“自动”
+// 
+//  topLineColor     	            顶线颜色
+//  topLineHeight        	        顶线的厚度
+//  bottomLineColor  	            底线颜色
+//  bottomLineHeight     	        底线厚度
+// 
+//  tabDividerColor	                分隔线的颜色
+//  tabDividerHeight	                分隔线的厚度
+// 
+//  tabBackground        	        每个标签的背景画。一般来说，它设置StateListDrawable
+//  tabViewTextAllCaps       	    如果设置为true，则所有选项卡标题都将大写，默认为true
+//  tabTextColor         	        默认情况下包含的选项卡的文本颜色
+//  tabTextSize          	        默认情况下包含的选项卡的文本大小
+//  tabViewTextHorizontalPadding 	默认情况下包含的选项卡的文本布局填充
+//  tabTextMinWidth          	    标签的最小宽度
+//  tabLayoutId              	    布局ID定义自定义选项卡。如果不指定布局，请使用默认选项卡
+//  tabTextViewId        	        自定义选项卡布局中的文本视图ID。如果没有使用customTabTextLayoutId定义，则不起作用
+//  tabDistributeEvenly	            如果设置为true，则每个选项卡的权重相同，默认为false
+//  tabClickable 	                如果设置为false，则禁用选项卡单击的选择，默认为true
+//  tabTitleOffset	                如果设置为“auto_center”，则中间的选项卡的滑动位置将保持在中间。如果指定尺寸，它将从左边缘偏移，默认为24dp
+//  
 
 public class SmartTabLayout extends HorizontalScrollView {
     private static final int TITLE_OFFSET_AUTO_CENTER = -1;
