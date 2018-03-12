@@ -57,8 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/b_dp45"
             app:tabLayoutId="@layout/custom_tab_margin"
-            app:tabIndicatorColor="#40C4FF"
-            app:tabBottomLineHeight="1dp" />
+            app:tabIndicatorColor="#40C4FF" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"

@@ -57,11 +57,11 @@ public class Dynamic3DFragment extends BaseFragment {
 
 
         viewpager.setAdapter(adapter);
-        viewpagertab1.setViewPager(viewpager);
-        viewpagertab2.setViewPager(viewpager);
-        viewpagertab3.setViewPager(viewpager);
-        viewpagertab4.setViewPager(viewpager);
-        viewpagertab5.setViewPager(viewpager);
+        viewpagertab1.setupWithViewPager(viewpager);
+        viewpagertab2.setupWithViewPager(viewpager);
+        viewpagertab3.setupWithViewPager(viewpager);
+        viewpagertab4.setupWithViewPager(viewpager);
+        viewpagertab5.setupWithViewPager(viewpager);
 
         settext(viewpagertab1);
         settext(viewpagertab2);

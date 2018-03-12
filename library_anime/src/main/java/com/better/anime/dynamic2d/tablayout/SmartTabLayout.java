@@ -270,7 +270,7 @@ public class SmartTabLayout extends HorizontalScrollView {
      * Sets the associated view pager. Note that the assumption here is that the pager content
      * (number of tabs and tab titles) does not change after this call has been made.
      */
-    public void setViewPager(ViewPager viewPager) {
+    public void setupWithViewPager(ViewPager viewPager) {
         tabStrip.removeAllViews();
 
         this.viewPager = viewPager;
