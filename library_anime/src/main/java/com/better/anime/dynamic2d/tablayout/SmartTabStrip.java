@@ -42,9 +42,6 @@ class SmartTabStrip extends LinearLayout {
 
     private static final int AUTO_WIDTH = -1;
 
-    private static final int DEFAULT_TOP_BORDER_THICKNESS_DIPS = 0;
-    private static final byte DEFAULT_TOP_BORDER_COLOR_ALPHA = 0x26;
-    private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x26;
     private static final int SELECTED_INDICATOR_THICKNESS_DIPS = 8;
     private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5;
     private static final float DEFAULT_INDICATOR_CORNER_RADIUS = 0f;
@@ -98,15 +95,7 @@ class SmartTabStrip extends LinearLayout {
         boolean indicatorAlwaysInCenter = DEFAULT_INDICATOR_IN_CENTER;
         int indicationInterpolatorId = SmartTabIndicationInterpolator.ID_SMART;
         int indicatorGravity = DEFAULT_INDICATOR_GRAVITY;
-        int indicatorColor = DEFAULT_SELECTED_INDICATOR_COLOR;
-        int indicatorColorsId = NO_ID;
-        int indicatorThickness = (int) (SELECTED_INDICATOR_THICKNESS_DIPS * density);
-        int indicatorWidth = AUTO_WIDTH;
-        float indicatorCornerRadius = DEFAULT_INDICATOR_CORNER_RADIUS * density;
-        int overlineColor = setColorAlpha(themeForegroundColor, DEFAULT_TOP_BORDER_COLOR_ALPHA);
-        int overlineThickness = (int) (DEFAULT_TOP_BORDER_THICKNESS_DIPS * density);
-        int underlineColor = setColorAlpha(themeForegroundColor, DEFAULT_BOTTOM_BORDER_COLOR_ALPHA);
-        int underlineThickness = getResources().getDimensionPixelSize(R.dimen.b_dp2);
+        int indicatorColor;
         int dividerColor = setColorAlpha(themeForegroundColor, DEFAULT_DIVIDER_COLOR_ALPHA);
         int dividerColorsId = NO_ID;
         int dividerThickness = (int) (DEFAULT_DIVIDER_THICKNESS_DIPS * density);
@@ -121,26 +110,21 @@ class SmartTabStrip extends LinearLayout {
                 R.styleable.stl_SmartTabLayout_stl_indicatorInFront, indicatorInFront);
         indicationInterpolatorId = a.getInt(
                 R.styleable.stl_SmartTabLayout_stl_indicatorInterpolation, indicationInterpolatorId);
-        indicatorGravity = a.getInt(
-                R.styleable.stl_SmartTabLayout_stl_indicatorGravity, indicatorGravity);
-        indicatorColor = a.getColor(
-                R.styleable.stl_SmartTabLayout_stl_indicatorColor, indicatorColor);
-        indicatorColorsId = a.getResourceId(
-                R.styleable.stl_SmartTabLayout_stl_indicatorColors, indicatorColorsId);
-        indicatorThickness = a.getDimensionPixelSize(
-                R.styleable.stl_SmartTabLayout_stl_indicatorThickness, indicatorThickness);
-        indicatorWidth = a.getLayoutDimension(
-                R.styleable.stl_SmartTabLayout_stl_indicatorWidth, indicatorWidth);
-        indicatorCornerRadius = a.getDimension(
-                R.styleable.stl_SmartTabLayout_stl_indicatorCornerRadius, indicatorCornerRadius);
-        overlineColor = a.getColor(
-                R.styleable.stl_SmartTabLayout_stl_overlineColor, overlineColor);
-        overlineThickness = a.getDimensionPixelSize(
-                R.styleable.stl_SmartTabLayout_stl_overlineThickness, overlineThickness);
-        underlineColor = a.getColor(
-                R.styleable.stl_SmartTabLayout_stl_underlineColor, underlineColor);
-        underlineThickness = a.getDimensionPixelSize(
-                R.styleable.stl_SmartTabLayout_stl_underlineThickness, underlineThickness);
+        indicatorGravity = a.getInt(R.styleable.stl_SmartTabLayout_stl_indicatorGravity, indicatorGravity);
+
+        indicatorColor = a.getColor(R.styleable.stl_SmartTabLayout_stl_indicatorColor, Color.parseColor("#33B5E5"));
+
+        indicatorThickness = a.getDimensionPixelSize(R.styleable.stl_SmartTabLayout_stl_indicatorThickness, getResources().getDimensionPixelSize(R.dimen.b_dp8));
+
+        indicatorWidth = a.getLayoutDimension(R.styleable.stl_SmartTabLayout_stl_indicatorWidth, AUTO_WIDTH);
+        indicatorCornerRadius = a.getDimension(R.styleable.stl_SmartTabLayout_stl_indicatorCornerRadius, 0);
+
+        topBorderThickness = a.getColor(R.styleable.stl_SmartTabLayout_stl_overlineColor, Color.parseColor("#00000000"));
+        topBorderColor = a.getDimensionPixelSize(R.styleable.stl_SmartTabLayout_stl_overlineThickness, 0);
+
+        bottomBorderColor = a.getColor(R.styleable.stl_SmartTabLayout_stl_underlineColor, Color.parseColor("#00000000"));
+        bottomBorderThickness = a.getDimensionPixelSize(R.styleable.stl_SmartTabLayout_stl_underlineThickness, 0);
+
         dividerColor = a.getColor(
                 R.styleable.stl_SmartTabLayout_stl_dividerColor, dividerColor);
         dividerColorsId = a.getResourceId(
@@ -151,31 +135,21 @@ class SmartTabStrip extends LinearLayout {
                 R.styleable.stl_SmartTabLayout_stl_drawDecorationAfterTab, drawDecorationAfterTab);
         a.recycle();
 
-        final int[] indicatorColors = (indicatorColorsId == NO_ID)
-                ? new int[]{indicatorColor}
-                : getResources().getIntArray(indicatorColorsId);
-
         final int[] dividerColors = (dividerColorsId == NO_ID)
                 ? new int[]{dividerColor}
                 : getResources().getIntArray(dividerColorsId);
 
         this.defaultTabColorizer = new SimpleTabColorizer();
-        this.defaultTabColorizer.setIndicatorColors(indicatorColors);
+        this.defaultTabColorizer.setIndicatorColors(new int[]{indicatorColor});
         this.defaultTabColorizer.setDividerColors(dividerColors);
 
-        this.topBorderThickness = overlineThickness;
-        this.topBorderColor = overlineColor;
-        this.bottomBorderThickness = underlineThickness;
-        this.bottomBorderColor = underlineColor;
         this.borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         this.indicatorAlwaysInCenter = indicatorAlwaysInCenter;
         this.indicatorWithoutPadding = indicatorWithoutPadding;
         this.indicatorInFront = indicatorInFront;
-        this.indicatorThickness = indicatorThickness;
-        this.indicatorWidth = indicatorWidth;
+
         this.indicatorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.indicatorCornerRadius = indicatorCornerRadius;
         this.indicatorGravity = indicatorGravity;
 
         this.dividerHeight = DEFAULT_DIVIDER_HEIGHT;

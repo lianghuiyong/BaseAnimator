@@ -7,7 +7,7 @@
     android:layout_marginRight="@dimen/b_dp20"
     android:background="?attr/selectableItemBackground"
     android:gravity="center"
-    android:textColor="#666666"
+    android:textColor="@color/tab_main_color_selector"
     android:textSize="14sp">
 
 </TextView>
