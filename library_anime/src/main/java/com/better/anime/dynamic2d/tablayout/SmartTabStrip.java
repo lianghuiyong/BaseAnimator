@@ -50,8 +50,8 @@ class SmartTabStrip extends LinearLayout {
     private final boolean tabIndicatorAlwaysInCenter;
     private boolean tabIndicatorInFront;
     private final int tabIndicatorHeight;
+    private final int tabIndicatorHorizontalPadding;
 
-    private final int tabIndicatorWidth;
     private final int tabIndicatorGravity;
     private final Paint indicatorPaint;
     private final int tabDividerHeight;
@@ -82,7 +82,7 @@ class SmartTabStrip extends LinearLayout {
         tabIndicatorColor = a.getColor(R.styleable.BetterTabLayout_tabIndicatorColor, Color.parseColor("#33B5E5"));
 
         tabIndicatorHeight = a.getDimensionPixelSize(R.styleable.BetterTabLayout_tabIndicatorHeight, getResources().getDimensionPixelSize(R.dimen.b_dp2));
-        tabIndicatorWidth = a.getLayoutDimension(R.styleable.BetterTabLayout_tabIndicatorWidth, -1);
+        tabIndicatorHorizontalPadding = a.getLayoutDimension(R.styleable.BetterTabLayout_tabIndicatorHorizontalPadding, 5);
 
         topLineHeight = a.getDimensionPixelSize(R.styleable.BetterTabLayout_tabTopLineHeight, 0);
         topLineColor = a.getColor(R.styleable.BetterTabLayout_tabTopLineColor, Color.TRANSPARENT);
@@ -283,7 +283,7 @@ class SmartTabStrip extends LinearLayout {
 
     private void drawIndicator(Canvas canvas, int left, int right, int height, float thickness,
                                int color) {
-        if (tabIndicatorHeight <= 0 || tabIndicatorWidth == 0) {
+        if (tabIndicatorHeight <= 0 ) {
             return;
         }
 
@@ -310,12 +310,9 @@ class SmartTabStrip extends LinearLayout {
         }
 
         indicatorPaint.setColor(color);
-        if (tabIndicatorWidth == -1) {
-            indicatorRectF.set(left, top, right, bottom);
-        } else {
-            float padding = (Math.abs(left - right) - tabIndicatorWidth) / 2f;
-            indicatorRectF.set(left + padding, top, right - padding, bottom);
-        }
+
+        indicatorRectF.set(left + tabIndicatorHorizontalPadding, top, right - tabIndicatorHorizontalPadding, bottom);
+
 
         canvas.drawRoundRect(
                 indicatorRectF, tabIndicatorHeight / 2,

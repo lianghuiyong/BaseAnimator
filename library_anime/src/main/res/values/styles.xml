@@ -71,9 +71,8 @@
 
         <attr name="tabIndicatorColor" format="color" />
         <attr name="tabIndicatorHeight" format="dimension" />
-        <attr name="tabIndicatorWidth" format="dimension">
-            <enum name="auto" value="-1" />
-        </attr>
+        <attr name="tabIndicatorHorizontalPadding" format="dimension" />
+
         <attr name="tabIndicatorGravity" format="enum">
             <enum name="bottom" value="0" />
             <enum name="top" value="1" />
