@@ -48,6 +48,8 @@ public class Dynamic3DFragment extends BaseFragment {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
+    int pageSize = 3;
+
     @Override
     public int setViewId() {
         return R.layout.tablayout_test;
@@ -56,7 +58,6 @@ public class Dynamic3DFragment extends BaseFragment {
     @Override
     public void initData() {
 
-        int pageSize = 3;
 
         BaseViewpagerAdapter adapter = new BaseViewpagerAdapter(getChildFragmentManager());
         for (int i = 0; i < pageSize; i++) {
@@ -71,29 +72,38 @@ public class Dynamic3DFragment extends BaseFragment {
         viewpagertab4.setViewPager(viewpager);
         viewpagertab5.setViewPager(viewpager);
 
-        for (int i = 0; i < pageSize; i++) {
-            TextView textView = viewpagertab1.getTabAt(i).findViewById(R.id.text);
-            textView.setText(i+"");
-        }
+        settext(viewpagertab1);
+        settext(viewpagertab2);
+        settext(viewpagertab3);
+        settext(viewpagertab4);
+        settext(viewpagertab5);
+    }
 
+    private void settext(SmartTabLayout viewpagertab) {
         for (int i = 0; i < pageSize; i++) {
-            TextView textView = viewpagertab2.getTabAt(i).findViewById(R.id.text);
-            textView.setText(i+"");
-        }
+            TextView textView = viewpagertab.getTabAt(i).findViewById(R.id.text);
 
-        for (int i = 0; i < pageSize; i++) {
-            TextView textView = viewpagertab3.getTabAt(i).findViewById(R.id.text);
-            textView.setText(i+"");
-        }
+            switch (i) {
+                case 0:
+                    textView.setText("嗯");
+                    break;
 
-        for (int i = 0; i < pageSize; i++) {
-            TextView textView = viewpagertab4.getTabAt(i).findViewById(R.id.text);
-            textView.setText(i+"");
-        }
+                case 1:
+                    textView.setText("哦哦");
+                    break;
 
-        for (int i = 0; i < pageSize; i++) {
-            TextView textView = viewpagertab5.getTabAt(i).findViewById(R.id.text);
-            textView.setText(i+"");
+                case 2:
+                    textView.setText("阿凡达");
+                    break;
+
+                case 3:
+                    textView.setText("通天帝国");
+                    break;
+
+                case 4:
+                    textView.setText("三国");
+                    break;
+            }
         }
     }
 }

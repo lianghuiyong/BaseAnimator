@@ -3,12 +3,10 @@
     android:id="@+id/text"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
+    android:layout_marginLeft="@dimen/b_dp20"
+    android:layout_marginRight="@dimen/b_dp20"
     android:background="?attr/selectableItemBackground"
     android:gravity="center"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
     android:textColor="#666666"
     android:textSize="14sp">
 

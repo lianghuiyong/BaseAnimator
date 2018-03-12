@@ -72,12 +72,6 @@ public abstract class SmartTabIndicationInterpolator {
         public float getRightEdge(float offset) {
             return rightEdgeInterpolator.getInterpolation(offset);
         }
-
-        @Override
-        public float getThickness(float offset) {
-            return 1f / (1.0f - getLeftEdge(offset) + getRightEdge(offset));
-        }
-
     }
 
     public static class LinearIndicationInterpolator extends SmartTabIndicationInterpolator {

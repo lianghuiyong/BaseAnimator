@@ -44,7 +44,6 @@ class SmartTabStrip extends LinearLayout {
 
     private static final int DEFAULT_TOP_BORDER_THICKNESS_DIPS = 0;
     private static final byte DEFAULT_TOP_BORDER_COLOR_ALPHA = 0x26;
-    private static final int DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS = 2;
     private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x26;
     private static final int SELECTED_INDICATOR_THICKNESS_DIPS = 8;
     private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5;
@@ -107,7 +106,7 @@ class SmartTabStrip extends LinearLayout {
         int overlineColor = setColorAlpha(themeForegroundColor, DEFAULT_TOP_BORDER_COLOR_ALPHA);
         int overlineThickness = (int) (DEFAULT_TOP_BORDER_THICKNESS_DIPS * density);
         int underlineColor = setColorAlpha(themeForegroundColor, DEFAULT_BOTTOM_BORDER_COLOR_ALPHA);
-        int underlineThickness = (int) (DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS * density);
+        int underlineThickness = getResources().getDimensionPixelSize(R.dimen.b_dp2);
         int dividerColor = setColorAlpha(themeForegroundColor, DEFAULT_DIVIDER_COLOR_ALPHA);
         int dividerColorsId = NO_ID;
         int dividerThickness = (int) (DEFAULT_DIVIDER_THICKNESS_DIPS * density);
@@ -200,7 +199,7 @@ class SmartTabStrip extends LinearLayout {
      * Blend {@code color1} and {@code color2} using the given ratio.
      *
      * @param ratio of which to blend. 1.0 will return {@code color1}, 0.5 will give an even blend,
-     * 0.0 will return {@code color2}.
+     *              0.0 will return {@code color2}.
      */
     private static int blendColors(int color1, int color2, float ratio) {
         final float inverseRation = 1f - ratio;
