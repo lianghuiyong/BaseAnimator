@@ -14,51 +14,51 @@
             android:id="@+id/viewpagertab1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/b_dp45"
-            app:stl_customTabTextLayoutId="@layout/custom_tab_margin"
-            app:stl_distributeEvenly="true"
-            app:stl_dividerColor="@android:color/black"
-            app:stl_indicatorColor="#20ffffff"
-            app:stl_indicatorGravity="center"
-            app:stl_indicatorWithoutPadding="true" />
+            app:tabLayoutId="@layout/custom_tab_margin"
+            app:tabDistributeEvenly="true"
+            app:tabDividerColor="@android:color/black"
+            app:tabIndicatorColor="#20ffffff"
+            app:tabIndicatorGravity="center"
+            app:tabIndicatorWithoutPadding="true" />
 
         <com.better.anime.dynamic2d.tablayout.SmartTabLayout
             android:id="@+id/viewpagertab2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/b_dp45"
-            app:stl_customTabTextLayoutId="@layout/custom_tab_margin"
-            app:stl_defaultTabTextColor="@android:color/black"
-            app:stl_defaultTabTextHorizontalPadding="24dp"
-            app:stl_dividerColors="@array/custom_tab_colors"
-            app:stl_indicatorColors="@array/custom_tab_colors"
-            app:stl_underlineThickness="1dp" />
+            app:tabLayoutId="@layout/custom_tab_margin"
+            app:tabTextColor="@android:color/black"
+            app:tabTextHorizontalPadding="24dp"
+            app:tabDividerColor="@color/light_blue_500"
+            app:tabIndicatorColor="#20ffffff"
+            app:tabBottomLineHeight="1dp" />
 
         <com.better.anime.dynamic2d.tablayout.SmartTabLayout
             android:id="@+id/viewpagertab3"
             android:layout_width="match_parent"
             android:layout_height="@dimen/b_dp45"
-            app:stl_customTabTextLayoutId="@layout/custom_tab_margin"
-            app:stl_defaultTabTextColor="@android:color/black"
-            app:stl_defaultTabTextMinWidth="120dp"
-            app:stl_indicatorAlwaysInCenter="true"
-            app:stl_indicatorColor="#40C4FF"
-            app:stl_underlineColor="@android:color/transparent" />
+            app:tabLayoutId="@layout/custom_tab_margin"
+            app:tabTextColor="@android:color/black"
+            app:tabTextMinWidth="120dp"
+            app:tabIndicatorAlwaysInCenter="true"
+            app:tabIndicatorColor="#40C4FF"
+            app:tabBottomLineColor="@android:color/transparent" />
 
         <com.better.anime.dynamic2d.tablayout.SmartTabLayout
             android:id="@+id/viewpagertab4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/b_dp45"
-            app:stl_customTabTextLayoutId="@layout/custom_tab_margin"
-            app:stl_distributeEvenly="true"
-            app:stl_indicatorColor="#40C4FF"
-            app:stl_underlineThickness="1dp" />
+            app:tabLayoutId="@layout/custom_tab_margin"
+            app:tabDistributeEvenly="true"
+            app:tabIndicatorColor="#40C4FF"
+            app:tabBottomLineHeight="1dp" />
 
         <com.better.anime.dynamic2d.tablayout.SmartTabLayout
             android:id="@+id/viewpagertab5"
             android:layout_width="match_parent"
             android:layout_height="@dimen/b_dp45"
-            app:stl_customTabTextLayoutId="@layout/custom_tab_margin"
-            app:stl_indicatorColor="#40C4FF"
-            app:stl_underlineThickness="1dp" />
+            app:tabLayoutId="@layout/custom_tab_margin"
+            app:tabIndicatorColor="#40C4FF"
+            app:tabBottomLineHeight="1dp" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"

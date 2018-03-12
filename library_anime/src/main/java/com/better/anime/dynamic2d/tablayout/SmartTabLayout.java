@@ -19,8 +19,10 @@ package com.better.anime.dynamic2d.tablayout;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -40,63 +42,54 @@ import com.better.anime.R;
 
 /**
  * ATTR	描述
- * stl_indicatorAlwaysInCenter	    如果设置为true，活动选项卡始终显示在中心（与书报摊谷歌应用程序相似），默认为false
- * stl_indicatorWithoutPadding	    如果设置为true，则绘制指示符，而不填充tab，默认为false
- * stl_indicatorInFront	            在下划线前绘制指标，默认为false
- * stl_indicatorGravity	            指示器的绘图位置：“底部”或“顶部”或“中心”，默认“底部”
- * stl_indicatorColor	            指示灯的颜色
- * stl_indicatorColors	            指示器的多种颜色，可以为每个选项卡设置颜色
- * stl_indicatorThickness	        指示器的厚度
- * stl_indicatorWidth	            指示灯的宽度，默认为“自动”
- * stl_indicatorCornerRadius	    圆角半径指示器
- * stl_overlineColor	            顶线颜色
- * stl_overlineThickness	        顶线的厚度
- * stl_underlineColor	            底线颜色
- * stl_underlineThickness	        底线厚度
- * stl_dividerColor	                标签之间的分隔线的颜色
- * stl_dividerColors	            选项卡之间的分隔线的多种颜色可以为每个选项卡设置颜色
- * stl_dividerThickness	            分隔线的厚度
- * stl_defaultTabBackground	        每个标签的背景画。一般来说，它设置StateListDrawable
- * stl_defaultTabTextAllCaps	    如果设置为true，则所有选项卡标题都将大写，默认为true
- * stl_defaultTabTextColor	        默认情况下包含的选项卡的文本颜色
- * stl_defaultTabTextSize	        默认情况下包含的选项卡的文本大小
- * stl_defaultTabTextHorizo​​ntalPadding	默认情况下包含的选项卡的文本布局填充
- * stl_defaultTabTextMinWidth	    标签的最小宽度
- * stl_customTabTextLayoutId	    布局ID定义自定义选项卡。如果不指定布局，请使用默认选项卡
- * stl_customTabTextViewId	        自定义选项卡布局中的文本视图ID。如果没有使用customTabTextLayoutId定义，则不起作用
- * stl_distributeEvenly	            如果设置为true，则每个选项卡的权重相同，默认为false
- * stl_clickable	                如果设置为false，则禁用选项卡单击的选择，默认为true
- * stl_titleOffset	                如果设置为“auto_center”，则中间的选项卡的滑动位置将保持在中间。如果指定尺寸，它将从左边缘偏移，默认为24dp
- * stl_drawDecorationAfterTab	    绘制标签后绘制装饰（指示和线），默认为false
+ * tabIndicatorAlwaysInCenter	    如果设置为true，默认为false
+ * tabIndicatorWithoutPadding	    如果设置为true，则绘制指示符，而不填充tab，默认为false
+ * tabIndicatorInFront	            在下划线前绘制指标，默认为false
+ *
+ * tabIndicatorGravity	            指示器的绘图位置：“底部”或“顶部”或“中心”，默认“底部”
+ *
+ * tabIndicatorHeight	            指示灯的高度，默认为 b_dp2
+ * tabIndicatorWidth	            指示灯的宽度，默认为“自动”
+ *
+ * topLineColor     	            顶线颜色
+ * topLineHeight        	        顶线的厚度
+ * bottomLineColor  	            底线颜色
+ * bottomLineHeight     	        底线厚度
+ *
+ * tabDividerColor	                分隔线的颜色
+ * tabDividerHeight	                分隔线的厚度
+ *
+ * tabBackground        	        每个标签的背景画。一般来说，它设置StateListDrawable
+ * tabViewTextAllCaps       	    如果设置为true，则所有选项卡标题都将大写，默认为true
+ * tabTextColor         	        默认情况下包含的选项卡的文本颜色
+ * tabTextSize          	        默认情况下包含的选项卡的文本大小
+ * tabViewTextHorizontalPadding 	默认情况下包含的选项卡的文本布局填充
+ * tabTextMinWidth          	    标签的最小宽度
+ * tabLayoutId              	    布局ID定义自定义选项卡。如果不指定布局，请使用默认选项卡
+ * tabTextViewId        	        自定义选项卡布局中的文本视图ID。如果没有使用customTabTextLayoutId定义，则不起作用
+ * tabDistributeEvenly	            如果设置为true，则每个选项卡的权重相同，默认为false
+ * tabClickable 	                如果设置为false，则禁用选项卡单击的选择，默认为true
+ * tabTitleOffset	                如果设置为“auto_center”，则中间的选项卡的滑动位置将保持在中间。如果指定尺寸，它将从左边缘偏移，默认为24dp
  * */
 
 public class SmartTabLayout extends HorizontalScrollView {
-
-    private static final boolean DEFAULT_DISTRIBUTE_EVENLY = false;
-    private static final int TITLE_OFFSET_DIPS = 24;
     private static final int TITLE_OFFSET_AUTO_CENTER = -1;
-    private static final int TAB_VIEW_PADDING_DIPS = 16;
-    private static final boolean TAB_VIEW_TEXT_ALL_CAPS = true;
-    private static final int TAB_VIEW_TEXT_SIZE_SP = 12;
-    private static final int TAB_VIEW_TEXT_COLOR = 0xFC000000;
-    private static final int TAB_VIEW_TEXT_MIN_WIDTH = 0;
-    private static final boolean TAB_CLICKABLE = true;
 
     protected final SmartTabStrip tabStrip;
-    private int titleOffset;
-    private int tabViewBackgroundResId;
+    private int tabTitleOffset;
+    private int tabBackground;
     private boolean tabViewTextAllCaps;
-    private ColorStateList tabViewTextColors;
-    private float tabViewTextSize;
+    private int tabTextColor;
+    private float tabTextSize;
     private int tabViewTextHorizontalPadding;
-    private int tabViewTextMinWidth;
+    private int tabTextMinWidth;
     private ViewPager viewPager;
     private ViewPager.OnPageChangeListener viewPagerPageChangeListener;
     private OnScrollChangeListener onScrollChangeListener;
     private TabProvider tabProvider;
     private InternalTabClickListener internalTabClickListener;
     private OnTabClickListener onTabClickListener;
-    private boolean distributeEvenly;
+    private boolean tabDistributeEvenly;
 
     public SmartTabLayout(Context context) {
         this(context, null);
@@ -112,63 +105,40 @@ public class SmartTabLayout extends HorizontalScrollView {
         // Disable the Scroll Bar
         setHorizontalScrollBarEnabled(false);
 
-        final DisplayMetrics dm = getResources().getDisplayMetrics();
-        final float density = dm.density;
+        int tabLayoutId;
+        int tabTextViewId;
 
-        int tabBackgroundResId = NO_ID;
-        boolean textAllCaps = TAB_VIEW_TEXT_ALL_CAPS;
-        ColorStateList textColors;
-        float textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP, dm);
-        int textHorizontalPadding = (int) (TAB_VIEW_PADDING_DIPS * density);
-        int textMinWidth = (int) (TAB_VIEW_TEXT_MIN_WIDTH * density);
-        boolean distributeEvenly = DEFAULT_DISTRIBUTE_EVENLY;
-        int customTabLayoutId = NO_ID;
-        int customTabTextViewId = NO_ID;
-        boolean clickable = TAB_CLICKABLE;
-        int titleOffset = (int) (TITLE_OFFSET_DIPS * density);
-
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.stl_SmartTabLayout, defStyle, 0);
-        tabBackgroundResId = a.getResourceId(R.styleable.stl_SmartTabLayout_stl_defaultTabBackground, tabBackgroundResId);
-        textAllCaps = a.getBoolean(R.styleable.stl_SmartTabLayout_stl_defaultTabTextAllCaps, textAllCaps);
-        textColors = a.getColorStateList(R.styleable.stl_SmartTabLayout_stl_defaultTabTextColor);
-        textSize = a.getDimension(R.styleable.stl_SmartTabLayout_stl_defaultTabTextSize, textSize);
-        textHorizontalPadding = a.getDimensionPixelSize(R.styleable.stl_SmartTabLayout_stl_defaultTabTextHorizontalPadding, textHorizontalPadding);
-        textMinWidth = a.getDimensionPixelSize(R.styleable.stl_SmartTabLayout_stl_defaultTabTextMinWidth, textMinWidth);
-        customTabLayoutId = a.getResourceId(R.styleable.stl_SmartTabLayout_stl_customTabTextLayoutId, customTabLayoutId);
-        customTabTextViewId = a.getResourceId(R.styleable.stl_SmartTabLayout_stl_customTabTextViewId, customTabTextViewId);
-        distributeEvenly = a.getBoolean(R.styleable.stl_SmartTabLayout_stl_distributeEvenly, distributeEvenly);
-        clickable = a.getBoolean(R.styleable.stl_SmartTabLayout_stl_clickable, clickable);
-        titleOffset = a.getLayoutDimension(R.styleable.stl_SmartTabLayout_stl_titleOffset, titleOffset);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BetterTabLayout, defStyle, 0);
+        tabBackground = a.getResourceId(R.styleable.BetterTabLayout_tabBackground, NO_ID);
+        tabViewTextAllCaps = a.getBoolean(R.styleable.BetterTabLayout_tabTextAllCaps, true);
+        tabTextColor = a.getColor(R.styleable.BetterTabLayout_tabTextColor, Color.parseColor("#FC000000"));
+        tabTextSize = a.getDimension(R.styleable.BetterTabLayout_tabTextSize, getResources().getDimensionPixelSize(R.dimen.b_sp12));
+        tabViewTextHorizontalPadding = a.getDimensionPixelSize(R.styleable.BetterTabLayout_tabTextHorizontalPadding, getResources().getDimensionPixelSize(R.dimen.b_dp16));
+        tabTextMinWidth = a.getDimensionPixelSize(R.styleable.BetterTabLayout_tabTextMinWidth, 0);
+        tabLayoutId = a.getResourceId(R.styleable.BetterTabLayout_tabLayoutId, NO_ID);
+        tabTextViewId = a.getResourceId(R.styleable.BetterTabLayout_tabTextViewId, NO_ID);
+        tabDistributeEvenly = a.getBoolean(R.styleable.BetterTabLayout_tabDistributeEvenly, false);
+        boolean clickable = a.getBoolean(R.styleable.BetterTabLayout_tabClickable, true);
+        tabTitleOffset = a.getLayoutDimension(R.styleable.BetterTabLayout_tabTitleOffset, getResources().getDimensionPixelSize(R.dimen.b_dp24));
         a.recycle();
 
-        this.titleOffset = titleOffset;
-        this.tabViewBackgroundResId = tabBackgroundResId;
-        this.tabViewTextAllCaps = textAllCaps;
-        this.tabViewTextColors = (textColors != null)
-                ? textColors
-                : ColorStateList.valueOf(TAB_VIEW_TEXT_COLOR);
-        this.tabViewTextSize = textSize;
-        this.tabViewTextHorizontalPadding = textHorizontalPadding;
-        this.tabViewTextMinWidth = textMinWidth;
         this.internalTabClickListener = clickable ? new InternalTabClickListener() : null;
-        this.distributeEvenly = distributeEvenly;
 
-        if (customTabLayoutId != NO_ID) {
-            setCustomTabView(customTabLayoutId, customTabTextViewId);
+        if (tabLayoutId != NO_ID) {
+            setCustomTabView(tabLayoutId, tabTextViewId);
         }
 
         this.tabStrip = new SmartTabStrip(context, attrs);
 
-        if (distributeEvenly && tabStrip.isIndicatorAlwaysInCenter()) {
+        if (tabDistributeEvenly && tabStrip.isIndicatorAlwaysInCenter()) {
             throw new UnsupportedOperationException(
-                    "'distributeEvenly' and 'indicatorAlwaysInCenter' both use does not support");
+                    "'tabDistributeEvenly' and 'indicatorAlwaysInCenter' both use does not support");
         }
 
         // Make sure that the Tab Strips fills this View
         setFillViewport(!tabStrip.isIndicatorAlwaysInCenter());
 
         addView(tabStrip, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
     }
 
     @Override
@@ -224,25 +194,15 @@ public class SmartTabLayout extends HorizontalScrollView {
      *
      * @param color to use for tab text
      */
-    public void setDefaultTabTextColor(int color) {
-        tabViewTextColors = ColorStateList.valueOf(color);
-    }
-
-    /**
-     * Sets the colors used for styling the tab text. This will need to be called prior to calling
-     * {@link #setViewPager(ViewPager)} otherwise it will not get set
-     *
-     * @param colors ColorStateList to use for tab text
-     */
-    public void setDefaultTabTextColor(ColorStateList colors) {
-        tabViewTextColors = colors;
+    public void setDefaultTabTextColor(@ColorInt int color) {
+        tabTextColor = color;
     }
 
     /**
      * Set the same weight for tab
      */
-    public void setDistributeEvenly(boolean distributeEvenly) {
-        this.distributeEvenly = distributeEvenly;
+    public void setDistributeEvenly(boolean tabDistributeEvenly) {
+        this.tabDistributeEvenly = tabDistributeEvenly;
     }
 
     /**
@@ -342,15 +302,14 @@ public class SmartTabLayout extends HorizontalScrollView {
         TextView textView = new TextView(getContext());
         textView.setGravity(Gravity.CENTER);
         textView.setText(title);
-        textView.setTextColor(tabViewTextColors);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabViewTextSize);
+        textView.setTextColor(tabTextColor);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
-        textView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
-        if (tabViewBackgroundResId != NO_ID) {
-            textView.setBackgroundResource(tabViewBackgroundResId);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (tabBackground != NO_ID) {
+            textView.setBackgroundResource(tabBackground);
+        } else {
             // If we're running on Honeycomb or newer, then we can use the Theme's
             // selectableItemBackground to ensure that the View has a pressed state
             TypedValue outValue = new TypedValue();
@@ -359,17 +318,15 @@ public class SmartTabLayout extends HorizontalScrollView {
             textView.setBackgroundResource(outValue.resourceId);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            // If we're running on ICS or newer, enable all-caps to match the Action Bar tab style
-            textView.setAllCaps(tabViewTextAllCaps);
-        }
+        // If we're running on ICS or newer, enable all-caps to match the Action Bar tab style
+        textView.setAllCaps(tabViewTextAllCaps);
 
         textView.setPadding(
                 tabViewTextHorizontalPadding, 0,
                 tabViewTextHorizontalPadding, 0);
 
-        if (tabViewTextMinWidth > 0) {
-            textView.setMinWidth(tabViewTextMinWidth);
+        if (tabTextMinWidth > 0) {
+            textView.setMinWidth(tabTextMinWidth);
         }
 
         return textView;
@@ -388,7 +345,7 @@ public class SmartTabLayout extends HorizontalScrollView {
                 throw new IllegalStateException("tabView is null.");
             }
 
-            if (distributeEvenly) {
+            if (tabDistributeEvenly) {
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tabView.getLayoutParams();
                 lp.width = 0;
                 lp.weight = 1;
@@ -447,7 +404,7 @@ public class SmartTabLayout extends HorizontalScrollView {
         }
 
         int x;
-        if (titleOffset == TITLE_OFFSET_AUTO_CENTER) {
+        if (tabTitleOffset == TITLE_OFFSET_AUTO_CENTER) {
 
             if (0f < positionOffset && positionOffset < 1f) {
                 View nextTab = tabStrip.getChildAt(tabIndex + 1);
@@ -467,9 +424,9 @@ public class SmartTabLayout extends HorizontalScrollView {
         } else {
 
             if (isLayoutRtl) {
-                x = (tabIndex > 0 || positionOffset > 0) ? titleOffset : 0;
+                x = (tabIndex > 0 || positionOffset > 0) ? tabTitleOffset : 0;
             } else {
-                x = (tabIndex > 0 || positionOffset > 0) ? -titleOffset : 0;
+                x = (tabIndex > 0 || positionOffset > 0) ? -tabTitleOffset : 0;
             }
 
         }
@@ -531,10 +488,6 @@ public class SmartTabLayout extends HorizontalScrollView {
         void onTabClicked(int position);
     }
 
-    /**
-     * Create the custom tabs in the tab layout. Set with
-     * {@link #setCustomTabView(com.ogaclejapan.smarttablayout.SmartTabLayout.TabProvider)}
-     */
     public interface TabProvider {
 
         /**

@@ -5,7 +5,7 @@
     <declare-styleable name="BaseView">
 
         <!--色值-->
-        <attr name="better_color" format="color"/>
+        <attr name="better_color" format="color" />
 
         <attr name="better_mode" format="enum">
             <!--矩形-->
@@ -32,71 +32,70 @@
 
     <declare-styleable name="BetterCardView">
         <!--阴影颜色-->
-        <attr name="shadowColor" format="color"/>
+        <attr name="shadowColor" format="color" />
         <!--阴影偏移量-->
-        <attr name="shadowDx" format="dimension"/>
-        <attr name="shadowDy" format="dimension"/>
+        <attr name="shadowDx" format="dimension" />
+        <attr name="shadowDy" format="dimension" />
 
 
-        <attr name="cardElevation" format="dimension"/>\
+        <attr name="cardElevation" format="dimension" />\
 
-        <attr name="cardCornerRadius" format="dimension"/>
-        <attr name="cardCornerRadiusTL" format="dimension"/>
-        <attr name="cardCornerRadiusTR" format="dimension"/>
-        <attr name="cardCornerRadiusBL" format="dimension"/>
-        <attr name="cardCornerRadiusBR" format="dimension"/>
+        <attr name="cardCornerRadius" format="dimension" />
+        <attr name="cardCornerRadiusTL" format="dimension" />
+        <attr name="cardCornerRadiusTR" format="dimension" />
+        <attr name="cardCornerRadiusBL" format="dimension" />
+        <attr name="cardCornerRadiusBR" format="dimension" />
 
-        <attr name="cardShadowMargin" format="dimension"/>
-        <attr name="cardShadowMarginTop" format="dimension"/>
-        <attr name="cardShadowMarginLeft" format="dimension"/>
-        <attr name="cardShadowMarginRight" format="dimension"/>
-        <attr name="cardShadowMarginBottom" format="dimension"/>
+        <attr name="cardShadowMargin" format="dimension" />
+        <attr name="cardShadowMarginTop" format="dimension" />
+        <attr name="cardShadowMarginLeft" format="dimension" />
+        <attr name="cardShadowMarginRight" format="dimension" />
+        <attr name="cardShadowMarginBottom" format="dimension" />
 
-        <attr name="backgroundColor" format="color"/>
-        <attr name="foregroundColor" format="color"/>
-        <attr name="android:foreground"/>
+        <attr name="backgroundColor" format="color" />
+        <attr name="foregroundColor" format="color" />
+        <attr name="android:foreground" />
     </declare-styleable>
 
-    <declare-styleable name="stl_SmartTabLayout">
-        <attr name="stl_indicatorAlwaysInCenter" format="boolean"/>
-        <attr name="stl_indicatorWithoutPadding" format="boolean"/>
-        <attr name="stl_indicatorInFront" format="boolean"/>
-        <attr name="stl_indicatorInterpolation" format="enum">
-            <enum name="smart" value="0"/>
-            <enum name="linear" value="1"/>
+    <declare-styleable name="BetterTabLayout">
+
+        <attr name="tabTopLineHeight" format="color" />
+        <attr name="tabTopLineColor" format="dimension" />
+
+        <attr name="tabBottomLineColor" format="color" />
+        <attr name="tabBottomLineHeight" format="dimension" />
+
+        <attr name="tabIndicatorInFront" format="boolean" />
+        <attr name="tabIndicatorWithoutPadding" format="boolean" />
+        <attr name="tabIndicatorAlwaysInCenter" format="boolean" />
+
+        <attr name="tabIndicatorColor" format="color" />
+        <attr name="tabIndicatorHeight" format="dimension" />
+        <attr name="tabIndicatorWidth" format="dimension">
+            <enum name="auto" value="-1" />
         </attr>
-        <attr name="stl_indicatorGravity" format="enum">
-            <enum name="bottom" value="0"/>
-            <enum name="top" value="1"/>
-            <enum name="center" value="2"/>
-        </attr>
-        <attr name="stl_indicatorColor" format="color"/>
-        <attr name="stl_indicatorColors" format="reference"/>
-        <attr name="stl_tabIndicatorHeight" format="dimension"/>
-        <attr name="stl_indicatorWidth" format="dimension">
-            <enum name="auto" value="-1"/>
+        <attr name="tabIndicatorGravity" format="enum">
+            <enum name="bottom" value="0" />
+            <enum name="top" value="1" />
+            <enum name="center" value="2" />
         </attr>
 
-        <attr name="stl_overlineColor" format="color"/>
-        <attr name="stl_overlineThickness" format="dimension"/>
-        <attr name="stl_underlineColor" format="color"/>
-        <attr name="stl_underlineThickness" format="dimension"/>
-        <attr name="stl_dividerColor" format="color"/>
-        <attr name="stl_dividerColors" format="reference"/>
-        <attr name="stl_dividerThickness" format="dimension"/>
-        <attr name="stl_defaultTabBackground" format="reference"/>
-        <attr name="stl_defaultTabTextAllCaps" format="boolean"/>
-        <attr name="stl_defaultTabTextColor" format="color|reference"/>
-        <attr name="stl_defaultTabTextSize" format="dimension"/>
-        <attr name="stl_defaultTabTextHorizontalPadding" format="dimension"/>
-        <attr name="stl_defaultTabTextMinWidth" format="dimension"/>
-        <attr name="stl_customTabTextLayoutId" format="reference"/>
-        <attr name="stl_customTabTextViewId" format="reference"/>
-        <attr name="stl_distributeEvenly" format="boolean"/>
-        <attr name="stl_clickable" format="boolean"/>
-        <attr name="stl_titleOffset" format="dimension">
-            <enum name="auto_center" value="-1"/>
+        <attr name="tabDividerColor" format="color|reference" />
+        <attr name="tabDividerHeight" format="dimension" />
+
+        <attr name="tabBackground" format="reference" />
+        <attr name="tabTextAllCaps" format="boolean" />
+        <attr name="tabTextColor" format="color" />
+        <attr name="tabTextSize" format="dimension" />
+        <attr name="tabTextHorizontalPadding" format="dimension" />
+        <attr name="tabTextMinWidth" format="dimension" />
+        <attr name="tabLayoutId" format="reference" />
+        <attr name="tabTextViewId" format="reference" />
+        <attr name="tabDistributeEvenly" format="boolean" />
+        <attr name="tabClickable" format="boolean" />
+        <attr name="tabTitleOffset" format="dimension">
+            <enum name="auto_center" value="-1" />
         </attr>
-        <attr name="stl_drawDecorationAfterTab" format="boolean"/>
+
     </declare-styleable>
 </resources>
