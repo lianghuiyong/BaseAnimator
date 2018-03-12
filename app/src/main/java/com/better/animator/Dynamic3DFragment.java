@@ -5,8 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.better.animator.base.BaseFragment;
+import com.better.animator.base.BaseViewpagerAdapter;
 import com.better.animator.view.DemoFragment;
 import com.better.anime.dynamic2d.tablayout.SmartTabLayout;
 import com.better.anime.dynamic2d.tablayout.v4.FragmentPagerItem;
@@ -54,11 +56,13 @@ public class Dynamic3DFragment extends BaseFragment {
     @Override
     public void initData() {
 
-        FragmentPagerItems pages = new FragmentPagerItems(getContext());
-        for (int i = 1; i < 5; i++) {
-            pages.add(FragmentPagerItem.of(i + "", DemoFragment.class));
+        int pageSize = 3;
+
+        BaseViewpagerAdapter adapter = new BaseViewpagerAdapter(getChildFragmentManager());
+        for (int i = 0; i < pageSize; i++) {
+            adapter.addFragment(new DemoFragment());
         }
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(getChildFragmentManager(), pages);
+
 
         viewpager.setAdapter(adapter);
         viewpagertab1.setViewPager(viewpager);
@@ -66,5 +70,30 @@ public class Dynamic3DFragment extends BaseFragment {
         viewpagertab3.setViewPager(viewpager);
         viewpagertab4.setViewPager(viewpager);
         viewpagertab5.setViewPager(viewpager);
+
+        for (int i = 0; i < pageSize; i++) {
+            TextView textView = viewpagertab1.getTabAt(i).findViewById(R.id.text);
+            textView.setText(i+"");
+        }
+
+        for (int i = 0; i < pageSize; i++) {
+            TextView textView = viewpagertab2.getTabAt(i).findViewById(R.id.text);
+            textView.setText(i+"");
+        }
+
+        for (int i = 0; i < pageSize; i++) {
+            TextView textView = viewpagertab3.getTabAt(i).findViewById(R.id.text);
+            textView.setText(i+"");
+        }
+
+        for (int i = 0; i < pageSize; i++) {
+            TextView textView = viewpagertab4.getTabAt(i).findViewById(R.id.text);
+            textView.setText(i+"");
+        }
+
+        for (int i = 0; i < pageSize; i++) {
+            TextView textView = viewpagertab5.getTabAt(i).findViewById(R.id.text);
+            textView.setText(i+"");
+        }
     }
 }
