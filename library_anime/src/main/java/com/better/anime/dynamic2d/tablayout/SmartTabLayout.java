@@ -43,7 +43,6 @@ import com.better.anime.R;
  * stl_indicatorAlwaysInCenter	    如果设置为true，活动选项卡始终显示在中心（与书报摊谷歌应用程序相似），默认为false
  * stl_indicatorWithoutPadding	    如果设置为true，则绘制指示符，而不填充tab，默认为false
  * stl_indicatorInFront	            在下划线前绘制指标，默认为false
- * stl_indicatorInterpolation	    指标的行为：’线性’或’敏捷’
  * stl_indicatorGravity	            指示器的绘图位置：“底部”或“顶部”或“中心”，默认“底部”
  * stl_indicatorColor	            指示灯的颜色
  * stl_indicatorColors	            指示器的多种颜色，可以为每个选项卡设置颜色
@@ -203,12 +202,8 @@ public class SmartTabLayout extends HorizontalScrollView {
         }
     }
 
-    /**
-     * Set the behavior of the Indicator scrolling feedback.
-     *
-     * @param interpolator {@link com.ogaclejapan.smarttablayout.SmartTabIndicationInterpolator}
-     */
-    public void setIndicationInterpolator(SmartTabIndicationInterpolator interpolator) {
+
+    public void setIndicationInterpolator(SmartIndicationInterpolator interpolator) {
         tabStrip.setIndicationInterpolator(interpolator);
     }
 

@@ -1,23 +1,14 @@
 package com.better.animator;
 
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.better.animator.base.BaseFragment;
 import com.better.animator.base.BaseViewpagerAdapter;
 import com.better.animator.view.DemoFragment;
 import com.better.anime.dynamic2d.tablayout.SmartTabLayout;
-import com.better.anime.dynamic2d.tablayout.v4.FragmentPagerItem;
-import com.better.anime.dynamic2d.tablayout.v4.FragmentPagerItemAdapter;
-import com.better.anime.dynamic2d.tablayout.v4.FragmentPagerItems;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /*
  * -----------------------------------------------------------------
@@ -48,7 +39,7 @@ public class Dynamic3DFragment extends BaseFragment {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
-    int pageSize = 3;
+    int pageSize = 5;
 
     @Override
     public int setViewId() {
