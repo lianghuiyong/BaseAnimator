@@ -1,23 +1,14 @@
 package com.better.animator;
 
-import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.better.animator.base.BaseFragment;
-import com.better.animator.view.DemoFragment;
-import com.better.anime.dynamic2d.tablayout.SmartTabLayout;
-import com.better.anime.dynamic2d.tablayout.v4.FragmentPagerItem;
-import com.better.anime.dynamic2d.tablayout.v4.FragmentPagerItemAdapter;
-import com.better.anime.dynamic2d.tablayout.v4.FragmentPagerItems;
+import com.better.animator.utils.SoftHideKeyBoardUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /*
  * -----------------------------------------------------------------
@@ -38,6 +29,9 @@ public class Dynamic3DFragment extends BaseFragment {
     @BindView(R.id.edit)
     EditText edit;
 
+    @BindView(R.id.root_layout)
+    LinearLayout root_layout;
+
     @Override
     public int setViewId() {
         return R.layout.tablayout_test;
@@ -45,6 +39,9 @@ public class Dynamic3DFragment extends BaseFragment {
 
     @Override
     public void initData() {
+
+        SoftHideKeyBoardUtil.assistActivity(getActivity());
+
         edit.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {

@@ -60,8 +60,6 @@ public class HomePageActivity extends BaseActivity {
 
         statusBar.setStatusBarDark(this);
 
-        SoftHideKeyBoardUtil.assistActivity(this);
-
         BaseViewpagerAdapter viewpagerAdapter = new BaseViewpagerAdapter(getSupportFragmentManager());
         viewpagerAdapter.addFragment(new InterpolatorFragment());   // Interpolator
         viewpagerAdapter.addFragment(new Dynamic2DFragment());      // 动效2D
