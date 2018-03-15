@@ -32,6 +32,7 @@
             android:name=".view.HomePageActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme" />
 
 

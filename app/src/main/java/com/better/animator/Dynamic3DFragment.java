@@ -2,9 +2,11 @@ package com.better.animator;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.better.animator.base.BaseFragment;
 import com.better.animator.view.DemoFragment;
@@ -33,18 +35,8 @@ import butterknife.Unbinder;
  */
 public class Dynamic3DFragment extends BaseFragment {
 
-    @BindView(R.id.viewpagertab1)
-    SmartTabLayout viewpagertab1;
-    @BindView(R.id.viewpagertab2)
-    SmartTabLayout viewpagertab2;
-    @BindView(R.id.viewpagertab3)
-    SmartTabLayout viewpagertab3;
-    @BindView(R.id.viewpagertab4)
-    SmartTabLayout viewpagertab4;
-    @BindView(R.id.viewpagertab5)
-    SmartTabLayout viewpagertab5;
-    @BindView(R.id.viewpager)
-    ViewPager viewpager;
+    @BindView(R.id.edit)
+    EditText edit;
 
     @Override
     public int setViewId() {
@@ -53,18 +45,11 @@ public class Dynamic3DFragment extends BaseFragment {
 
     @Override
     public void initData() {
-
-        FragmentPagerItems pages = new FragmentPagerItems(getContext());
-        for (int i = 1; i < 5; i++) {
-            pages.add(FragmentPagerItem.of(i + "", DemoFragment.class));
-        }
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(getChildFragmentManager(), pages);
-
-        viewpager.setAdapter(adapter);
-        viewpagertab1.setViewPager(viewpager);
-        viewpagertab2.setViewPager(viewpager);
-        viewpagertab3.setViewPager(viewpager);
-        viewpagertab4.setViewPager(viewpager);
-        viewpagertab5.setViewPager(viewpager);
+        edit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return false;
+            }
+        });
     }
 }

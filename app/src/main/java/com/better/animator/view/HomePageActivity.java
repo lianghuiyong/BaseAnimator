@@ -13,6 +13,7 @@ import com.better.animator.InterpolatorFragment;
 import com.better.animator.R;
 import com.better.animator.base.BaseActivity;
 import com.better.animator.base.BaseViewpagerAdapter;
+import com.better.animator.utils.SoftHideKeyBoardUtil;
 import com.better.animator.widget.BaseStatusBar;
 
 import butterknife.BindView;
@@ -58,6 +59,8 @@ public class HomePageActivity extends BaseActivity {
     public void initData() {
 
         statusBar.setStatusBarDark(this);
+
+        SoftHideKeyBoardUtil.assistActivity(this);
 
         BaseViewpagerAdapter viewpagerAdapter = new BaseViewpagerAdapter(getSupportFragmentManager());
         viewpagerAdapter.addFragment(new InterpolatorFragment());   // Interpolator

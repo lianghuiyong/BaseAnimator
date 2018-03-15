@@ -1,78 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#f4f4f4"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/b_dp50"
-        android:orientation="vertical">
+        android:layout_height="@dimen/b_dp200"
+        android:background="@android:color/holo_blue_light" />
 
-        <com.better.anime.dynamic2d.tablayout.SmartTabLayout
-            android:id="@+id/viewpagertab1"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/b_dp45"
-            app:stl_dividerColor="@android:color/transparent"
-            app:stl_dividerThickness="0dp"
-            app:stl_indicatorColor="@android:color/transparent"
-            app:stl_indicatorThickness="0dp"
-            app:stl_underlineColor="@android:color/transparent"
-            app:stl_underlineThickness="0dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/b_dp200"
+        android:background="@android:color/holo_green_light" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/holo_red_light" />
 
-        <com.better.anime.dynamic2d.tablayout.SmartTabLayout
-            android:id="@+id/viewpagertab2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/b_dp45"
-            app:stl_defaultTabTextColor="@android:color/white"
-            app:stl_defaultTabTextHorizontalPadding="24dp"
-            app:stl_dividerColors="@array/custom_tab_colors"
-            app:stl_indicatorColors="@array/custom_tab_colors"
-            app:stl_indicatorInterpolation="linear"
-            app:stl_indicatorThickness="3dp"
-            app:stl_underlineThickness="1dp" />
-
-        <com.better.anime.dynamic2d.tablayout.SmartTabLayout
-            android:id="@+id/viewpagertab3"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/b_dp45"
-            app:stl_defaultTabTextColor="@android:color/white"
-            app:stl_defaultTabTextMinWidth="120dp"
-            app:stl_indicatorAlwaysInCenter="true"
-            app:stl_indicatorColor="#40C4FF"
-            app:stl_indicatorCornerRadius="1.5dp"
-            app:stl_indicatorInterpolation="smart"
-            app:stl_indicatorThickness="3dp"
-            app:stl_underlineColor="@android:color/transparent" />
-
-        <com.better.anime.dynamic2d.tablayout.SmartTabLayout
-            android:id="@+id/viewpagertab4"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/b_dp45"
-            app:stl_distributeEvenly="true"
-            app:stl_indicatorColor="#40C4FF"
-            app:stl_indicatorInterpolation="linear"
-            app:stl_indicatorThickness="3dp"
-            app:stl_underlineThickness="1dp" />
-
-        <com.better.anime.dynamic2d.tablayout.SmartTabLayout
-            android:id="@+id/viewpagertab5"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/b_dp45"
-            app:stl_customTabTextLayoutId="@layout/custom_tab_margin"
-            app:stl_customTabTextViewId="@id/custom_text"
-            app:stl_indicatorColor="#40C4FF"
-            app:stl_indicatorInterpolation="linear"
-            app:stl_indicatorThickness="3dp"
-            app:stl_underlineThickness="1dp" />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-</FrameLayout>
+    <EditText
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+</LinearLayout>
 
