@@ -23,170 +23,88 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.better.anime.R;
 
-/**
- * <p>
- * Forked from Google Samples &gt; SlidingTabsBasic &gt;
- * <a href="https://developer.android.com/samples/SlidingTabsBasic/src/com.example.android.common/view/SlidingTabLayout.html">SlidingTabStrip</a>
- */
 class SmartTabStrip extends LinearLayout {
 
     private static final int GRAVITY_BOTTOM = 0;
     private static final int GRAVITY_TOP = 1;
     private static final int GRAVITY_CENTER = 2;
 
-    private static final int AUTO_WIDTH = -1;
-
-    private static final int DEFAULT_TOP_BORDER_THICKNESS_DIPS = 0;
-    private static final byte DEFAULT_TOP_BORDER_COLOR_ALPHA = 0x26;
-    private static final int DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS = 2;
-    private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x26;
-    private static final int SELECTED_INDICATOR_THICKNESS_DIPS = 8;
-    private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5;
-    private static final float DEFAULT_INDICATOR_CORNER_RADIUS = 0f;
-    private static final int DEFAULT_DIVIDER_THICKNESS_DIPS = 1;
-    private static final byte DEFAULT_DIVIDER_COLOR_ALPHA = 0x20;
-    private static final float DEFAULT_DIVIDER_HEIGHT = 0.5f;
-    private static final boolean DEFAULT_INDICATOR_IN_CENTER = false;
-    private static final boolean DEFAULT_INDICATOR_IN_FRONT = false;
-    private static final boolean DEFAULT_INDICATOR_WITHOUT_PADDING = false;
-    private static final int DEFAULT_INDICATOR_GRAVITY = GRAVITY_BOTTOM;
-    private static final boolean DEFAULT_DRAW_DECORATION_AFTER_TAB = false;
-
-    private final int topBorderThickness;
-    private final int topBorderColor;
-    private final int bottomBorderThickness;
-    private final int bottomBorderColor;
+    private final int topLineHeight;
+    private final int topLineColor;
+    private final int bottomLineHeight;
+    private final int bottomLineColor;
     private final Paint borderPaint;
     private final RectF indicatorRectF = new RectF();
-    private final boolean indicatorWithoutPadding;
-    private final boolean indicatorAlwaysInCenter;
-    private final boolean indicatorInFront;
-    private final int indicatorThickness;
-    private final int indicatorWidth;
-    private final int indicatorGravity;
-    private final float indicatorCornerRadius;
+    private final boolean tabIndicatorWithoutPadding;
+    private final boolean tabIndicatorAlwaysInCenter;
+    private boolean tabIndicatorInFront;
+    private final int tabIndicatorHeight;
+    private final int tabIndicatorHorizontalPadding;
+
+    private final int tabIndicatorGravity;
     private final Paint indicatorPaint;
-    private final int dividerThickness;
+    private final int tabDividerHeight;
     private final Paint dividerPaint;
     private final float dividerHeight;
     private final SimpleTabColorizer defaultTabColorizer;
-    private final boolean drawDecorationAfterTab;
+    private final boolean shouldDrowLine;
 
     private int lastPosition;
     private int selectedPosition;
     private float selectionOffset;
-    private SmartTabIndicationInterpolator indicationInterpolator;
+    private SmartIndicationInterpolator indicationInterpolator;
     private SmartTabLayout.TabColorizer customTabColorizer;
 
     SmartTabStrip(Context context, AttributeSet attrs) {
         super(context);
         setWillNotDraw(false);
 
-        final float density = getResources().getDisplayMetrics().density;
+        int tabIndicatorColor;
+        int tabDividerColor;
 
-        TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(android.R.attr.colorForeground, outValue, true);
-        final int themeForegroundColor = outValue.data;
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BetterTabLayout);
+        tabIndicatorAlwaysInCenter = a.getBoolean(R.styleable.BetterTabLayout_tabIndicatorAlwaysInCenter, false);
+        tabIndicatorWithoutPadding = a.getBoolean(R.styleable.BetterTabLayout_tabIndicatorWithoutPadding, false);
+        tabIndicatorInFront = a.getBoolean(R.styleable.BetterTabLayout_tabIndicatorInFront, false);
 
-        boolean indicatorWithoutPadding = DEFAULT_INDICATOR_WITHOUT_PADDING;
-        boolean indicatorInFront = DEFAULT_INDICATOR_IN_FRONT;
-        boolean indicatorAlwaysInCenter = DEFAULT_INDICATOR_IN_CENTER;
-        int indicationInterpolatorId = SmartTabIndicationInterpolator.ID_SMART;
-        int indicatorGravity = DEFAULT_INDICATOR_GRAVITY;
-        int indicatorColor = DEFAULT_SELECTED_INDICATOR_COLOR;
-        int indicatorColorsId = NO_ID;
-        int indicatorThickness = (int) (SELECTED_INDICATOR_THICKNESS_DIPS * density);
-        int indicatorWidth = AUTO_WIDTH;
-        float indicatorCornerRadius = DEFAULT_INDICATOR_CORNER_RADIUS * density;
-        int overlineColor = setColorAlpha(themeForegroundColor, DEFAULT_TOP_BORDER_COLOR_ALPHA);
-        int overlineThickness = (int) (DEFAULT_TOP_BORDER_THICKNESS_DIPS * density);
-        int underlineColor = setColorAlpha(themeForegroundColor, DEFAULT_BOTTOM_BORDER_COLOR_ALPHA);
-        int underlineThickness = (int) (DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS * density);
-        int dividerColor = setColorAlpha(themeForegroundColor, DEFAULT_DIVIDER_COLOR_ALPHA);
-        int dividerColorsId = NO_ID;
-        int dividerThickness = (int) (DEFAULT_DIVIDER_THICKNESS_DIPS * density);
-        boolean drawDecorationAfterTab = DEFAULT_DRAW_DECORATION_AFTER_TAB;
+        tabIndicatorGravity = a.getInt(R.styleable.BetterTabLayout_tabIndicatorGravity, GRAVITY_BOTTOM);
+        tabIndicatorColor = a.getColor(R.styleable.BetterTabLayout_tabIndicatorColor, Color.parseColor("#33B5E5"));
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.stl_SmartTabLayout);
-        indicatorAlwaysInCenter = a.getBoolean(
-                R.styleable.stl_SmartTabLayout_stl_indicatorAlwaysInCenter, indicatorAlwaysInCenter);
-        indicatorWithoutPadding = a.getBoolean(
-                R.styleable.stl_SmartTabLayout_stl_indicatorWithoutPadding, indicatorWithoutPadding);
-        indicatorInFront = a.getBoolean(
-                R.styleable.stl_SmartTabLayout_stl_indicatorInFront, indicatorInFront);
-        indicationInterpolatorId = a.getInt(
-                R.styleable.stl_SmartTabLayout_stl_indicatorInterpolation, indicationInterpolatorId);
-        indicatorGravity = a.getInt(
-                R.styleable.stl_SmartTabLayout_stl_indicatorGravity, indicatorGravity);
-        indicatorColor = a.getColor(
-                R.styleable.stl_SmartTabLayout_stl_indicatorColor, indicatorColor);
-        indicatorColorsId = a.getResourceId(
-                R.styleable.stl_SmartTabLayout_stl_indicatorColors, indicatorColorsId);
-        indicatorThickness = a.getDimensionPixelSize(
-                R.styleable.stl_SmartTabLayout_stl_indicatorThickness, indicatorThickness);
-        indicatorWidth = a.getLayoutDimension(
-                R.styleable.stl_SmartTabLayout_stl_indicatorWidth, indicatorWidth);
-        indicatorCornerRadius = a.getDimension(
-                R.styleable.stl_SmartTabLayout_stl_indicatorCornerRadius, indicatorCornerRadius);
-        overlineColor = a.getColor(
-                R.styleable.stl_SmartTabLayout_stl_overlineColor, overlineColor);
-        overlineThickness = a.getDimensionPixelSize(
-                R.styleable.stl_SmartTabLayout_stl_overlineThickness, overlineThickness);
-        underlineColor = a.getColor(
-                R.styleable.stl_SmartTabLayout_stl_underlineColor, underlineColor);
-        underlineThickness = a.getDimensionPixelSize(
-                R.styleable.stl_SmartTabLayout_stl_underlineThickness, underlineThickness);
-        dividerColor = a.getColor(
-                R.styleable.stl_SmartTabLayout_stl_dividerColor, dividerColor);
-        dividerColorsId = a.getResourceId(
-                R.styleable.stl_SmartTabLayout_stl_dividerColors, dividerColorsId);
-        dividerThickness = a.getDimensionPixelSize(
-                R.styleable.stl_SmartTabLayout_stl_dividerThickness, dividerThickness);
-        drawDecorationAfterTab = a.getBoolean(
-                R.styleable.stl_SmartTabLayout_stl_drawDecorationAfterTab, drawDecorationAfterTab);
+        tabIndicatorHeight = a.getDimensionPixelSize(R.styleable.BetterTabLayout_tabIndicatorHeight, getResources().getDimensionPixelSize(R.dimen.b_dp2));
+        tabIndicatorHorizontalPadding = a.getLayoutDimension(R.styleable.BetterTabLayout_tabIndicatorHorizontalPadding, 5);
+
+        topLineHeight = a.getDimensionPixelSize(R.styleable.BetterTabLayout_tabTopLineHeight, 0);
+        topLineColor = a.getColor(R.styleable.BetterTabLayout_tabTopLineColor, Color.TRANSPARENT);
+
+        bottomLineColor = a.getColor(R.styleable.BetterTabLayout_tabBottomLineColor, Color.TRANSPARENT);
+        bottomLineHeight = a.getDimensionPixelSize(R.styleable.BetterTabLayout_tabBottomLineHeight, 0);
+
+        //间隔线
+        tabDividerColor = a.getColor(R.styleable.BetterTabLayout_tabDividerColor, Color.parseColor("#33B5E5"));
+        tabDividerHeight = a.getDimensionPixelSize(R.styleable.BetterTabLayout_tabDividerHeight, 0);
+        shouldDrowLine = !(tabDividerHeight > 0 || tabIndicatorHeight > 0 || topLineHeight > 0);
         a.recycle();
 
-        final int[] indicatorColors = (indicatorColorsId == NO_ID)
-                ? new int[]{indicatorColor}
-                : getResources().getIntArray(indicatorColorsId);
-
-        final int[] dividerColors = (dividerColorsId == NO_ID)
-                ? new int[]{dividerColor}
-                : getResources().getIntArray(dividerColorsId);
+        final int[] dividerColors = new int[]{tabDividerColor};
 
         this.defaultTabColorizer = new SimpleTabColorizer();
-        this.defaultTabColorizer.setIndicatorColors(indicatorColors);
+        this.defaultTabColorizer.setIndicatorColors(tabIndicatorColor);
         this.defaultTabColorizer.setDividerColors(dividerColors);
 
-        this.topBorderThickness = overlineThickness;
-        this.topBorderColor = overlineColor;
-        this.bottomBorderThickness = underlineThickness;
-        this.bottomBorderColor = underlineColor;
         this.borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        this.indicatorAlwaysInCenter = indicatorAlwaysInCenter;
-        this.indicatorWithoutPadding = indicatorWithoutPadding;
-        this.indicatorInFront = indicatorInFront;
-        this.indicatorThickness = indicatorThickness;
-        this.indicatorWidth = indicatorWidth;
         this.indicatorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.indicatorCornerRadius = indicatorCornerRadius;
-        this.indicatorGravity = indicatorGravity;
 
-        this.dividerHeight = DEFAULT_DIVIDER_HEIGHT;
+        this.dividerHeight = 0.5f;
         this.dividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.dividerPaint.setStrokeWidth(dividerThickness);
-        this.dividerThickness = dividerThickness;
+        this.dividerPaint.setStrokeWidth(tabDividerHeight);
 
-        this.drawDecorationAfterTab = drawDecorationAfterTab;
-
-        this.indicationInterpolator = SmartTabIndicationInterpolator.of(indicationInterpolatorId);
+        this.indicationInterpolator = new SmartIndicationInterpolator();
     }
 
     /**
@@ -200,7 +118,7 @@ class SmartTabStrip extends LinearLayout {
      * Blend {@code color1} and {@code color2} using the given ratio.
      *
      * @param ratio of which to blend. 1.0 will return {@code color1}, 0.5 will give an even blend,
-     * 0.0 will return {@code color2}.
+     *              0.0 will return {@code color2}.
      */
     private static int blendColors(int color1, int color2, float ratio) {
         final float inverseRation = 1f - ratio;
@@ -210,7 +128,7 @@ class SmartTabStrip extends LinearLayout {
         return Color.rgb((int) r, (int) g, (int) b);
     }
 
-    void setIndicationInterpolator(SmartTabIndicationInterpolator interpolator) {
+    void setIndicationInterpolator(SmartIndicationInterpolator interpolator) {
         indicationInterpolator = interpolator;
         invalidate();
     }
@@ -244,7 +162,7 @@ class SmartTabStrip extends LinearLayout {
     }
 
     boolean isIndicatorAlwaysInCenter() {
-        return indicatorAlwaysInCenter;
+        return tabIndicatorAlwaysInCenter;
     }
 
     SmartTabLayout.TabColorizer getTabColorizer() {
@@ -253,7 +171,7 @@ class SmartTabStrip extends LinearLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (!drawDecorationAfterTab) {
+        if (!shouldDrowLine) {
             drawDecoration(canvas);
         }
     }
@@ -261,7 +179,7 @@ class SmartTabStrip extends LinearLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if (drawDecorationAfterTab) {
+        if (shouldDrowLine) {
             drawDecoration(canvas);
         }
     }
@@ -273,7 +191,7 @@ class SmartTabStrip extends LinearLayout {
         final SmartTabLayout.TabColorizer tabColorizer = getTabColorizer();
         final boolean isLayoutRtl = Utils.isLayoutRtl(this);
 
-        if (indicatorInFront) {
+        if (tabIndicatorInFront) {
             drawOverline(canvas, 0, width);
             drawUnderline(canvas, 0, width, height);
         }
@@ -281,8 +199,8 @@ class SmartTabStrip extends LinearLayout {
         // Thick colored underline below the current selection
         if (tabCount > 0) {
             View selectedTab = getChildAt(selectedPosition);
-            int selectedStart = Utils.getStart(selectedTab, indicatorWithoutPadding);
-            int selectedEnd = Utils.getEnd(selectedTab, indicatorWithoutPadding);
+            int selectedStart = Utils.getStart(selectedTab, tabIndicatorWithoutPadding);
+            int selectedEnd = Utils.getEnd(selectedTab, tabIndicatorWithoutPadding);
             int left;
             int right;
             if (isLayoutRtl) {
@@ -294,7 +212,7 @@ class SmartTabStrip extends LinearLayout {
             }
 
             int color = tabColorizer.getIndicatorColor(selectedPosition);
-            float thickness = indicatorThickness;
+            float thickness = tabIndicatorHeight;
 
             if (selectionOffset > 0f && selectedPosition < (getChildCount() - 1)) {
                 int nextColor = tabColorizer.getIndicatorColor(selectedPosition + 1);
@@ -308,8 +226,8 @@ class SmartTabStrip extends LinearLayout {
                 float thicknessOffset = indicationInterpolator.getThickness(selectionOffset);
 
                 View nextTab = getChildAt(selectedPosition + 1);
-                int nextStart = Utils.getStart(nextTab, indicatorWithoutPadding);
-                int nextEnd = Utils.getEnd(nextTab, indicatorWithoutPadding);
+                int nextStart = Utils.getStart(nextTab, tabIndicatorWithoutPadding);
+                int nextEnd = Utils.getEnd(nextTab, tabIndicatorWithoutPadding);
                 if (isLayoutRtl) {
                     left = (int) (endOffset * nextEnd + (1.0f - endOffset) * left);
                     right = (int) (startOffset * nextStart + (1.0f - startOffset) * right);
@@ -324,7 +242,7 @@ class SmartTabStrip extends LinearLayout {
 
         }
 
-        if (!indicatorInFront) {
+        if (!tabIndicatorInFront) {
             drawOverline(canvas, 0, width);
             drawUnderline(canvas, 0, getWidth(), height);
         }
@@ -335,7 +253,7 @@ class SmartTabStrip extends LinearLayout {
     }
 
     private void drawSeparator(Canvas canvas, int height, int tabCount) {
-        if (dividerThickness <= 0) {
+        if (tabDividerHeight <= 0) {
             return;
         }
 
@@ -359,7 +277,7 @@ class SmartTabStrip extends LinearLayout {
 
     private void drawIndicator(Canvas canvas, int left, int right, int height, float thickness,
                                int color) {
-        if (indicatorThickness <= 0 || indicatorWidth == 0) {
+        if (tabIndicatorHeight <= 0 ) {
             return;
         }
 
@@ -367,9 +285,9 @@ class SmartTabStrip extends LinearLayout {
         float top;
         float bottom;
 
-        switch (indicatorGravity) {
+        switch (tabIndicatorGravity) {
             case GRAVITY_TOP:
-                center = indicatorThickness / 2f;
+                center = tabIndicatorHeight / 2f;
                 top = center - (thickness / 2f);
                 bottom = center + (thickness / 2f);
                 break;
@@ -380,44 +298,37 @@ class SmartTabStrip extends LinearLayout {
                 break;
             case GRAVITY_BOTTOM:
             default:
-                center = height - (indicatorThickness / 2f);
+                center = height - (tabIndicatorHeight / 2f);
                 top = center - (thickness / 2f);
                 bottom = center + (thickness / 2f);
         }
 
         indicatorPaint.setColor(color);
-        if (indicatorWidth == AUTO_WIDTH) {
-            indicatorRectF.set(left, top, right, bottom);
-        } else {
-            float padding = (Math.abs(left - right) - indicatorWidth) / 2f;
-            indicatorRectF.set(left + padding, top, right - padding, bottom);
-        }
 
-        if (indicatorCornerRadius > 0f) {
-            canvas.drawRoundRect(
-                    indicatorRectF, indicatorCornerRadius,
-                    indicatorCornerRadius, indicatorPaint);
-        } else {
-            canvas.drawRect(indicatorRectF, indicatorPaint);
-        }
+        indicatorRectF.set(left + tabIndicatorHorizontalPadding, top, right - tabIndicatorHorizontalPadding, bottom);
+
+
+        canvas.drawRoundRect(
+                indicatorRectF, tabIndicatorHeight / 2,
+                tabIndicatorHeight / 2, indicatorPaint);
     }
 
     private void drawOverline(Canvas canvas, int left, int right) {
-        if (topBorderThickness <= 0) {
+        if (topLineHeight <= 0) {
             return;
         }
         // Thin overline along the entire top edge
-        borderPaint.setColor(topBorderColor);
-        canvas.drawRect(left, 0, right, topBorderThickness, borderPaint);
+        borderPaint.setColor(topLineColor);
+        canvas.drawRect(left, 0, right, topLineHeight, borderPaint);
     }
 
     private void drawUnderline(Canvas canvas, int left, int right, int height) {
-        if (bottomBorderThickness <= 0) {
+        if (bottomLineHeight <= 0) {
             return;
         }
         // Thin underline along the entire bottom edge
-        borderPaint.setColor(bottomBorderColor);
-        canvas.drawRect(left, height - bottomBorderThickness, right, height, borderPaint);
+        borderPaint.setColor(bottomLineColor);
+        canvas.drawRect(left, height - bottomLineHeight, right, height, borderPaint);
     }
 
     private static class SimpleTabColorizer implements SmartTabLayout.TabColorizer {

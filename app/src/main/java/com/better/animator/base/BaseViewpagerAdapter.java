@@ -1,6 +1,5 @@
 package com.better.animator.base;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
@@ -23,19 +22,19 @@ import java.util.List;
  */
 
 public class BaseViewpagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> fragments;
+    private List<BaseFragment> fragments;
 
     public BaseViewpagerAdapter(FragmentManager fm) {
         super(fm);
         this.fragments = new ArrayList<>();
     }
 
-    public void addFragment(Fragment fragment) {
+    public void addFragment(BaseFragment fragment) {
         fragments.add(fragment);
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public BaseFragment getItem(int position) {
         return this.fragments.get(position);
     }
 
