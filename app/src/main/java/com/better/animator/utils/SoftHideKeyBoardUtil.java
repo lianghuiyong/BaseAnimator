@@ -19,12 +19,18 @@ import java.lang.reflect.Method;
  */
 
 public class SoftHideKeyBoardUtil {
+    // For more information, see https://code.google.com/p/android/issues/detail?id=5497
+    // To use this class, simply invoke assistActivity() on an Activity that already has its content view set.
+
+
     public static void assistActivity(View content) {
         new SoftHideKeyBoardUtil(content);
     }
 
     private View mChildOfContent;
     private int usableHeightPrevious;
+    private int firstViewHeight;
+    private boolean isFirst = true;
     private ViewGroup.LayoutParams frameLayoutParams;
 
     private SoftHideKeyBoardUtil(View content) {
@@ -40,44 +46,39 @@ public class SoftHideKeyBoardUtil {
     }
 
     private void possiblyResizeChildOfContent() {
-        int usableHeightNow = computeUsableHeight();
-        if (usableHeightNow != usableHeightPrevious) {
+
+
+        int usableHeightNow = (int) (computeUsableHeight() - mChildOfContent.getY());
+
+        if (!isFirst && usableHeightNow != usableHeightPrevious) {
+
+
+            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
+            int heightDifference = usableHeightSansKeyboard - usableHeightNow;
+            if (heightDifference > (usableHeightSansKeyboard / 4)) {
+                // keyboard became visible
+                frameLayoutParams.height = usableHeightNow - BarUtils.getStatusBarHeight(mChildOfContent.getContext());
+            } else {
+                // keyboard became hide
+                frameLayoutParams.height = firstViewHeight;
+            }
 
             frameLayoutParams.height = usableHeightNow;
-
-            Log.e("lhy", "frameLayoutParams.height = " + frameLayoutParams.height);
-
             mChildOfContent.requestLayout();
             usableHeightPrevious = usableHeightNow;
+        }
+
+        if (isFirst) {
+            firstViewHeight = frameLayoutParams.height;
+            isFirst = false;
         }
     }
 
     private int computeUsableHeight() {
         Rect r = new Rect();
         mChildOfContent.getWindowVisibleDisplayFrame(r);
-        return (r.bottom);
+        return r.bottom - r.top;
     }
 
-    public static boolean checkDeviceHasNavigationBar(Context context) {
-        boolean hasNavigationBar = false;
-        Resources rs = context.getResources();
-        int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
-        if (id > 0) {
-            hasNavigationBar = rs.getBoolean(id);
-        }
-        try {
-            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
-            Method m = systemPropertiesClass.getMethod("get", String.class);
-            String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
-            if ("1".equals(navBarOverride)) {
-                hasNavigationBar = false;
-            } else if ("0".equals(navBarOverride)) {
-                hasNavigationBar = true;
-            }
-        } catch (Exception e) {
 
-        }
-        return hasNavigationBar;
-
-    }
 }

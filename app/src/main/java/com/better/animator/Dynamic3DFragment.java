@@ -1,17 +1,6 @@
 package com.better.animator;
 
-import android.support.v7.widget.FitWindowsLinearLayout;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-
 import com.better.animator.base.BaseFragment;
-import com.better.animator.utils.ImmersionBar;
-import com.better.animator.utils.SoftHideKeyBoardUtil;
-
-import butterknife.BindView;
 
 /*
  * -----------------------------------------------------------------
@@ -29,11 +18,6 @@ import butterknife.BindView;
  */
 public class Dynamic3DFragment extends BaseFragment {
 
-    @BindView(R.id.edit)
-    EditText edit;
-
-    @BindView(R.id.root_layout)
-    FitWindowsLinearLayout root_layout;
 
     @Override
     public int setViewId() {
@@ -42,14 +26,5 @@ public class Dynamic3DFragment extends BaseFragment {
 
     @Override
     public void initData() {
-
-//        SoftHideKeyBoardUtil.assistActivity(getView());
-
-        edit.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                return false;
-            }
-        });
     }
 }
