@@ -1,6 +1,12 @@
 package com.better.animator;
 
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
 import com.better.animator.base.BaseFragment;
+import com.better.animator.utils.SoftHideKeyBoardUtil;
+
+import butterknife.BindView;
 
 /*
  * -----------------------------------------------------------------
@@ -26,5 +32,7 @@ public class Dynamic3DFragment extends BaseFragment {
 
     @Override
     public void initData() {
+
+//        SoftHideKeyBoardUtil.assistActivity(root_layout);
     }
 }

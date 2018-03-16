@@ -1,98 +1,84 @@
 package com.better.animator.utils;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Rect;
-import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-
-import java.lang.reflect.Method;
+import android.view.animation.LinearInterpolator;
 
 /**
  * Created by liang on 2018/3/15.
  */
 
 public class SoftHideKeyBoardUtil {
-    // For more information, see https://code.google.com/p/android/issues/detail?id=5497
-    // To use this class, simply invoke assistActivity() on an Activity that already has its content view set.
-
 
     public static void assistActivity(View content) {
         new SoftHideKeyBoardUtil(content);
     }
 
     private View mChildOfContent;
-    private int usableHeightPrevious;
-    private int firstViewHeight;
+
+    //键盘显示与隐藏时的高度
+    private int viewHeightOnKeyShow;
+    private int viewHeightOnKeyHide;
+
+    //记录布局显示的宽高
+    private int viewHeightOld;
+    private int viewHeightNew;
+
     private boolean isFirst = true;
-    private ViewGroup.LayoutParams frameLayoutParams;
 
     private SoftHideKeyBoardUtil(View content) {
         mChildOfContent = content;
         mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
-
-                Log.e("lhy", "computeUsableHeight() = " + computeUsableHeight());
                 possiblyResizeChildOfContent();
             }
         });
-        frameLayoutParams = mChildOfContent.getLayoutParams();
     }
 
     private void possiblyResizeChildOfContent() {
 
+        viewHeightNew = (int) (computeUsableHeight() - mChildOfContent.getY());
 
-        int usableHeightNow = (int) (computeUsableHeight() - mChildOfContent.getY());
+        if (!isFirst && viewHeightNew != viewHeightOld) {
 
-        if (!isFirst && usableHeightNow != usableHeightPrevious) {
+            if (viewHeightOnKeyHide - viewHeightNew > 100) {
 
-
-            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
-            int heightDifference = usableHeightSansKeyboard - usableHeightNow;
-            if (heightDifference > (usableHeightSansKeyboard / 4)) {
                 // keyboard became visible
-
-                int value = usableHeightNow;
-                showHideTitle(mChildOfContent, value, false);
+                viewHeightOnKeyShow = viewHeightNew;
+                changeHeight(mChildOfContent, viewHeightOnKeyHide, viewHeightOnKeyShow);
 
             } else {
                 // keyboard became hide
-                int value = firstViewHeight;
-
-                showHideTitle(mChildOfContent, value, true);
+                changeHeight(mChildOfContent, viewHeightOnKeyShow, viewHeightOnKeyHide);
             }
 
-            usableHeightPrevious = usableHeightNow;
+            viewHeightOld = viewHeightNew;
         }
 
         if (isFirst) {
-            firstViewHeight = mChildOfContent.getHeight();
+            viewHeightOnKeyHide = mChildOfContent.getHeight();
             isFirst = false;
         }
     }
 
-    private void showHideTitle(final View view, final int maxHeight, boolean isShow) {
-        ValueAnimator animator;
+    private void changeHeight(final View view, final int statHeight, final int endHeight) {
 
-        animator = ValueAnimator.ofFloat(0f, 1f);
-
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+        animator.setInterpolator(new LinearInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float currentValue = (float) animation.getAnimatedValue();
                 ViewGroup.LayoutParams params = view.getLayoutParams();
-                params.height = (int) (currentValue * maxHeight);
+                params.height = statHeight + (int) (currentValue * (endHeight - statHeight));
                 view.setLayoutParams(params);
             }
         });
-        animator.setDuration(200).start();
+        animator.setDuration(180).start();
     }
 
     private int computeUsableHeight() {
