@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.FitWindowsLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f4f4f4"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/b_dp200"
         android:background="@android:color/holo_blue_light" />
@@ -29,5 +30,5 @@
         android:focusable="true"
         android:focusableInTouchMode="true" />
 
-</LinearLayout>
+</android.support.v7.widget.FitWindowsLinearLayout>
 

@@ -1,6 +1,7 @@
 package com.better.animator.base;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +26,17 @@ import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
 
+    private View view;
+
+    @Nullable
+    @Override
+    public View getView() {
+        return view;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(setViewId(), container, false);
+        view = inflater.inflate(setViewId(), container, false);
         ButterKnife.bind(this, view);
         initData();
         return view;
