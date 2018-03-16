@@ -13,7 +13,6 @@ import com.better.animator.InterpolatorFragment;
 import com.better.animator.R;
 import com.better.animator.base.BaseActivity;
 import com.better.animator.base.BaseViewpagerAdapter;
-import com.better.animator.utils.ImmersionBar;
 import com.better.animator.utils.SoftHideKeyBoardUtil;
 import com.better.animator.widget.BaseStatusBar;
 
