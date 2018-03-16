@@ -1,5 +1,6 @@
 package com.better.animator.utils;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -57,27 +58,47 @@ public class SoftHideKeyBoardUtil {
             int heightDifference = usableHeightSansKeyboard - usableHeightNow;
             if (heightDifference > (usableHeightSansKeyboard / 4)) {
                 // keyboard became visible
-                frameLayoutParams.height = usableHeightNow - BarUtils.getStatusBarHeight(mChildOfContent.getContext());
+
+                int value = usableHeightNow;
+                showHideTitle(mChildOfContent, value, false);
+
             } else {
                 // keyboard became hide
-                frameLayoutParams.height = firstViewHeight;
+                int value = firstViewHeight;
+
+                showHideTitle(mChildOfContent, value, true);
             }
 
-            frameLayoutParams.height = usableHeightNow;
-            mChildOfContent.requestLayout();
             usableHeightPrevious = usableHeightNow;
         }
 
         if (isFirst) {
-            firstViewHeight = frameLayoutParams.height;
+            firstViewHeight = mChildOfContent.getHeight();
             isFirst = false;
         }
+    }
+
+    private void showHideTitle(final View view, final int maxHeight, boolean isShow) {
+        ValueAnimator animator;
+
+        animator = ValueAnimator.ofFloat(0f, 1f);
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float currentValue = (float) animation.getAnimatedValue();
+                ViewGroup.LayoutParams params = view.getLayoutParams();
+                params.height = (int) (currentValue * maxHeight);
+                view.setLayoutParams(params);
+            }
+        });
+        animator.setDuration(200).start();
     }
 
     private int computeUsableHeight() {
         Rect r = new Rect();
         mChildOfContent.getWindowVisibleDisplayFrame(r);
-        return r.bottom - r.top;
+        return r.bottom;
     }
 
 
